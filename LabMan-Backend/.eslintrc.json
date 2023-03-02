@@ -16,12 +16,13 @@
             "tab"
         ],
         "quotes": [
-            "error",
+            "warn",
             "double"
         ],
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-unused-vars": "error"
     }
 }
