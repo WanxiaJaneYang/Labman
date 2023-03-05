@@ -57,13 +57,15 @@ Status Code:
 
 - 1.0 Initial functions
 
+
+
+## License
+
+This project is licensed under the ISC License - see the LICENSE.md file for details
+
 ## Author
 
 - Chang Liu
 - Wanxia Yang
 - Shuxiao Peng
-- Kaini Chang
-
-## License
-
-This project is licensed under the ISC License - see the LICENSE.md file for details
+- Kaini Chang  (completed)
