@@ -8,7 +8,7 @@ var config =
   host:"labman.mysql.database.azure.com", 
   user:"a1866621", 
   password:"Adelaide123N", 
-  database:"mysql", 
+  database:"labman", 
   port:3306, 
   ssl: {    rejectUnauthorized: false,
     ca: fs.readFileSync("./BaltimoreCyberTrustRoot.crt.pem", "utf8")}
