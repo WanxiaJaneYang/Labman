@@ -13,7 +13,7 @@ const pool = mysql.createPool({
   connectTimeout: 60000,
   ssl: {   
     rejectUnauthorized: false,
-    ca: fs.readFileSync("/Users/kaini/mcip/Team05/LabMan-Backend/DigiCertGlobalRootCA.crt.pem")
+    ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem")
 }
 });
 pool.getConnection(function(err, connection) {
