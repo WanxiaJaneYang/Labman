@@ -13,7 +13,7 @@ const pool = mysql.createPool({
   connectTimeout: 60000,
   ssl: {   
     rejectUnauthorized: false,
-    ca: fs.readFileSync("/Users/kaini/mcip/Team05/LabMan-Backend/DigiCertGlobalRootCA.crt.pem")
+    ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem")
 }
 });
 pool.getConnection(function(err, connection) {
@@ -23,15 +23,19 @@ pool.getConnection(function(err, connection) {
     }    else
     {
        console.log("Connection established.");
-            readData(connection);
+       //testing   :perform database operations using the connection  
+       readData(connection);
     }
 
-  // perform database operations using the connection
-
-//   connection.release(); // release the connection back to the pool
+// release the connection back to the pool
+connection.release(
+    function (err) { 
+        if (err) throw err;
+        else  console.log('Closing connection.') 
+});
 });
 
-
+//testing function
 function readData(connection){
     connection.query('SELECT * FROM test', 
         function (err, results, fields) {
@@ -39,12 +43,11 @@ function readData(connection){
             else console.log(results);
             console.log('Done.');
         })
-        connection.release(
-        function (err) { 
-            if (err) throw err;
-            else  console.log('Closing connection.') 
-    });
 };
+
+
+
+
 app.use(express.json());
 
 export default app;
