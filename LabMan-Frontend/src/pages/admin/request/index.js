@@ -1,12 +1,12 @@
 import React from "react";
-import MyLayout from "../../../components/Layout";
+import AdminLayout from "../../../components/AdminLayout";
 
 function RequestPage() {
     return (
         <div>
-            <MyLayout >
+            <AdminLayout >
                 <h1>Request Page</h1>
-            </MyLayout>
+            </AdminLayout>
         </div>
     );
 }

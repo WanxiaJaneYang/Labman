@@ -1,12 +1,12 @@
 import React from "react";
-import MyLayout from "../../../components/Layout";
+import AdminLayout from "../../../components/AdminLayout";
 
 function EquipmentPage() {
     return (
         <div>
-            <MyLayout defaultSelectedKeys="3">
+            <AdminLayout defaultSelectedKeys="3">
                 <h1>Equipment Page</h1>
-            </MyLayout>
+            </AdminLayout>
         </div>
     );
 }

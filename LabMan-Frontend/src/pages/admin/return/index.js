@@ -1,12 +1,12 @@
 import React from "react";
-import MyLayout from "../../../components/Layout";
+import AdminLayout from "../../../components/AdminLayout";
 
 function ReturnPage() {
     return (
         <div>
-            <MyLayout defaultSelectedKeys="2">
+            <AdminLayout defaultSelectedKeys="2">
                 <h1>Return Page</h1>
-            </MyLayout>
+            </AdminLayout>
         </div>
     );
 }
