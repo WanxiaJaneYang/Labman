@@ -1,11 +1,12 @@
 import React from "react";
 import AdminLayout from "../../../components/AdminLayout";
+import RequestRecordTable from "../../../components/RequestRecordTable";
 
 function RequestPage() {
     return (
         <div>
             <AdminLayout >
-                <h1>Request Page</h1>
+                <RequestRecordTable />
             </AdminLayout>
         </div>
     );
