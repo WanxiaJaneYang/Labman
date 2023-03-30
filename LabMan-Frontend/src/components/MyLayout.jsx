@@ -37,17 +37,6 @@ const MyLayout = ({ defaultSelectedKeys = "1", children, menuItems }) => {
                 </Menu>
             </Sider>
             <Layout className="site-layout">
-                <Header
-                    style={{
-                        padding: 0,
-                        background: colorBgContainer,
-                    }}
-                >
-                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                        className: "trigger",
-                        onClick: () => setCollapsed(!collapsed),
-                    })}
-                </Header>
                 <Content
                     style={{
                         margin: "24px 16px",
