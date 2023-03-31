@@ -1,6 +1,6 @@
 import React from "react";
-import AdminLayout from "../../../components/AdminLayout";
-import RequestRecordTable from "../../../components/RequestRecordTable";
+import AdminLayout from "../../../components/layout/AdminLayout";
+import RequestRecordTable from "../../../components/tables/RequestRecordTable";
 
 function RequestPage() {
     return (

@@ -1,27 +1,25 @@
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-} from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "./MyLayout.css";
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const MyLayout = ({ defaultSelectedKeys = "1", children, menuItems }) => {
-    const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     return (
         <Layout>
             <Sider
-                trigger={null}
-                collapsible
-                collapsed={collapsed}
                 breakpoint="md"
-                onCollapse={setCollapsed}
+                collapsedWidth="0"
+                onBreakpoint={(broken) => {
+                    console.log(broken);
+                }}
+                onCollapse={(collapsed, type) => {
+                    console.log(collapsed, type);
+                }}
             >
                 <div className="logo" />
                 <Menu

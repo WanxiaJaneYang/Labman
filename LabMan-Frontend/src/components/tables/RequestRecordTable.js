@@ -37,7 +37,7 @@ const data = [
     },
     {
         key: '2',
-        time: '2021-05-01 12:00:00',
+        time: '2021-05-03 12:00:00',
         name: 'Jim Green',
         studentID: 'a123456789',
         equipmentType: 'Microscope',
@@ -45,7 +45,7 @@ const data = [
     },
     {
         key: '3',
-        time: '2021-05-01 12:00:00',
+        time: '2021-05-02 12:00:00',
         name: 'Joe Black',
         studentID: 'a123456789',
         equipmentType: 'Microscope',
