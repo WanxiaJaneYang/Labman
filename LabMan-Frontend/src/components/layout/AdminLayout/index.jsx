@@ -1,39 +1,38 @@
-import React from "react";
-import MyLayout from "./MyLayout";
+import MyLayout from "../MyLayout";
 import {
     DatabaseOutlined,
     ExportOutlined,
     ImportOutlined,
 } from "@ant-design/icons";
+import { Outlet } from "react-router";
 
 const adminMenuItems = [
     {
-        key: "1",
+        key: "request",
         icon: <ExportOutlined />,
         label: "Request",
         link: "/admin/request",
     },
     {
-        key: "2",
+        key: "return",
         icon: <ImportOutlined />,
         label: "Return",
         link: "/admin/return",
     },
     {
-        key: "3",
+        key: "equipment",
         icon: <DatabaseOutlined />,
         label: "Equipment",
         link: "/admin/equipment",
     },
 ];
 
-const AdminLayout = ({ defaultSelectedKeys = "1", children }) => {
+const AdminLayout = () => {
     return (
         <MyLayout
-            defaultSelectedKeys={defaultSelectedKeys}
             menuItems={adminMenuItems}
         >
-            {children}
+            <Outlet />
         </MyLayout>
     );
 };

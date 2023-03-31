@@ -1,18 +1,24 @@
 import { Layout, Menu, theme } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "./MyLayout.css";
 
 const { Sider, Content } = Layout;
 
-const MyLayout = ({ defaultSelectedKeys = "1", children, menuItems }) => {
+const MyLayout = ({ children, menuItems }) => {
+    const location = useLocation();
+    const [selectedKey, setSelectedKey] = React.useState(window.location.pathname?.split("/")[2]);
+    useEffect(() => {
+        setSelectedKey(window.location.pathname?.split("/")[2]);
+    }, [location]);
+
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     return (
         <Layout>
             <Sider
-                breakpoint="md"
+                breakpoint="lg"
                 collapsedWidth="0"
                 onBreakpoint={(broken) => {
                     console.log(broken);
@@ -25,7 +31,7 @@ const MyLayout = ({ defaultSelectedKeys = "1", children, menuItems }) => {
                 <Menu
                     theme="dark"
                     mode="inline"
-                    defaultSelectedKeys={[defaultSelectedKeys]}
+                    selectedKeys={[selectedKey]}
                 >
                     {menuItems.map((item) => (
                         <Menu.Item key={item.key} icon={item.icon}>
@@ -46,7 +52,7 @@ const MyLayout = ({ defaultSelectedKeys = "1", children, menuItems }) => {
                     {children}
                 </Content>
             </Layout>
-        </Layout>
+        </Layout >
     );
 };
 export default MyLayout;
