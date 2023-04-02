@@ -16,38 +16,75 @@ const pool = mysql.createPool({
     ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem")
 }
 });
-pool.getConnection(function(err, connection) {
-    if (err) { 
-        console.log("!!! Cannot connect !!! Error:");
-        throw err;
-    }    else
-    {
-       console.log("Connection established.");
-       //testing   :perform database operations using the connection  
-       readData(connection);
-    }
-
-// release the connection back to the pool
-connection.release(
-    function (err) { 
-        if (err) throw err;
-        else  console.log('Closing connection.') 
-});
-});
-
-//testing function
-function readData(connection){
-    connection.query('SELECT * FROM test', 
-        function (err, results, fields) {
-            if (err) throw err;
-            else console.log(results);
-            console.log('Done.');
-        })
-};
-
-
-
-
 app.use(express.json());
+
+//connection log
+// pool.getConnection((err, connection) => {
+//     if (err) {
+//       console.error("Error connecting to database: ", err);
+//     } else {
+//       console.log("Connected to database!");
+//      // connection.release();
+//     }
+//   });
+  
+
+//insert a new equipment type
+app.post("/equipment_type", (req, res) => {
+    const { type_name, type_quantity } = req.body;
+    pool.query(
+      "INSERT INTO equipment_type (type_name, type_quantity) VALUES (?, ?)",
+      [type_name, type_quantity],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "Error inserting equipment type" });
+        }
+        return res.status(201).json({ message: "Equipment type created successfully" });
+      }
+    );
+  });
+
+//all equipment types
+app.get("/equipments", (req, res) => {
+    pool.query("SELECT * FROM equipment_type", (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Error retrieving equipment types" });
+        }
+        return res.status(200).json(results);
+    });
+});
+
+//insert a new equipment type
+app.post("/user", (req, res) => {
+    const { user_name } = req.body;
+    pool.query(
+      "INSERT INTO equipment_type (user_name) VALUES (?)",
+      [user_name],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "Error inserting user" });
+        }
+        return res.status(201).json({ message: "User created successfully" });
+      }
+    );
+  });
+
+//all users
+app.get("/users", (req, res) => {
+    pool.query("SELECT * FROM user", (err, results) => {
+        if (err) {  
+            console.error(err);
+            return res.status(500).json({ error: "Error retrieving users" });
+        }
+        return res.status(200).json(results);
+    });
+});
+
+app.listen(3000, () => {
+    console.log("Server listening on port 3000");
+  });
 
 export default app;
