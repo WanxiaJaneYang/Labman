@@ -56,7 +56,7 @@ app.get("/equipments", (req, res) => {
     });
 });
 
-//insert a new equipment type
+//insert a new user
 app.post("/user", (req, res) => {
     const { user_name } = req.body;
     pool.query(
