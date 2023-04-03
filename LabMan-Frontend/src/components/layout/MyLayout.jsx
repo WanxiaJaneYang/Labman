@@ -1,15 +1,15 @@
 import { Layout, Menu, theme } from "antd";
 import React, { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./MyLayout.css";
-
 const { Sider, Content } = Layout;
 
 const MyLayout = ({ children, menuItems }) => {
     const location = useLocation();
-    const [selectedKey, setSelectedKey] = React.useState(window.location.pathname?.split("/")[2]);
+    const [selectedKey, setSelectedKey] = React.useState(window.location.pathname);
+    const navigate = useNavigate();
     useEffect(() => {
-        setSelectedKey(window.location.pathname?.split("/")[2]);
+        setSelectedKey(window.location.pathname);
     }, [location]);
 
     const {
@@ -32,12 +32,15 @@ const MyLayout = ({ children, menuItems }) => {
                     theme="dark"
                     mode="inline"
                     selectedKeys={[selectedKey]}
-                >
-                    {menuItems.map((item) => (
-                        <Menu.Item key={item.key} icon={item.icon}>
-                            <Link to={item.link}>{item.label}</Link>
-                        </Menu.Item>
+                    onClick={({ key }) => {
+                        navigate(key);
+                    }}
+                    items={menuItems.map((item) => (
+                        {
+                            ...item,
+                        }
                     ))}
+                >
                 </Menu>
             </Sider>
             <Layout className="site-layout">

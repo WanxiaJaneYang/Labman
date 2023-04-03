@@ -13,33 +13,6 @@ const columns = [
 
 ];
 
-// const data = [
-//     {
-//         key: '1',
-//         time: '2021-05-01 12:00:00',
-//         name: 'John Brown',
-//         studentID: 'a123456789',
-//         equipmentType: 'Microscope',
-//         count: 1,
-//     },
-//     {
-//         key: '2',
-//         time: '2021-05-03 12:00:00',
-//         name: 'Jim Green',
-//         studentID: 'a123456789',
-//         equipmentType: 'Microscope',
-//         count: 1,
-//     },
-//     {
-//         key: '3',
-//         time: '2021-05-02 12:00:00',
-//         name: 'Joe Black',
-//         studentID: 'a123456789',
-//         equipmentType: 'Microscope',
-//         count: 1,
-//     },
-// ];
-
 const getRandomuserParams = (params) => ({
     results: params.pagination?.pageSize,
     page: params.pagination?.current,
