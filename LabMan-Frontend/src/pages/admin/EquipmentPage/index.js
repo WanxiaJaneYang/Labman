@@ -1,7 +1,9 @@
+import EquipmentTable from "../../../components/tables/EquipmentTable";
+
 function EquipmentPage() {
     return (
         <div>
-            <h1>Equipment Page</h1>
+            <EquipmentTable />
         </div>
     );
 }

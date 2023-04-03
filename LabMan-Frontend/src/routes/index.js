@@ -2,6 +2,9 @@ import { Navigate } from "react-router";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import AdminLayout from "../components/Layout/AdminLayout";
+import EquipmentPage from "../pages/admin/EquipmentPage";
+import RequestPage from "../pages/admin/RequestPage";
+import ReturnPage from "../pages/admin/ReturnPage";
 
 const routes = [
     {
@@ -22,15 +25,15 @@ const routes = [
         children: [
             {
                 path: "request",
-                element: <h1>Request Page</h1>,
+                element: <RequestPage />,
             },
             {
                 path: "return",
-                element: <h1>Return Page</h1>,
+                element: <ReturnPage />,
             },
             {
                 path: "equipment",
-                element: <h1>Equipment Page</h1>,
+                element: <EquipmentPage />,
             }
         ]
     }
