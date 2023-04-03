@@ -13,7 +13,7 @@ const fetchData = () => {
 };
 
 function RequestPage() {
-    const { selectedRow, setSelectedRow } = useState(null);
+    const [selectedRow, setSelectedRow] = useState(null);
     const handleRowSelected = (row) => {
         setSelectedRow(row);
     };

@@ -8,22 +8,19 @@ import { Outlet } from "react-router";
 
 const adminMenuItems = [
     {
-        key: "request",
+        key: "/admin/request",
         icon: <ExportOutlined />,
         label: "Request",
-        link: "/admin/request",
     },
     {
-        key: "return",
+        key: "/admin/return",
         icon: <ImportOutlined />,
         label: "Return",
-        link: "/admin/return",
     },
     {
-        key: "equipment",
+        key: "/admin/equipment",
         icon: <DatabaseOutlined />,
         label: "Equipment",
-        link: "/admin/equipment",
     },
 ];
 
