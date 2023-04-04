@@ -1,6 +1,6 @@
-import ReturnTable from "../../../components/tables/ReturnTable";
-import ReturnEquipment from "../../../components/Buttons/ReturnEquipment";
-import SearchReturnRecord from "../../../components/Buttons/SearchReturnRecord";
+import ReturnTable from "./Components/ReturnTable";
+import ReturnEquipmentButton from "./Components/Buttons/ReturnEquipmentButton";
+import SearchReturnRecordBar from "./Components/Buttons/SearchReturnRecordBar";
 import { Row, Col } from "antd";
 import { useState } from "react";
 
@@ -33,10 +33,10 @@ function ReturnPage() {
 		<div>
 			<Row justify="space-between" align="middle">
 				<Col>
-					<ReturnEquipment selectedRow={selectedRow} onReturn={fetchData} />
+					<ReturnEquipmentButton selectedRow={selectedRow} onReturn={fetchData} />
 				</Col>
 				<Col>
-					<SearchReturnRecord />
+					<SearchReturnRecordBar />
 				</Col>
 			</Row>
 			<ReturnTable onRowSelected={handleRowSelected} datasource={fetchData} />

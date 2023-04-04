@@ -1,10 +1,10 @@
-import EquipmentTable from "../../../components/tables/EquipmentTable";
 import { Row, Col, Space } from "antd";
 import { useState } from "react";
-import NewEquipment from "../../../components/Buttons/NewEquipment";
-import SearchEquipment from "../../../components/Buttons/SearchEquipment";
-import ModifyEquipment from "../../../components/Buttons/ModifyEquipment";
-import DeleteEquipment from "../../../components/Buttons/DeleteEquipment";
+import EquipmentTable from "./Components/EquipmentTable";
+import NewEquipmentButton from "./Components/Buttons/NewEquipmentButton";
+import SearchEquipmentBar from "./Components/Buttons/SearchEquipmentBar";
+import ModifyEquipmentButton from "./Components/Buttons/ModifyEquipmentButton";
+import DeleteEquipmentButton from "./Components/Buttons/DeleteEquipmentButton";
 
 function EquipmentPage() {
 	const [selectedRow, setSelectedRow] = useState(null);
@@ -35,20 +35,20 @@ function EquipmentPage() {
 		<div>
 			<Row justify="space-between" align="middle">
 				<Col>
-					<NewEquipment />
+					<NewEquipmentButton />
 				</Col>
 				<Col>
-					<SearchEquipment />
+					<SearchEquipmentBar />
 				</Col>
 			</Row>
 			<EquipmentTable onRowSelected={handleRowSelected} datasource={fetchData} />
 			<Row justify={"start"}>
 				<Space>
 					<Col>
-						<ModifyEquipment selectedRow={selectedRow} onModify={fetchData} />
+						<ModifyEquipmentButton selectedRow={selectedRow} onModify={fetchData} />
 					</Col>
 					<Col>
-						<DeleteEquipment selectedRow={selectedRow} onDelete={fetchData} />
+						<DeleteEquipmentButton selectedRow={selectedRow} onDelete={fetchData} />
 					</Col>
 				</Space>
 			</Row>

@@ -1,6 +1,6 @@
 import { Button } from "antd";
 
-function ModifyEquipment() {
+function ModifyRequestRecordButton() {
 	return (
 		<Button type="primary">
             Modify
@@ -8,4 +8,4 @@ function ModifyEquipment() {
 	);
 }
 
-export default ModifyEquipment;
+export default ModifyRequestRecordButton;

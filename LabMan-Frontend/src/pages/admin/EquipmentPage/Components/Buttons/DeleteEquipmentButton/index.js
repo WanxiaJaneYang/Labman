@@ -2,7 +2,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 const { confirm } = Modal;
 
-function DeleteEquipment(props) {
+function DeleteEquipmentButton(props) {
 	const handleDelete = () => {
 		if (props.selectedRow) {
 			showConfirm();
@@ -38,4 +38,4 @@ function DeleteEquipment(props) {
 	);
 }
 
-export default DeleteEquipment;
+export default DeleteEquipmentButton;

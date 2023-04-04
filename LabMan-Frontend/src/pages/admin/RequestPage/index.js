@@ -1,8 +1,8 @@
-import RequestRecordTable from "../../../components/tables/RequestRecordTable";
-import SearchRequestRecord from "../../../components/Buttons/SearchRequestRecord";
-import NewRequestRecord from "../../../components/Buttons/NewRequestRecord";
-import ModifyRequestRecord from "../../../components/Buttons/ModifyRequestRecord";
-import DeleteRequestRecord from "../../../components/Buttons/DeleteRequestRecord";
+import RequestRecordTable from "./Components/RequestRecordTable";
+import ModifyRequestRecordButton from "./Components/Buttons/ModifyRequestRecordButton";
+import DeleteRequestRecordButton from "./Components/Buttons/DeleteRequestRecordButton";
+import NewRequestRecordButton from "./Components/Buttons/NewRequestRecordButton";
+import SearchRequestRecordBar from "./Components/Buttons/SearchRequestRecordBar";
 import { Row, Col, Space } from "antd";
 import { useState } from "react";
 
@@ -35,20 +35,20 @@ function RequestPage() {
 		<div>
 			<Row justify="space-between" align="middle">
 				<Col>
-					<NewRequestRecord />
+					<NewRequestRecordButton />
 				</Col>
 				<Col>
-					<SearchRequestRecord />
+					<SearchRequestRecordBar />
 				</Col>
 			</Row>
 			<RequestRecordTable onRowSelected={handleRowSelected} datasource={fetchData} />
 			<Row justify={"start"}>
 				<Space>
 					<Col>
-						<ModifyRequestRecord selectedRow={selectedRow} onModify={fetchData} />
+						<ModifyRequestRecordButton selectedRow={selectedRow} onModify={fetchData} />
 					</Col>
 					<Col>
-						<DeleteRequestRecord selectedRow={selectedRow} onDelete={fetchData} />
+						<DeleteRequestRecordButton selectedRow={selectedRow} onDelete={fetchData} />
 					</Col>
 				</Space>
 			</Row>

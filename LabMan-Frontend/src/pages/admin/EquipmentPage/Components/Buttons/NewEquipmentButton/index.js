@@ -1,9 +1,9 @@
 import { Button } from "antd";
 
-const NewEquipment = ({ onClick }) => {
+const NewEquipmentButton = ({ onClick }) => {
 	return (
 		<Button type='primary' onClick={onClick}>New </Button>
 	);
 };
 
-export default NewEquipment;
+export default NewEquipmentButton;

@@ -2,7 +2,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 const { confirm } = Modal;
 
-function DeleteRequestRecord(props) {
+function DeleteRequestRecordButton(props) {
 	const handleDelete = () => {
 		if (props.selectedRow) {
 			showConfirm();
@@ -38,4 +38,4 @@ function DeleteRequestRecord(props) {
 	);
 }
 
-export default DeleteRequestRecord;
+export default DeleteRequestRecordButton;

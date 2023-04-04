@@ -4,19 +4,27 @@ import { Input, Select, Space } from "antd";
 
 const options = [
 	{
-		value: "equipmentID",
-		label: "Equipment ID",
+		value: "studentID",
+		label: "Student ID",
+	},
+	{
+		value: "name",
+		label: "Name",
 	},
 	{
 		value: "equipmentType",
 		label: "Equipment Type",
 	},
+	{
+		value: "time",
+		label: "Time",
+	},
 ];
 
-const SearchEquipment = ({ onClick }) => {
+const SearchRequestRecordBar = ({ onClick }) => {
 	return (
 		<Space.Compact>
-			<Select defaultValue="equipmentType" options={options} />
+			<Select defaultValue="studentID" options={options} />
 			<Input defaultValue="input" />
 			<Tooltip title="Search">
 				<Button
@@ -30,4 +38,4 @@ const SearchEquipment = ({ onClick }) => {
 	);
 };
 
-export default SearchEquipment;
+export default SearchRequestRecordBar;
