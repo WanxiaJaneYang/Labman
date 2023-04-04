@@ -7,13 +7,13 @@ function DeleteEquipment(props) {
         if (props.selectedRow) {
             showConfirm();
         } else {
-            console.log("No record selected for deletion");
+            console.log("No Equipment selected for deletion");
         }
     };
 
     const showConfirm = () => {
         confirm({
-            title: "Do you Want to delete the Record?",
+            title: "Do you Want to delete the Equipment?",
             icon: <ExclamationCircleFilled />,
             // content: "Some descriptions",
             onOk() {

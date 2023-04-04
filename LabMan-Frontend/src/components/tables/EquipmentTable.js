@@ -19,7 +19,7 @@ const getRandomuserParams = (params) => ({
     ...params,
 });
 
-const EquipmentTable = () => {
+const EquipmentTable = (props) => {
     const [data, setData] = useState();
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState({
@@ -63,10 +63,26 @@ const EquipmentTable = () => {
         }
     };
 
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
+            props.onRowSelected(selectedRows[0]);
+        },
+        getCheckboxProps: (record) => ({
+            disabled: record.name === "Disabled User",
+            // Column configuration not to be checked
+            name: record.name,
+        }),
+    };
+
     return (
         <Table
             columns={columns}
             rowKey={(record) => record.login.uuid}
+            rowSelection={{
+                type: "radio",
+                ...rowSelection,
+            }}
             dataSource={data}
             pagination={tableParams.pagination}
             loading={loading}
