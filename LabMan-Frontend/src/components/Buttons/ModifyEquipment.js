@@ -1,11 +1,11 @@
 import { Button } from "antd";
 
-function ModifyEquipment(props) {
-    return (
-        <Button type="primary">
+function ModifyEquipment() {
+	return (
+		<Button type="primary">
             Modify
-        </Button>
-    );
+		</Button>
+	);
 }
 
 export default ModifyEquipment;
