@@ -1,9 +1,10 @@
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Button, Modal } from 'antd';
+
 const { confirm } = Modal;
 
-function DeleteRequestRecord(props) {
-    const handleDelete = () => {
+const ReturnEquipment = (props) => {
+    const handleReturn = () => {
         if (props.selectedRow) {
             showConfirm();
         } else {
@@ -13,7 +14,7 @@ function DeleteRequestRecord(props) {
 
     const showConfirm = () => {
         confirm({
-            title: "Do you Want to delete the Record?",
+            title: "Do you record this equipment as returned?",
             icon: <ExclamationCircleFilled />,
             // content: "Some descriptions",
             onOk() {
@@ -21,7 +22,7 @@ function DeleteRequestRecord(props) {
                 // ...
 
                 // After the deletion is successful, call the onDelete function (which is fetchData) to refetch the data
-                props.onDelete();
+                props.onReturn();
 
                 console.log("OK");
             },
@@ -32,10 +33,9 @@ function DeleteRequestRecord(props) {
     };
 
     return (
-        <Button type="primary" danger onClick={handleDelete}>
-            Delete
-        </Button>
+        <Button type='primary' onClick={handleReturn}>Return</Button>
     );
 }
 
-export default DeleteRequestRecord;
+export default ReturnEquipment;
+
