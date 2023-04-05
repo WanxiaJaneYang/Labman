@@ -1,0 +1,73 @@
+import { Form, Input, InputNumber } from "antd";
+const layout = {
+	labelCol: {
+		span: 8,
+	},
+	wrapperCol: {
+		span: 16,
+	},
+};
+
+/* eslint-disable no-template-curly-in-string */
+const validateMessages = {
+	required: "${label} is required!",
+	types: {
+		number: "${label} is not a valid number!",
+	},
+	number: {
+		range: "${label} must be between ${min} and ${max}",
+	},
+};
+/* eslint-enable no-template-curly-in-string */
+
+const onFinish = (values) => {
+	console.log(values);
+};
+const NewEquipmentForm = () => (
+	<Form
+		{...layout}
+		name="nest-messages"
+		onFinish={onFinish}
+		style={{
+			maxWidth: 600,
+		}}
+		validateMessages={validateMessages}
+	>
+		<Form.Item
+			name={["equipment", "typeName"]}
+			label="Equipment Type"
+			rules={[
+				{
+					required: true,
+				},
+			]}
+		>
+			<Input />
+		</Form.Item>
+
+		<Form.Item
+			name={["equipment", "totalAmount"]}
+			label="Total Amount"
+			rules={[
+				{
+					type: "number",
+					min: 0,
+					max: 999,
+					required: true,
+				},
+			]}
+		>
+			<InputNumber />
+		</Form.Item>
+		{/* <Form.Item name={["equipment", "description"]} label="Description">
+			<Input.TextArea />
+		</Form.Item> */}
+		<Form.Item
+			wrapperCol={{
+				...layout.wrapperCol,
+				offset: 8,
+			}}
+		/>
+	</Form>
+);
+export default NewEquipmentForm;

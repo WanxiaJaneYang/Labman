@@ -1,28 +1,30 @@
+import { useRequestRecordContext } from "../../Context/RequestRecordContext";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 const { confirm } = Modal;
 
-function DeleteRequestRecordButton(props) {
+function DeleteRequestRecordButton() {
+	const { selectedRow, fetchData } = useRequestRecordContext();
+  
 	const handleDelete = () => {
-		if (props.selectedRow) {
+		if (selectedRow) {
 			showConfirm();
 		} else {
 			console.log("No record selected for deletion");
 		}
 	};
-
+  
 	const showConfirm = () => {
 		confirm({
 			title: "Do you Want to delete the Record?",
 			icon: <ExclamationCircleFilled />,
-			// content: "Some descriptions",
 			onOk() {
-				// Call the API to delete the record from the server
-				// ...
-
-				// After the deletion is successful, call the onDelete function (which is fetchData) to refetch the data
-				props.onDelete();
-
+			// Call the API to delete the record from the server
+			// ...
+  
+				// After the deletion is successful, call the fetchData function to refetch the data
+				fetchData();
+  
 				console.log("OK");
 			},
 			onCancel() {
@@ -30,12 +32,13 @@ function DeleteRequestRecordButton(props) {
 			},
 		});
 	};
-
+  
 	return (
 		<Button type="primary" danger onClick={handleDelete}>
-            Delete
+		Delete
 		</Button>
 	);
 }
-
+  
 export default DeleteRequestRecordButton;
+  

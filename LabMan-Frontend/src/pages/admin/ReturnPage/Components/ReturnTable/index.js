@@ -26,6 +26,11 @@ const columns = [
 		dataIndex: "count",
 		responsive: ["md"],
 	},
+	{
+		title: "Status",
+		dataIndex: "status",
+		responsive: ["md"],
+	},
 ];
 
 const getRandomuserParams = (params) => ({

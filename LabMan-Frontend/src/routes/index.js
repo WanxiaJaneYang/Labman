@@ -2,9 +2,9 @@ import { Navigate } from "react-router";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import AdminLayout from "../components/Layout/AdminLayout";
-import EquipmentPage from "../pages/admin/EquipmentPage";
-import RequestPage from "../pages/admin/RequestPage";
-import ReturnPage from "../pages/admin/ReturnPage";
+import RequestPage from "../pages/Admin/RequestPage";
+import ReturnPage from "../pages/Admin/ReturnPage";
+import EquipmentPage from "../pages/Admin/EquipmentPage";
 
 const routes = [
 	{
