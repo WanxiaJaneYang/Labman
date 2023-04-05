@@ -1,35 +1,34 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { useEffect } from "react";
+// Add an import statement for your API functions
+// import { createRecord, fetchRecords } from './your-api';
 
-const RequestRecordContext = createContext();
+const ReturnRecordContext = createContext();
 
-export const useRequestRecordContext = () => {
-	return useContext(RequestRecordContext);
+export const useReturnRecordContext = () => {
+	return useContext(ReturnRecordContext);
 };
 
-const RequestRecordProvider = ({ children }) => {
+const ReturnRecordProvider = ({ children }) => {
+	const[loading,setLoading] = useState(false);
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [data, setData] = useState([]);
-	const [loading, setLoading] = useState(false);
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
 			pageSize: 10,
-			showSizeChanger: true, // Add this line
-			pageSizeOptions: ["5", "10", "20", "50"], // Add this line
 		},
 	});
 
 	const fetchData = async () => {
+		// Set the 'loading' state to true to show the loading indicator
 		setLoading(true);
 		// Call the API function to fetch the data and update the 'data' state
 		// const fetchedData = await fetchRecords(/* ...params */);
 		// setData(fetchedData);
+		// Set the 'loading' state to false to hide the loading indicator
 		setLoading(false);
 	};
-
-	useEffect(() => {
-		fetchData();
-	}, [JSON.stringify(tableParams)]);
 
 	const handleFormSubmit = async (values) => {
 		// Call the mock function to create a new record and pass the form values
@@ -38,6 +37,10 @@ const RequestRecordProvider = ({ children }) => {
 		setData((prevData) => [...prevData, newRecord]);
 	};
 
+	useEffect(() => {
+		fetchData();
+	}, [JSON.stringify(tableParams)]);
+
 	const mockCreateRecord = (values) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
@@ -45,33 +48,24 @@ const RequestRecordProvider = ({ children }) => {
 			}, 1000);
 		});
 	};
-
-	const handleTableChange = (pagination, filters, sorter) => {
-		setTableParams({
-			pagination,
-			filters,
-			...sorter,
-		});
-	};
-
+	
 	const value = {
+		loading,
 		selectedRow,
 		setSelectedRow,
 		data,
 		setData,
-		loading,
 		tableParams,
 		setTableParams,
 		fetchData,
 		handleFormSubmit,
-		handleTableChange,
 	};
 
 	return (
-		<RequestRecordContext.Provider value={value}>
+		<ReturnRecordContext.Provider value={value}>
 			{children}
-		</RequestRecordContext.Provider>
+		</ReturnRecordContext.Provider>
 	);
 };
 
-export default RequestRecordProvider;
+export default ReturnRecordProvider;

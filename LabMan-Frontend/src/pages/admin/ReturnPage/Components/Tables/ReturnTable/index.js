@@ -1,9 +1,8 @@
 import { Table } from "antd";
-
 const columns = [
 	{
-		title: "Time",
-		dataIndex: "time",
+		title: "Due day",
+		dataIndex: "dueDay",
 		sorter: true,
 	},
 	{
@@ -24,9 +23,14 @@ const columns = [
 		dataIndex: "count",
 		responsive: ["md"],
 	},
+	{
+		title: "Status",
+		dataIndex: "status",
+		responsive: ["md"],
+	},
 ];
 
-const RequestRecordTable = (props) => {
+const ReturnTable = (props) => {
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
@@ -46,14 +50,13 @@ const RequestRecordTable = (props) => {
 				type: "radio",
 				...rowSelection,
 			}}
-			rowKey={(record) => record.login?.uuid || record.id} // Use id as a fallback when uuid is not available
-			dataSource={props.data} // Use data from props instead of the local state
+			rowKey={(record) => record.login.uuid}
+			dataSource={props.data}
 			loading={props.loading}
-			pagination={props.pagination}
 			onChange={props.handleTableChange}
 			scroll={{ x: "max-content" }}
 		/>
 	);
 };
 
-export default RequestRecordTable;
+export default ReturnTable;

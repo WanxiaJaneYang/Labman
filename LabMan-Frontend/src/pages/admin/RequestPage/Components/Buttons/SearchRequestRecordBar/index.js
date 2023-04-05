@@ -15,10 +15,6 @@ const options = [
 		value: "equipmentType",
 		label: "Equipment Type",
 	},
-	{
-		value: "time",
-		label: "Time",
-	},
 ];
 
 const SearchRequestRecordBar = ({ onClick }) => {

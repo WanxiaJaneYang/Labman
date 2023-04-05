@@ -5,10 +5,12 @@ import NewRequestRecordButton from "../Components/Buttons/NewRequestRecordButton
 import SearchRequestRecordBar from "../Components/Buttons/SearchRequestRecordBar";
 import { Row, Col, Space } from "antd";
 import { useRequestRecordContext } from "../Components/Context/RequestRecordContext";
-import React from "react";
 
 function RequestPageContent() {
 	const {
+		loading,
+		tableParams,
+		setTableParams,
 		selectedRow,
 		setSelectedRow,
 		data,
@@ -17,6 +19,16 @@ function RequestPageContent() {
 
 	const handleRowSelected = (row) => {
 		setSelectedRow(row);
+	};
+
+	const handleTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			...tableParams,
+			pagination,
+			filters,
+			sorter,
+		});
+		fetchData();
 	};
 
 	return (
@@ -29,7 +41,11 @@ function RequestPageContent() {
 					<SearchRequestRecordBar />
 				</Col>
 			</Row>
-			<RequestRecordTable onRowSelected={handleRowSelected} data={data} />
+			<RequestRecordTable onRowSelected={handleRowSelected}
+				data={data}
+				loading={loading}
+				pagination={tableParams.pagination}
+				handleTableChange={handleTableChange} />
 			<Row justify={"start"}>
 				<Space>
 					<Col>
