@@ -1,15 +1,12 @@
-import { createContext, useContext, useState } from "react";
-import { useEffect } from "react";
-// Add an import statement for your API functions
-// import { createRecord, fetchRecords } from './your-api';
+import { createContext, useContext, useState, useEffect } from "react";
 
-const ReturnRecordContext = createContext();
+const StudentContext = createContext();
 
-export const useReturnRecordContext = () => {
-	return useContext(ReturnRecordContext);
+export const useStudentContext = () => {
+	return useContext(StudentContext);
 };
 
-const ReturnRecordProvider = ({ children }) => {
+const StudentProvider = ({ children }) => {
 	const[loading,setLoading] = useState(false);
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [data, setData] = useState([]);
@@ -62,10 +59,10 @@ const ReturnRecordProvider = ({ children }) => {
 	};
 
 	return (
-		<ReturnRecordContext.Provider value={value}>
+		<StudentContext.Provider value={value}>
 			{children}
-		</ReturnRecordContext.Provider>
+		</StudentContext.Provider>
 	);
 };
 
-export default ReturnRecordProvider;
+export default StudentProvider;

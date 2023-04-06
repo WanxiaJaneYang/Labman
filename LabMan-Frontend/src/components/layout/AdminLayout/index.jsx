@@ -3,6 +3,8 @@ import {
 	DatabaseOutlined,
 	ExportOutlined,
 	ImportOutlined,
+	TeamOutlined,
+	FileOutlined,
 } from "@ant-design/icons";
 import { Outlet } from "react-router";
 
@@ -21,6 +23,16 @@ const adminMenuItems = [
 		key: "/admin/equipment",
 		icon: <DatabaseOutlined />,
 		label: "Equipment",
+	},
+	{
+		key: "/admin/student",
+		icon: <TeamOutlined />,
+		label: "Student",
+	},
+	{
+		key: "/admin/actionHistory",
+		icon:<FileOutlined />,
+		label: "Action History",
 	},
 ];
 

@@ -1,6 +1,6 @@
 import { Form, Input, InputNumber } from "antd";
 
-function NewEquipmentForm({ form }) {
+function ModifyEquipmentForm({ form }) {
 	return (
 		<Form form={form} layout="vertical">
 			<Form.Item label="Equipment Name" name="equipmentType" rules={[{ required: true }]}>
@@ -13,4 +13,4 @@ function NewEquipmentForm({ form }) {
 	);
 }
 
-export default NewEquipmentForm;
+export default ModifyEquipmentForm;

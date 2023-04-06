@@ -1,6 +1,6 @@
 import { Modal, Form } from "antd";
 import NewRequestRecordForm from "../../Forms/NewRequestRecordForm";
-import { useRequestRecordContext } from "../../Context/RequestRecordContext";
+import { useRequestRecordContext } from "../../../Context";
 
 const NewRequestRecordModal = (props) => {
 	const { handleFormSubmit } = useRequestRecordContext();

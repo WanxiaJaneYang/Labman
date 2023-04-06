@@ -1,4 +1,4 @@
-import RequestRecordProvider from "./Components/Context/RequestRecordContext";
+import RequestRecordProvider from "./Context";
 import RequestPageContent from "./RequestPageContent";
 
 function RequestPage() {

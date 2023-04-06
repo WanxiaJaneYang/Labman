@@ -4,7 +4,7 @@ import DeleteRequestRecordButton from "../Components/Buttons/DeleteRequestRecord
 import NewRequestRecordButton from "../Components/Buttons/NewRequestRecordButton";
 import SearchRequestRecordBar from "../Components/Buttons/SearchRequestRecordBar";
 import { Row, Col, Space } from "antd";
-import { useRequestRecordContext } from "../Components/Context/RequestRecordContext";
+import { useRequestRecordContext } from "../Context";
 
 function RequestPageContent() {
 	const {

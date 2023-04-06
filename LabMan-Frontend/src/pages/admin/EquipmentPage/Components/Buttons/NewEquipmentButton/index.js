@@ -1,19 +1,42 @@
-import { Button } from "antd";
+import { Button,Modal,Form } from "antd";
 import {useState} from "react";
-import NewEquipmentModal from "../../Modals/NewEquipmentModal";
+import {useEquipmentContext} from "../../../Context";
+import NewEquipmentForm from "../../Forms/NewEquipmentForm";
+
 const NewEquipmentButton = () => {
+	const{onFormSubmit}=useEquipmentContext();
+
 	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const [form] = Form.useForm();
+
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
+
 	const hideModal = () => {
 		setIsModalOpen(false);
+	};
+
+	const okHandler = async() => {
+		try {
+			const values = await form.validateFields();
+			console.log("Form values:", values);
+			onFormSubmit();
+			// call the API to create a new request record here
+			hideModal();
+			form.resetFields();
+		} catch (error) {
+			console.log("Form validation failed:", error);
+		}
 	};
 
 	return (
 		<>
 			<Button type='primary' onClick={showModal}>New </Button>
-			<NewEquipmentModal open={isModalOpen} hideModal={hideModal}/>
+			<Modal title='Add New Equipment' width="70vw" open={isModalOpen} onCancel={hideModal} onOk={okHandler}>
+				<NewEquipmentForm form={form}/>
+			</Modal>
 		</>
 	);
 };

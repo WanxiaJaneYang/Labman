@@ -1,10 +1,13 @@
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal } from "antd";
+import { useEquipmentContext } from "../../../Context";
 const { confirm } = Modal;
 
-function DeleteEquipmentButton(props) {
+function DeleteEquipmentButton() {
+	const{selectedRow, onDelete}=useEquipmentContext();
+
 	const handleDelete = () => {
-		if (props.selectedRow) {
+		if (selectedRow) {
 			showConfirm();
 		} else {
 			console.log("No Equipment selected for deletion");
@@ -17,12 +20,7 @@ function DeleteEquipmentButton(props) {
 			icon: <ExclamationCircleFilled />,
 			// content: "Some descriptions",
 			onOk() {
-				// Call the API to delete the record from the DB
-				// ...
-
-				// After the deletion is successful, call the onDelete function (which is fetchData) to refetch the data
-				props.onDelete();
-
+				onDelete();
 				console.log("OK");
 			},
 			onCancel() {
