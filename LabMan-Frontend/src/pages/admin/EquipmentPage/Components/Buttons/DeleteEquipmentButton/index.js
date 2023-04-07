@@ -1,15 +1,18 @@
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { Button, Modal } from "antd";
+import { Button, Modal,message } from "antd";
 import { useEquipmentContext } from "../../../Context";
 const { confirm } = Modal;
 
 function DeleteEquipmentButton() {
+	const [messageApi, contextHolder] = message.useMessage();
+
 	const{selectedRow, onDelete}=useEquipmentContext();
 
 	const handleDelete = () => {
 		if (selectedRow) {
 			showConfirm();
 		} else {
+			messageApi.warning("Please select a row.");
 			console.log("No Equipment selected for deletion");
 		}
 	};
@@ -30,9 +33,13 @@ function DeleteEquipmentButton() {
 	};
 
 	return (
-		<Button type="primary" danger onClick={handleDelete}>
+		<>
+			{contextHolder}
+			<Button type="primary" danger onClick={handleDelete}>
             Delete
-		</Button>
+			</Button>
+		</>
+		
 	);
 }
 

@@ -1,9 +1,10 @@
-import { Button,Modal,Form } from "antd";
+import { Button,Modal,Form, message } from "antd";
 import {useState} from "react";
 import {useEquipmentContext} from "../../../Context";
 import ModifyEquipmentForm from "../../Forms/ModifyEquipmentForm";
 
 function ModifyEquipmentButton() {
+	const [messageApi, contextHolder] = message.useMessage();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const [form] = Form.useForm();
@@ -15,7 +16,7 @@ function ModifyEquipmentButton() {
 			showModal();
 		}
 		else{
-			console.log("No Equipment selected for modification");
+			messageApi.warning("Please select a row.");
 		}
 	};
 
@@ -31,7 +32,7 @@ function ModifyEquipmentButton() {
 		try {
 			const values = await form.validateFields();
 			console.log("Form values:", values);
-			onModify();
+			onModify(values);
 			hideModal();
 			form.resetFields();
 		} catch (error) {
@@ -43,6 +44,7 @@ function ModifyEquipmentButton() {
 
 	return (
 		<>
+			{contextHolder}
 			<Button type="primary" onClick={onModifyClick} >
             Modify
 			</Button>

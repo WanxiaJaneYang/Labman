@@ -8,14 +8,18 @@ const columns = [
 		dataIndex: "equipmentType",
 	},
 	{
-		title: "Count",
+		title: "Available Count",
+		dataIndex: "availableCount",
+	},
+	{
+		title: "Total Count",
 		dataIndex: "count",
 	},
 
 ];
 
 const EquipmentTable = () => {
-	const { data, loading, fetchData, tableParams, onTableChange, setSelectedRow } = useEquipmentContext();
+	const { data, loading, fetchData, tableParams, onTableChange, onRowSelected } = useEquipmentContext();
 
 	useEffect(() => {
 		fetchData();
@@ -24,7 +28,7 @@ const EquipmentTable = () => {
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-			setSelectedRow(selectedRows[0]);//modify this line so we could set row as some identifier
+			onRowSelected(selectedRows[0]);//modify this line so we could set row as some identifier
 		},
 		getCheckboxProps: (record) => ({
 			disabled: record.name === "Disabled User",
@@ -36,7 +40,7 @@ const EquipmentTable = () => {
 	return (
 		<Table
 			columns={columns}
-			rowKey={(record) => record.login.uuid}
+			rowKey={(record) => record.equipmentType}
 			rowSelection={{
 				type: "radio",
 				...rowSelection,

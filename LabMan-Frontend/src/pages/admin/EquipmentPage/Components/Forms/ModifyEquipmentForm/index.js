@@ -1,16 +1,27 @@
-import { Form, Input, InputNumber } from "antd";
+import {Form, Input, InputNumber} from "antd";
+import {useEquipmentContext} from "../../../Context";
 
-function ModifyEquipmentForm({ form }) {
+const ModifyEquipmentForm = ({form}) => {
+	const {selectedRow} = useEquipmentContext();
+
 	return (
-		<Form form={form} layout="vertical">
-			<Form.Item label="Equipment Name" name="equipmentType" rules={[{ required: true }]}>
-				<Input />
+		<Form form={form} layout="vertical" initialValues={{
+			equipmentType: selectedRow.equipmentType,
+			count: selectedRow.count,
+			availableCount: selectedRow.availableCount,
+		}}>
+			<Form.Item label="Equipment Type" name="equipmentType" >
+				<Input/>
 			</Form.Item>
-			<Form.Item label="Total Number" name="totalNumber" rules={[{ required: true },{type:Number}]}>
+			<Form.Item label="Available Count" name="availableCount" >
 				<InputNumber />
+			</Form.Item>
+			<Form.Item label="Total Count" name="count" >
+				<InputNumber/>
 			</Form.Item>
 		</Form>
 	);
-}
+    
+};
 
 export default ModifyEquipmentForm;
