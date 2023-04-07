@@ -1,41 +1,43 @@
 import { createContext, useContext, useState, useEffect } from "react";
 // import qs from "qs";
 
-const EquipmentContext = createContext();
+const StudentContext = createContext();
 
-export const useEquipmentContext = () => {
-	return useContext(EquipmentContext);
+export const useStudentContext = () => {
+	return useContext(StudentContext);
 };
 
-const EquipmentProvider = ({ children }) => {
-	const [selectedRow, setSelectedRow] = useState(null);
+const StudentProvider = ({ children }) => {
+	const [selectedRows, setSelectedRow] = useState(null);
 	const [data, setData] = useState([
 		{
-			type_id: 1,
-			type_name: "Microscope",
-			available_amount: 10,
-			total_amount: 10,
+			user_id: "1",
+			user_name: "a1888888",
+			email: "a18888@adelaide.edu.au",
+			password: "123456",
 		},
 		{
-			type_id: 2,
-			type_name: "Spectrometer",
-			available_amount: 10,
-			total_amount: 10,
+			user_id: "2",
+			user_name: "a1888889",
+			email: "a1888889@adelaide.edu.au",
+			password: "123456",
 		},
 		{
-			type_id: 3,
-			type_name: "Spectrophotometer",
-			available_amount: 10,
-			total_amount: 10,
+			user_id: "3",
+			user_name: "a1888890",
+			email: "a1888890@adelaide.edu.au",
+			password: "123456",
 		},
+
 	]);
+
 	const [loading, setLoading] = useState(false);
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
 			pageSize: 10,
-			showSizeChanger: true, // Add this line
-			pageSizeOptions: ["5", "10", "20", "50"], // Add this line
+			showSizeChanger: true, 
+			pageSizeOptions: ["5", "10", "20", "50"],
 		},
 	});
 	
@@ -80,7 +82,7 @@ const EquipmentProvider = ({ children }) => {
 		fetchData();
 	}, [JSON.stringify(tableParams)]);
 
-	const onFormSubmit = async (values) => {
+	const onAdd = async (values) => {
 		console.log("onFormSubmit, values:", values);
 		// Call the mock function to create a new record and pass the form values
 		await mockCreateRecord(values);
@@ -93,9 +95,8 @@ const EquipmentProvider = ({ children }) => {
 				resolve(setData(data.concat(
 					{
 						...values,
-						type_id: data.length + 1,
+						user_id: data.length + 1,
 					}
-						
 				)));
 			}, 1000);
 		});
@@ -110,37 +111,41 @@ const EquipmentProvider = ({ children }) => {
 		fetchData();
 	};
 
-	const onRowSelected = (row) => {
-		console.log("onRowSelected, set row as:",row);
-		setSelectedRow(row);
+	const onRowSelected = (rows) => {
+		console.log("onRowSelected, set row as:",rows);
+		setSelectedRow(rows);
 	};
 
 	const onDelete = async() => {
-		console.log("row deleted:", selectedRow);
-		await mockDeleteRecord(selectedRow.type_id);
+		console.log("row deleted:", selectedRows);
+		await Promise.all (
+			selectedRows.map((item) => mockDeleteStudent(item.user_id))
+		);
 		setSelectedRow(null);
 		// modify later to delete the data from the database and fetch data again
 	};
 
-	const mockDeleteRecord = (type_id) => {
+	const mockDeleteStudent = (user_id) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				resolve(setData(data.filter((item) => item.type_id!== type_id)));
+				console.log("deleting student_id:", user_id);
+				setData((prevState) => prevState.filter((item) => item.user_id !== user_id));
+				resolve();
 			}, 1000);
 		});
 	};
 
-	const onEquipmentSearch =  async(value) => {
+	const onStudentSearch =  async(value) => {
 		console.log("onEquipmentSearch, searchParams:", value);
 		await mockSearchRecord(value);
 		//modify later to call the api to get the data
 	};
 
-	const mockSearchRecord = (type_name) => {
+	const mockSearchRecord = (user_name) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
 				console.log("before search, data:", data);
-				resolve(setData(data.filter((item) => item.type_name === type_name)));
+				resolve(setData(data.filter((item) => item.user_name === user_name)));
 				console.log("mockSearchRecord, data:", data);
 			}, 1000);
 		});
@@ -161,7 +166,7 @@ const EquipmentProvider = ({ children }) => {
 				console.log("before modify, data:", data);
 				resolve(setData(
 					data.map((item) => {
-						if (item.type_id === selectedRow.type_id) {
+						if (item.user_id === selectedRows[0].user_id) {
 							return {
 								...item,
 								...value,
@@ -178,26 +183,24 @@ const EquipmentProvider = ({ children }) => {
 
 
 	const value = {
-		selectedRow,
-		data,
-		setData,
+		selectedRows,
+		data,		
 		loading,
 		tableParams,
-		setTableParams,
 		fetchData,
 		onTableChange,
 		onRowSelected,
-		onFormSubmit,
+		onAdd,
 		onDelete,
-		onEquipmentSearch,
+		onStudentSearch,
 		onModify,
 	};
 
 	return (
-		<EquipmentContext.Provider value={value}>
+		<StudentContext.Provider value={value}>
 			{children}
-		</EquipmentContext.Provider>
+		</StudentContext.Provider>
 	);
 };
 
-export default EquipmentProvider;
+export default StudentProvider;

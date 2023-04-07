@@ -1,16 +1,25 @@
 import {Form, Input, InputNumber} from "antd";
 import {useEquipmentContext} from "../../../Context";
+import {useEffect} from "react";
 
 const ModifyEquipmentForm = ({form}) => {
 	const {selectedRow} = useEquipmentContext();
-
+	useEffect(() => {
+		if (selectedRow) {
+			form.setFieldsValue({
+				type_id: selectedRow.type_id,
+				type_name: selectedRow.type_name,
+				available_amount: selectedRow.available_amount,
+				total_amount: selectedRow.total_amount,
+			});
+		} else {
+			form.resetFields();
+		}
+	}, [selectedRow, form]);
+	
+	
 	return (
-		<Form form={form} layout="vertical" initialValues={{
-			type_id: selectedRow.type_id,
-			type_name: selectedRow.type_name,
-			available_amount: selectedRow.available_amount,
-			total_amount: selectedRow.total_amount,
-		}}>
+		<Form form={form} layout="vertical" >
 			<Form.Item label="Equipment Type" name="type_name" >
 				<Input/>
 			</Form.Item>

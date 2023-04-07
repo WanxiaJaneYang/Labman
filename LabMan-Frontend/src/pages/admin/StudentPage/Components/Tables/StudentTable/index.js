@@ -1,81 +1,21 @@
 import { Table } from "antd";
-import qs from "qs";
-import { useEffect, useState } from "react";
+import { useStudentContext } from "../../../Context/StudentContext";
+
 const columns = [
 	{
 		title: "Student ID",
-		dataIndex: "studentId",
-	},
-	{
-		title: "Name",
-		dataIndex: "studentName",
-	},
-	{
-		title: "Email",
-		dataIndex: "studentEmail",
-		responsive: ["md"],
-	},
-	{
-		title: "Password",
-		dataIndex: "studentPassword",
-		responsive: ["md"],
-	},
-
+		dataIndex: "user_name",
+	}
 ];
 
-const getRandomuserParams = (params) => ({
-	results: params.pagination?.pageSize,
-	page: params.pagination?.current,
-	...params,
-});
-const StudentTable = (props) => {
-	const [data, setData] = useState();
-	const [loading, setLoading] = useState(false);
-	const [tableParams, setTableParams] = useState({
-		pagination: {
-			current: 1,
-			pageSize: 10,
-		},
-	});
-	const fetchData = () => {
-		setLoading(true);
-		fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-			.then((res) => res.json())
-			.then(({ results }) => {
-				setData(results);
-				setLoading(false);
-				setTableParams({
-					...tableParams,
-					pagination: {
-						...tableParams.pagination,
-						total: 200,
-						// 200 is mock data, you should read it from server
-						// total: data.totalCount,
-					},
-				});
-			});
-	};
-
-	useEffect(() => {
-		fetchData();
-	}, [JSON.stringify(tableParams)]);
-	const handleTableChange = (pagination, filters, sorter) => {
-		setTableParams({
-			pagination,
-			filters,
-			...sorter,
-		});
-
-		// `dataSource` is useless since `pageSize` changed
-		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-			setData([]);
-		}
-	};
+const StudentTable = () => {
+	const { data, loading, tableParams, handleTableChange, onRowSelected, selectedRows } = useStudentContext();
 
 	const rowSelection = {
+		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.user_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-			props.onRowSelected(selectedRows[0]);
+			onRowSelected(selectedRows);
 		},
 		getCheckboxProps: (record) => ({
 			disabled: record.name === "Disabled User",
@@ -87,11 +27,8 @@ const StudentTable = (props) => {
 	return (
 		<Table
 			columns={columns}
-			rowKey={(record) => record.login.uuid}
-			rowSelection={{
-				type: "radio",
-				...rowSelection,
-			}}
+			rowKey={(record) => record.user_id}
+			rowSelection={rowSelection}
 			dataSource={data}
 			pagination={tableParams.pagination}
 			loading={loading}

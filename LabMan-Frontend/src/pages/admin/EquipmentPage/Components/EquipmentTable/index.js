@@ -19,13 +19,14 @@ const columns = [
 ];
 
 const EquipmentTable = () => {
-	const { data, loading, fetchData, tableParams, onTableChange, onRowSelected } = useEquipmentContext();
+	const { data, loading, fetchData, tableParams, onTableChange, onRowSelected, selectedRow } = useEquipmentContext();
 
 	useEffect(() => {
 		fetchData();
 	}, [JSON.stringify(tableParams)]);
 
 	const rowSelection = {
+		selectedRowKeys: selectedRow ? [selectedRow.type_id] : [],
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
 			onRowSelected(selectedRows[0]);//modify this line so we could set row as some identifier
