@@ -6,17 +6,18 @@ const ModifyEquipmentForm = ({form}) => {
 
 	return (
 		<Form form={form} layout="vertical" initialValues={{
-			equipmentType: selectedRow.equipmentType,
-			count: selectedRow.count,
-			availableCount: selectedRow.availableCount,
+			type_id: selectedRow.type_id,
+			type_name: selectedRow.type_name,
+			available_amount: selectedRow.available_amount,
+			total_amount: selectedRow.total_amount,
 		}}>
-			<Form.Item label="Equipment Type" name="equipmentType" >
+			<Form.Item label="Equipment Type" name="type_name" >
 				<Input/>
 			</Form.Item>
-			<Form.Item label="Available Count" name="availableCount" >
+			<Form.Item label="Available Count" name="available_amount" >
 				<InputNumber />
 			</Form.Item>
-			<Form.Item label="Total Count" name="count" >
+			<Form.Item label="Total Count" name="total_amount" >
 				<InputNumber/>
 			</Form.Item>
 		</Form>

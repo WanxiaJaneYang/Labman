@@ -21,8 +21,9 @@ const NewEquipmentButton = () => {
 	const okHandler = async() => {
 		try {
 			const values = await form.validateFields();
+			values.available_amount=values.total_amount;
 			console.log("Form values:", values);
-			onFormSubmit();
+			onFormSubmit(values);
 			// call the API to create a new request record here
 			hideModal();
 			form.resetFields();

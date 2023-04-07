@@ -3,10 +3,10 @@ import { Form, Input, InputNumber } from "antd";
 function NewEquipmentForm({ form }) {
 	return (
 		<Form form={form} layout="vertical">
-			<Form.Item label="Equipment Name" name="equipmentType" rules={[{ required: true }]}>
+			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
 				<Input />
 			</Form.Item>
-			<Form.Item label="Total Number" name="totalNumber" rules={[{ required: true },{type:Number}]}>
+			<Form.Item label="Total Number" name="total_amount" rules={[{ required: true },{type:Number}]}>
 				<InputNumber />
 			</Form.Item>
 		</Form>

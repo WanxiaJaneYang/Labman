@@ -11,19 +11,22 @@ const EquipmentProvider = ({ children }) => {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const [data, setData] = useState([
 		{
-			equipmentType: "Microscope",
-			availableCount: 10,
-			count: 10,
+			type_id: 1,
+			type_name: "Microscope",
+			available_amount: 10,
+			total_amount: 10,
 		},
 		{
-			equipmentType: "Incubator",
-			availableCount: 20,
-			count: 20,
+			type_id: 2,
+			type_name: "Spectrometer",
+			available_amount: 10,
+			total_amount: 10,
 		},
 		{
-			equipmentType: "Centrifuge",
-			availableCount: 30,
-			count: 30,
+			type_id: 3,
+			type_name: "Spectrophotometer",
+			available_amount: 10,
+			total_amount: 10,
 		},
 	]);
 	const [loading, setLoading] = useState(false);
@@ -78,16 +81,22 @@ const EquipmentProvider = ({ children }) => {
 	}, [JSON.stringify(tableParams)]);
 
 	const onFormSubmit = async (values) => {
+		console.log("onFormSubmit, values:", values);
 		// Call the mock function to create a new record and pass the form values
-		const newRecord = await mockCreateRecord(values);
+		await mockCreateRecord(values);
 		// Add the new record to the 'data' state to update the table
-		setData((prevData) => [...prevData, newRecord]);
 	};
 
 	const mockCreateRecord = (values) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				resolve({ id: Date.now(), ...values });
+				resolve(setData(data.concat(
+					{
+						...values,
+						type_id: data.length + 1,
+					}
+						
+				)));
 			}, 1000);
 		});
 	};
@@ -108,15 +117,15 @@ const EquipmentProvider = ({ children }) => {
 
 	const onDelete = async() => {
 		console.log("row deleted:", selectedRow);
-		await mockDeleteRecord(selectedRow.equipmentType);
+		await mockDeleteRecord(selectedRow.type_id);
 		setSelectedRow(null);
 		// modify later to delete the data from the database and fetch data again
 	};
 
-	const mockDeleteRecord = (equipmentType) => {
+	const mockDeleteRecord = (type_id) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				resolve(setData(data.filter((item) => item.equipmentType !== equipmentType)));
+				resolve(setData(data.filter((item) => item.type_id!== type_id)));
 			}, 1000);
 		});
 	};
@@ -127,11 +136,11 @@ const EquipmentProvider = ({ children }) => {
 		//modify later to call the api to get the data
 	};
 
-	const mockSearchRecord = (equipmentType) => {
+	const mockSearchRecord = (type_name) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
 				console.log("before search, data:", data);
-				resolve(setData(data.filter((item) => item.equipmentType === equipmentType)));
+				resolve(setData(data.filter((item) => item.type_name === type_name)));
 				console.log("mockSearchRecord, data:", data);
 			}, 1000);
 		});
@@ -151,7 +160,7 @@ const EquipmentProvider = ({ children }) => {
 				console.log("before modify, data:", data);
 				resolve(setData(
 					data.map((item) => {
-						if (item.equipmentType === selectedRow.equipmentType) {
+						if (item.type_id === selectedRow.type_id) {
 							return {
 								...item,
 								...value,

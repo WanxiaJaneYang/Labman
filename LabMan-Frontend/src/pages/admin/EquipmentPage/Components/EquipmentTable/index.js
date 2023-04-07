@@ -5,15 +5,15 @@ import { useEquipmentContext } from "../../Context";
 const columns = [
 	{
 		title: "Equipment Type",
-		dataIndex: "equipmentType",
+		dataIndex: "type_name",
 	},
 	{
-		title: "Available Count",
-		dataIndex: "availableCount",
+		title: "Available Amount",
+		dataIndex: "available_amount",
 	},
 	{
-		title: "Total Count",
-		dataIndex: "count",
+		title: "Total Amount",
+		dataIndex: "total_amount",
 	},
 
 ];
@@ -40,7 +40,7 @@ const EquipmentTable = () => {
 	return (
 		<Table
 			columns={columns}
-			rowKey={(record) => record.equipmentType}
+			rowKey={(record) => record.type_id}
 			rowSelection={{
 				type: "radio",
 				...rowSelection,
