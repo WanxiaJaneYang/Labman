@@ -1,4 +1,4 @@
-import RequestRecordTable from "../Components/Tables/RequestRecordTable";
+import RequestRecordTable from "../Components/RequestRecordTable";
 import ModifyRequestRecordButton from "../Components/Buttons/ModifyRequestRecordButton";
 import DeleteRequestRecordButton from "../Components/Buttons/DeleteRequestRecordButton";
 import NewRequestRecordButton from "../Components/Buttons/NewRequestRecordButton";

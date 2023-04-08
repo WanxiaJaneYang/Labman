@@ -51,7 +51,7 @@ function ModifyStudentButton() {
 			<Button type="primary" onClick={onModifyClick} >
             Modify
 			</Button>
-			<Modal title="Modify Equipment" width="70vw" open={isModalOpen} onCancel={hideModal} onOk={okHandler}>
+			<Modal title="Modify Student" width="70vw" open={isModalOpen} onCancel={hideModal} onOk={okHandler}>
 				<ModifyStudentForm form={form}/>
 			</Modal>
 		</>
