@@ -6,10 +6,10 @@ const { confirm } = Modal;
 function DeleteEquipmentButton() {
 	const [messageApi, contextHolder] = message.useMessage();
 
-	const{selectedRow, onDelete}=useEquipmentContext();
+	const{selectedRows, onDelete}=useEquipmentContext();
 
 	const handleDelete = () => {
-		if (selectedRow) {
+		if (selectedRows) {
 			showConfirm();
 		} else {
 			messageApi.warning("Please select a row.");

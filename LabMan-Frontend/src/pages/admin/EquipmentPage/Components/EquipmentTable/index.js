@@ -19,17 +19,17 @@ const columns = [
 ];
 
 const EquipmentTable = () => {
-	const { data, loading, fetchData, tableParams, onTableChange, onRowSelected, selectedRow } = useEquipmentContext();
+	const { data, loading, fetchData, tableParams, onTableChange, onRowSelected, selectedRows } = useEquipmentContext();
 
 	useEffect(() => {
 		fetchData();
 	}, [JSON.stringify(tableParams)]);
 
 	const rowSelection = {
-		selectedRowKeys: selectedRow ? [selectedRow.type_id] : [],
+		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.type_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-			onRowSelected(selectedRows[0]);//modify this line so we could set row as some identifier
+			onRowSelected(selectedRows);//modify this line so we could set row as some identifier
 		},
 		getCheckboxProps: (record) => ({
 			disabled: record.name === "Disabled User",
@@ -42,10 +42,7 @@ const EquipmentTable = () => {
 		<Table
 			columns={columns}
 			rowKey={(record) => record.type_id}
-			rowSelection={{
-				type: "radio",
-				...rowSelection,
-			}}
+			rowSelection={rowSelection}
 			dataSource={data}
 			pagination={tableParams.pagination}
 			loading={loading}

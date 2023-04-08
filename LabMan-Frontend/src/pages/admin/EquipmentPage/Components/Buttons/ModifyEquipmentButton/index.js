@@ -9,11 +9,14 @@ function ModifyEquipmentButton() {
 
 	const [form] = Form.useForm();
 
-	const {selectedRow, onModify} = useEquipmentContext();
+	const {selectedRows, onModify} = useEquipmentContext();
 
 	const onModifyClick = () => {
-		if(selectedRow){
+		if(selectedRows&&selectedRows.length==1){
 			showModal();
+		}
+		else if(selectedRows&&selectedRows.length>1){
+			messageApi.warning("Please select only one row.");
 		}
 		else{
 			messageApi.warning("Please select a row.");

@@ -8,7 +8,7 @@ export const useEquipmentContext = () => {
 };
 
 const EquipmentProvider = ({ children }) => {
-	const [selectedRow, setSelectedRow] = useState(null);
+	const [selectedRows, setSelectedRow] = useState(null);
 	const [data, setData] = useState([
 		{
 			type_id: 1,
@@ -110,14 +110,14 @@ const EquipmentProvider = ({ children }) => {
 		fetchData();
 	};
 
-	const onRowSelected = (row) => {
-		console.log("onRowSelected, set row as:",row);
-		setSelectedRow(row);
+	const onRowSelected = (rows) => {
+		console.log("onRowSelected, set rows as:",rows);
+		setSelectedRow(rows);
 	};
 
 	const onDelete = async() => {
-		console.log("row deleted:", selectedRow);
-		await mockDeleteRecord(selectedRow.type_id);
+		console.log("row deleted:", selectedRows);
+		await  Promise.all(selectedRows.map((item) => mockDeleteRecord(item.type_id)));
 		setSelectedRow(null);
 		// modify later to delete the data from the database and fetch data again
 	};
@@ -125,7 +125,7 @@ const EquipmentProvider = ({ children }) => {
 	const mockDeleteRecord = (type_id) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				resolve(setData(data.filter((item) => item.type_id!== type_id)));
+				resolve(setData(prevData => prevData.filter((item) => item.type_id !== type_id)));
 			}, 1000);
 		});
 	};
@@ -161,7 +161,7 @@ const EquipmentProvider = ({ children }) => {
 				console.log("before modify, data:", data);
 				resolve(setData(
 					data.map((item) => {
-						if (item.type_id === selectedRow.type_id) {
+						if (item.type_id === selectedRows[0].type_id) {
 							return {
 								...item,
 								...value,
@@ -178,7 +178,7 @@ const EquipmentProvider = ({ children }) => {
 
 
 	const value = {
-		selectedRow,
+		selectedRows,
 		data,
 		setData,
 		loading,

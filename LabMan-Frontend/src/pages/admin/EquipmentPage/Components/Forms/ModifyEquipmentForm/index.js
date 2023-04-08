@@ -3,19 +3,19 @@ import {useEquipmentContext} from "../../../Context";
 import {useEffect} from "react";
 
 const ModifyEquipmentForm = ({form}) => {
-	const {selectedRow} = useEquipmentContext();
+	const {selectedRows} = useEquipmentContext();
 	useEffect(() => {
-		if (selectedRow) {
+		if (selectedRows) {
 			form.setFieldsValue({
-				type_id: selectedRow.type_id,
-				type_name: selectedRow.type_name,
-				available_amount: selectedRow.available_amount,
-				total_amount: selectedRow.total_amount,
+				type_id: selectedRows[0].type_id,
+				type_name: selectedRows[0].type_name,
+				available_amount: selectedRows[0].available_amount,
+				total_amount: selectedRows[0].total_amount,
 			});
 		} else {
 			form.resetFields();
 		}
-	}, [selectedRow, form]);
+	}, [selectedRows, form]);
 	
 	
 	return (
