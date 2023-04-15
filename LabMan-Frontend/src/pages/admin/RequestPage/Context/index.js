@@ -7,8 +7,7 @@ export const useRequestRecordContext = () => {
 };
 
 const RequestRecordProvider = ({ children }) => {
-	const [selectedRow, setSelectedRow] = useState(null);
-	const [data, setData] = useState([]);
+	const [selectedRows, setSelectedRows] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [tableParams, setTableParams] = useState({
 		pagination: {
@@ -18,6 +17,35 @@ const RequestRecordProvider = ({ children }) => {
 			pageSizeOptions: ["5", "10", "20", "50"], // Add this line
 		},
 	});
+	
+	const [data, setData] = useState(
+		[
+			{
+				request_id: 1,
+				user_name: "a1777777",
+				type_name: "Microscope",
+				borrow_amount: 1,
+				borrow_date: "2021-05-01",
+				return_date: "2021-07-02",
+			},
+			{
+				request_id: 2,
+				user_name: "a1777779",
+				type_name: "Spectrometer",
+				borrow_amount: 1,
+				borrow_date: "2021-05-08",
+				return_date: "2021-07-02",
+			},
+			{
+				request_id: 3,
+				user_name: "a1777778",
+				type_name: "Spectrophotometer",
+				borrow_amount: 1,
+				borrow_date: "2021-05-12",
+				return_date: "2021-07-02",
+			},
+		]
+	);
 
 	const fetchData = async () => {
 		setLoading(true);
@@ -46,17 +74,9 @@ const RequestRecordProvider = ({ children }) => {
 		});
 	};
 
-	const handleTableChange = (pagination, filters, sorter) => {
-		setTableParams({
-			pagination,
-			filters,
-			...sorter,
-		});
-	};
-
 	const value = {
-		selectedRow,
-		setSelectedRow,
+		selectedRows,
+		setSelectedRows,
 		data,
 		setData,
 		loading,
@@ -64,7 +84,6 @@ const RequestRecordProvider = ({ children }) => {
 		setTableParams,
 		fetchData,
 		handleFormSubmit,
-		handleTableChange,
 	};
 
 	return (

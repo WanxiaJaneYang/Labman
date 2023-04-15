@@ -1,15 +1,54 @@
-import { Table } from "antd";
+import { Space, Table } from "antd";
 import { useStudentContext } from "../../../Context/StudentContext";
-
-const columns = [
-	{
-		title: "Student ID",
-		dataIndex: "user_name",
-	}
-];
+import ShowStudentDetailModal from "../../Modals/ShowStudentDetailModal";
+import ModifyStudentModal from "../../Modals/ModifyStudentModal";
 
 const StudentTable = () => {
-	const { data, loading, tableParams, handleTableChange, onRowSelected, selectedRows } = useStudentContext();
+	const { data, loading, tableParams, handleTableChange, onRowSelected, selectedRows,setModalData, detailModalVisible, setDetailModalVisible, modifyModalVisible, setModifyModalVisible } = useStudentContext();
+
+	const showDetailModal = () => {
+		console.log("showing detail modal");
+		setDetailModalVisible(true);
+		console.log("detail modal visible:",detailModalVisible);
+	};
+
+	const handelDetailClick = (record) => {
+		console.log("detail being clicked record:",record);
+		setModalData(record);
+		showDetailModal();
+	};
+
+	const handelModifyClick = (record) => {
+		console.log("modify being clicked record:",record);
+		setModalData(record);
+		showModifyModal();
+	};
+
+	const showModifyModal = () => {
+		console.log("showing modify modal");
+		setModifyModalVisible(true);
+		console.log("modify modal visible:",modifyModalVisible);
+	};
+
+	const columns = [
+		{
+			title: "Student ID",
+			dataIndex: "user_name",
+			render: (_, record) => {
+				return (
+					<>
+						<Space>
+							<p>{record.user_name}</p>
+							<a onClick={()=>handelDetailClick(record)}>Details</a>
+							<a onClick={()=>handelModifyClick(record)} >Modify</a>
+						</Space>
+						<ShowStudentDetailModal/>
+						<ModifyStudentModal/>
+					</>
+				);
+			},
+		}
+	];
 
 	const rowSelection = {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.user_id) : [],

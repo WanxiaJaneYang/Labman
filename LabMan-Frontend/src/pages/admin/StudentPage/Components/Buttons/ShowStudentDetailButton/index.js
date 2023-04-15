@@ -9,10 +9,9 @@ function ShowStudentDetailButton() {
 	const {selectedRows} = useStudentContext();
 
 	const onClick = () => {
-		if(selectedRows.length === 1){
+		if(selectedRows && selectedRows.length === 1){
 			showModal();
-		}
-		else if(selectedRows.length > 1){
+		}else if(selectedRows && selectedRows.length > 1){
 			messageApi.warning("Please select only one row.");
 		}
 		else{
@@ -37,7 +36,7 @@ function ShowStudentDetailButton() {
 			<Modal title="Student Detail" width="70vw" open={isModalOpen} onCancel={hideModal} onOk={hideModal}>
 				<p>Student ID: {selectedRows?selectedRows[0].user_name:""}</p>
 				<p>Student Email: {selectedRows?selectedRows[0].email:""}</p>
-				<p>Student Password: {selectedRows?selectedRows[0].password:""}</p>
+				{/* <p>Student Password: {selectedRows?selectedRows[0].password:""}</p> */}
 			</Modal>
 		</>
 		

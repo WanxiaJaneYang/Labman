@@ -32,6 +32,10 @@ const StudentProvider = ({ children }) => {
 	]);
 
 	const [loading, setLoading] = useState(false);
+
+	const[detailModalVisible, setDetailModalVisible] = useState(false);
+	const[modifyModalVisible, setModifyModalVisible] = useState(false);
+	const [modalData, setModalData] = useState(null);
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
@@ -166,7 +170,7 @@ const StudentProvider = ({ children }) => {
 				console.log("before modify, data:", data);
 				resolve(setData(
 					data.map((item) => {
-						if (item.user_id === selectedRows[0].user_id) {
+						if (item.user_id === value.user_id) {
 							return {
 								...item,
 								...value,
@@ -194,6 +198,12 @@ const StudentProvider = ({ children }) => {
 		onDelete,
 		onStudentSearch,
 		onModify,
+		modalData,
+		setModalData,
+		detailModalVisible,
+		setDetailModalVisible,
+		modifyModalVisible,
+		setModifyModalVisible,
 	};
 
 	return (

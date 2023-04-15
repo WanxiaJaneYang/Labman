@@ -12,10 +12,9 @@ function ModifyStudentButton() {
 	const {selectedRows, onModify} = useStudentContext();
 
 	const onModifyClick = () => {
-		if(selectedRows.length === 1){
+		if(selectedRows && selectedRows.length === 1){
 			showModal();
-		}
-		else if(selectedRows.length > 1){
+		}else if(selectedRows && selectedRows.length > 1){
 			messageApi.warning("Please select only one row.");
 		}
 		else{
@@ -48,7 +47,7 @@ function ModifyStudentButton() {
 	return (
 		<>
 			{contextHolder}
-			<Button type="primary" onClick={onModifyClick} >
+			<Button onClick={onModifyClick} >
             Modify
 			</Button>
 			<Modal title="Modify Student" width="70vw" open={isModalOpen} onCancel={hideModal} onOk={okHandler}>

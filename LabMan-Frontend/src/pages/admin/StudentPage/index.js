@@ -4,8 +4,6 @@ import NewStudentButton from "./Components/Buttons/NewStudentButton";
 import SearchStudentBar from "./Components/Buttons/SearchStudentBar";
 import DeleteStudentButton from "./Components/Buttons/DeleteStudentButton";
 import{Row, Col, Space} from "antd";
-import ModifyStudentButton from "./Components/Buttons/ModifyStudentButton";
-import ShowStudentDetailButton from "./Components/Buttons/ShowStudentDetailButton";
 
 const StudentPage=()=>{
 	return(
@@ -22,12 +20,6 @@ const StudentPage=()=>{
 			<StudentTable />
 			<Row justify={"start"}>
 				<Space>
-					<Col>
-						<ShowStudentDetailButton/>
-					</Col>
-					<Col>
-						<ModifyStudentButton/>
-					</Col>
 					<Col>
 						<DeleteStudentButton />
 					</Col>
