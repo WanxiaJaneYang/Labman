@@ -6,7 +6,7 @@ const ModifyEquipmentForm = ({ form }) => {
 	const { selectedRows } = useEquipmentContext();
 
 	useEffect(() => {
-		if (selectedRows) {
+		if (selectedRows && selectedRows.length > 0) {
 			form.setFieldsValue({
 				type_id: selectedRows[0].type_id,
 				type_name: selectedRows[0].type_name,
