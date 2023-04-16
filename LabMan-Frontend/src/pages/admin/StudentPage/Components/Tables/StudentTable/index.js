@@ -2,9 +2,10 @@ import { Space, Table } from "antd";
 import { useStudentContext } from "../../../Context/StudentContext";
 import ShowStudentDetailModal from "../../Modals/ShowStudentDetailModal";
 import ModifyStudentModal from "../../Modals/ModifyStudentModal";
+import { useEffect } from "react";
 
 const StudentTable = () => {
-	const { data, loading, tableParams, handleTableChange, onRowSelected, selectedRows,setModalData, detailModalVisible, setDetailModalVisible, modifyModalVisible, setModifyModalVisible } = useStudentContext();
+	const { data,fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows,setModalData, detailModalVisible, setDetailModalVisible, modifyModalVisible, setModifyModalVisible } = useStudentContext();
 
 	const showDetailModal = () => {
 		console.log("showing detail modal");
@@ -28,6 +29,19 @@ const StudentTable = () => {
 		console.log("showing modify modal");
 		setModifyModalVisible(true);
 		console.log("modify modal visible:",modifyModalVisible);
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, [JSON.stringify(tableParams)]);
+
+	const handleTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			pagination,
+			filters,
+			...sorter,
+		});
+		fetchData();
 	};
 
 	const columns = [
@@ -54,7 +68,7 @@ const StudentTable = () => {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.user_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-			onRowSelected(selectedRows);
+			setSelectedRows(selectedRows);
 		},
 		getCheckboxProps: (record) => ({
 			disabled: record.name === "Disabled User",

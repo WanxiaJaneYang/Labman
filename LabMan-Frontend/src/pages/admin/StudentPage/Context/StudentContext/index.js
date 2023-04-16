@@ -8,7 +8,7 @@ export const useStudentContext = () => {
 };
 
 const StudentProvider = ({ children }) => {
-	const [selectedRows, setSelectedRow] = useState(null);
+	const [selectedRows, setSelectedRows] = useState(null);
 	const [data, setData] = useState([
 		{
 			user_id: "1",
@@ -106,26 +106,12 @@ const StudentProvider = ({ children }) => {
 		});
 	};
 
-	const onTableChange = (pagination, filters, sorter) => {
-		setTableParams({
-			pagination,
-			filters,
-			...sorter,
-		});
-		fetchData();
-	};
-
-	const onRowSelected = (rows) => {
-		console.log("onRowSelected, set row as:",rows);
-		setSelectedRow(rows);
-	};
-
 	const onDelete = async() => {
 		console.log("row deleted:", selectedRows);
 		await Promise.all (
 			selectedRows.map((item) => mockDeleteStudent(item.user_id))
 		);
-		setSelectedRow(null);
+		setSelectedRows([]);
 		// modify later to delete the data from the database and fetch data again
 	};
 
@@ -161,7 +147,7 @@ const StudentProvider = ({ children }) => {
 		await mockModifyRecord(value);
 		// called by the modify button and pass 2 param back:equipmentId|equipmentType, searchValue
 		//call the api to get the data
-		setSelectedRow(null);
+		setSelectedRows([]);
 	};
 
 	const mockModifyRecord = (value) => {
@@ -188,12 +174,12 @@ const StudentProvider = ({ children }) => {
 
 	const value = {
 		selectedRows,
+		setSelectedRows,
 		data,		
 		loading,
 		tableParams,
+		setTableParams,
 		fetchData,
-		onTableChange,
-		onRowSelected,
 		onAdd,
 		onDelete,
 		onStudentSearch,
