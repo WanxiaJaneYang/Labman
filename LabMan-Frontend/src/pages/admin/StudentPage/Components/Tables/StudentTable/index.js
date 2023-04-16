@@ -70,11 +70,11 @@ const StudentTable = () => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
 			setSelectedRows(selectedRows);
 		},
-		getCheckboxProps: (record) => ({
-			disabled: record.name === "Disabled User",
-			// Column configuration not to be checked
-			name: record.name,
-		}),
+		// getCheckboxProps: (record) => ({
+		// 	disabled: record.name === "Disabled User",
+		// 	// Column configuration not to be checked
+		// 	name: record.name,
+		// }),
 	};
 
 	return (
