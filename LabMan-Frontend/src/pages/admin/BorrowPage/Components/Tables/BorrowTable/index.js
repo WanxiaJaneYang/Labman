@@ -1,16 +1,11 @@
 import { Table } from "antd";
-import { useReturnRecordContext } from "../../../ReturnRecordContext";
-const ReturnTable = () => {
-	const { data, loading, setSelectedRows, handleTableChange, tableParams} = useReturnRecordContext();
+import {useBorrowContext} from "../../../BorrowPageContext";
+const BorrowTable = () => {
+	const {data, loading, tableParams, selectedRows,setSelectedRows, onTableChange} = useBorrowContext();
 	const columns = [
 		{
-			title: "Borrow Time",
-			dataIndex: "borrow_date",
-			sorter: true,
-		},
-		{
-			title: "Due Time",
-			dataIndex: "return_date",
+			title: "Request Time",
+			dataIndex: "request_date",
 			sorter: true,
 		},
 		{
@@ -39,9 +34,10 @@ const ReturnTable = () => {
 	];
 
 	const rowSelection = {
+		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.borrow_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-			setSelectedRows(selectedRows);
+			setSelectedRows(selectedRows);//modify this line so we could set row as some identifier
 		},
 		getCheckboxProps: (record) => ({
 			disabled: record.name === "Disabled User",
@@ -51,17 +47,16 @@ const ReturnTable = () => {
 	};
 
 	return (
-		<Table
-			columns={columns}
-			rowSelection={rowSelection}
-			rowKey={(record) => record.borrow_id}
+		<Table 
 			dataSource={data}
+			columns={columns}
+			rowKey={(record) => record.borrow_id}
 			loading={loading}
-			onChange={handleTableChange}
 			pagination={tableParams.pagination}
-			scroll={{ x: "max-content" }}
+			rowSelection={rowSelection}
+			onChange={onTableChange}
 		/>
 	);
 };
 
-export default ReturnTable;
+export default BorrowTable;

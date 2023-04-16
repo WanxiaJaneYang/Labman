@@ -15,6 +15,11 @@ const adminMenuItems = [
 		label: "Request",
 	},
 	{
+		key: "/admin/borrow",
+		icon: <ImportOutlined />,
+		label: "Borrow",
+	},
+	{
 		key: "/admin/return",
 		icon: <ImportOutlined />,
 		label: "Return",

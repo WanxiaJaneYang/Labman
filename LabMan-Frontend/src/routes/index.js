@@ -7,6 +7,7 @@ import ReturnPage from "../pages/Admin/ReturnPage";
 import EquipmentPage from "../pages/Admin/EquipmentPage";
 import StudentPage from "../pages/Admin/StudentPage";
 import ActionHistoryPage from "../pages/Admin/ActionHistoryPage";
+import BorrowPage from "../pages/Admin/BorrowPage";
 
 const routes = [
 	{
@@ -28,6 +29,10 @@ const routes = [
 			{
 				path: "request",
 				element: <RequestPage />,
+			},
+			{
+				path: "borrow",
+				element: <BorrowPage />,
 			},
 			{
 				path: "return",

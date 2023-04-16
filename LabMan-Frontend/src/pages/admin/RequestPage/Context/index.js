@@ -7,57 +7,70 @@ export const useRequestRecordContext = () => {
 };
 
 const RequestRecordProvider = ({ children }) => {
+	const [loading,setLoading] = useState(false);
 	const [selectedRows, setSelectedRows] = useState(null);
-	const [loading, setLoading] = useState(false);
+	const [data, setData] = useState([
+		{
+			request_id: 1,
+			user_id: 1,
+			user_name:"a1888888",
+			type_id: 1,
+			type_name:"Macbook Pro",
+			borrow_amount: 1,
+			request_time: "2021-04-30",
+			return_date: "2021-05-01",
+			status: 0,
+		},
+		{
+			request_id: 2,
+			user_id: 2,
+			user_name:"a1888899",
+			type_id: 2,
+			type_name:"Macbook Air",
+			borrow_amount: 2,
+			request_time: "2021-04-30",
+			return_date: "2021-05-02",
+			status: 1,
+		},
+		{
+			request_id: 3,
+			user_id: 3,
+			user_name:"a1888800",
+			type_id: 3,
+			type_name:"Microsoft",
+			borrow_amount: 3,
+			request_time: "2021-04-30",
+			return_date: "2021-05-03",
+			status: 0,
+		},
+	]);
+
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
 			pageSize: 10,
-			showSizeChanger: true, // Add this line
-			pageSizeOptions: ["5", "10", "20", "50"], // Add this line
+			showSizeChanger: true, 
+			pageSizeOptions: ["5", "10", "20", "50"],
 		},
 	});
-	
-	const [data, setData] = useState(
-		[
-			{
-				request_id: 1,
-				user_name: "a1777777",
-				type_name: "Microscope",
-				borrow_amount: 1,
-				borrow_date: "2021-05-01",
-				return_date: "2021-07-02",
-			},
-			{
-				request_id: 2,
-				user_name: "a1777779",
-				type_name: "Spectrometer",
-				borrow_amount: 1,
-				borrow_date: "2021-05-08",
-				return_date: "2021-07-02",
-			},
-			{
-				request_id: 3,
-				user_name: "a1777778",
-				type_name: "Spectrophotometer",
-				borrow_amount: 1,
-				borrow_date: "2021-05-12",
-				return_date: "2021-07-02",
-			},
-		]
-	);
+
+	const handleTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			pagination,
+			filters,
+			...sorter,
+		});
+	};
 
 	const fetchData = async () => {
+		// Set the 'loading' state to true to show the loading indicator
 		setLoading(true);
 		// Call the API function to fetch the data and update the 'data' state
 		// const fetchedData = await fetchRecords(/* ...params */);
-		// setData(fetchedData);
+		setData(data);
+		// Set the 'loading' state to false to hide the loading indicator
 		setLoading(false);
 	};
-
-	useEffect(() => {
-		fetchData();
-	}, [JSON.stringify(tableParams)]);
 
 	const handleFormSubmit = async (values) => {
 		// Call the mock function to create a new record and pass the form values
@@ -66,6 +79,10 @@ const RequestRecordProvider = ({ children }) => {
 		setData((prevData) => [...prevData, newRecord]);
 	};
 
+	useEffect(() => {
+		fetchData();
+	}, [JSON.stringify(tableParams)]);
+
 	const mockCreateRecord = (values) => {
 		return new Promise((resolve) => {
 			setTimeout(() => {
@@ -73,17 +90,18 @@ const RequestRecordProvider = ({ children }) => {
 			}, 1000);
 		});
 	};
-
+	
 	const value = {
+		loading,
 		selectedRows,
 		setSelectedRows,
 		data,
 		setData,
-		loading,
 		tableParams,
 		setTableParams,
 		fetchData,
 		handleFormSubmit,
+		handleTableChange,
 	};
 
 	return (

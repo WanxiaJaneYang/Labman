@@ -1,4 +1,4 @@
-import ReturnRecordProvider from "./Components/Context/ReturnRecordContext";
+import ReturnRecordProvider from "./ReturnRecordContext";
 import ReturnTable from "./Components/Tables/ReturnTable";
 import SearchReturnRecordBar from "./Components/Buttons/SearchReturnRecordBar";
 import ReturnEquipmentButton from "./Components/Buttons/ReturnEquipmentButton";
