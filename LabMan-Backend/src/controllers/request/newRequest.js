@@ -61,7 +61,7 @@ async function newRequest(req, res) {
           type_name: type_name,
           user_id: user_id,
           user_name: user_name,
-          action: 0, // 0 = New request
+          log_type: 0, // 0 = New request
           log_date: current_time,
           request_id: request_id // Use the request_id from the previous query
         };

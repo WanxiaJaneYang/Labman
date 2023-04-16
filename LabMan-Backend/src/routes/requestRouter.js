@@ -1,11 +1,9 @@
 import { Router } from "express";
-import express from "express";
 import { getRequests } from '../controllers/request/getRequests.js';
 import { newRequest } from '../controllers/request/newRequest.js';
 import { pickRequest } from '../controllers/request/pickRequest.js';
 
 const requestRouter = Router();
-requestRouter.use(express.json());
 
 //query all request records
 requestRouter.get("/request", getRequests);

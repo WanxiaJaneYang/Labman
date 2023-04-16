@@ -24,7 +24,7 @@ async function pickRequest(req, res) {
     borrow_amount: 1,
     borrow_date: current_time,
     return_date: borrowingRequest.return_date,
-    request_status: 1,//  1 = borrowed
+    status: 0,//  0 = borrowed/unreturned
     request_id: request_id
   };
 
@@ -62,7 +62,7 @@ async function pickRequest(req, res) {
             type_name: borrowingRequest.type_name,
             user_id: borrowingRequest.user_id,
             user_name: borrowingRequest.user_name,
-            action: 1,  // 1 = borrow
+            log_type: 1,  // 1 = borrow
             log_date: current_time,
             borrow_id: borrow_id // Use the request_id from the previous query
           };
@@ -76,7 +76,6 @@ async function pickRequest(req, res) {
               });
             }
           });
-
 
           // Commit the transaction on success
           connection.commit((err) => {
@@ -95,7 +94,20 @@ async function pickRequest(req, res) {
           });
         });
       };
+      
+      // Update the request status to 1
+      const updateStatusQuery = 'UPDATE requests SET request_status = ? WHERE request_id = ?';
+      pool.query(updateStatusQuery, [1, request_id], (err, result) => {
+        if (err) {
+          console.error(err);
+          connection.rollback(() => {
+            // Rollback the transaction on error
+            connection.release();
+            return res.status(500).json({ error: 'Failed to update request status' });
+          });
+        }
+      });
+    });
   });
-});
 }
 export { pickRequest };

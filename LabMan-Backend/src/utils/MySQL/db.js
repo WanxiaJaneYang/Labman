@@ -26,15 +26,3 @@ function connectToDatabase() {
 export {connectToDatabase};
 export default pool;
 
-//     user: "a1866621",
-//     password: "Adelaide123N",
-//     database: "labman",
-//     port: 3306,
-//     connectTimeout: 60000,
-//     ssl: {
-//       rejectUnauthorized: false,
-//       ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem")
-//     },
-//     acquireTimeout: 10000, // Set the acquireTimeout in milliseconds
-//     waitForConnections: true
-//   });
