@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 // import qs from "qs";
 
 const StudentContext = createContext();
@@ -81,10 +81,6 @@ const StudentProvider = ({ children }) => {
 	// 	page: params.pagination?.current,
 	// 	...params,
 	// });
-
-	useEffect(() => {
-		fetchData();
-	}, [JSON.stringify(tableParams)]);
 
 	const onAdd = async (values) => {
 		console.log("onFormSubmit, values:", values);
@@ -170,16 +166,14 @@ const StudentProvider = ({ children }) => {
 		});
 	};
 			
-
-
 	const value = {
 		selectedRows,
 		setSelectedRows,
-		data,		
+		data,
+		fetchData,		
 		loading,
 		tableParams,
 		setTableParams,
-		fetchData,
 		onAdd,
 		onDelete,
 		onStudentSearch,
