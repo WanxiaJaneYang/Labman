@@ -5,18 +5,19 @@ import {
 	ImportOutlined,
 	TeamOutlined,
 	FileOutlined,
+	FormOutlined,
 } from "@ant-design/icons";
 import { Outlet } from "react-router";
 
 const adminMenuItems = [
 	{
 		key: "/admin/request",
-		icon: <ExportOutlined />,
+		icon: <FormOutlined />,
 		label: "Request",
 	},
 	{
 		key: "/admin/borrow",
-		icon: <ImportOutlined />,
+		icon: <ExportOutlined />,
 		label: "Borrow",
 	},
 	{

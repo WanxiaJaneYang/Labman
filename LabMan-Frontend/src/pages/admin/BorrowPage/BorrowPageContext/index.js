@@ -84,27 +84,6 @@ const BorrowProvider = ({ children }) => {
 		fetchData();
 	}, [JSON.stringify(tableParams)]);
 
-	const onFormSubmit = async (values) => {
-		console.log("onFormSubmit, values:", values);
-		// Call the mock function to create a new record and pass the form values
-		await mockCreateRecord(values);
-		// Add the new record to the 'data' state to update the table
-	};
-
-	const mockCreateRecord = (values) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				resolve(setData(data.concat(
-					{
-						...values,
-						type_id: data.length + 1,
-					}
-						
-				)));
-			}, 1000);
-		});
-	};
-
 	const onTableChange = (pagination, filters, sorter) => {
 		setTableParams({
 			pagination,
@@ -114,68 +93,15 @@ const BorrowProvider = ({ children }) => {
 		fetchData();
 	};
 
-
-	const onDelete = async() => {
-		console.log("row deleted:", selectedRows);
-		await  Promise.all(selectedRows.map((item) => mockDeleteRecord(item.type_id)));
-		setSelectedRows([]);
-		// modify later to delete the data from the database and fetch data again
+	const onSearch = ({searchType, searchValue}) => {
+		console.log(searchType, searchValue);
+		//add api search here
 	};
 
-	const mockDeleteRecord = (type_id) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				resolve(setData(prevData => prevData.filter((item) => item.type_id !== type_id)));
-			}, 1000);
-		});
+	const onConfirmCollection = () => {
+		console.log(selectedRows);
+		//add api confirm collection here
 	};
-
-	const onEquipmentSearch =  async(value) => {
-		console.log("onEquipmentSearch, searchParams:", value);
-		await mockSearchRecord(value);
-		//modify later to call the api to get the data
-	};
-
-	const mockSearchRecord = (type_name) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				console.log("before search, data:", data);
-				resolve(setData(data.filter((item) => item.type_name === type_name)));
-				console.log("mockSearchRecord, data:", data);
-			}, 1000);
-		});
-	};
-
-
-	const onModify = async (value) => {
-		console.log("onModify, form value:", value);
-		await mockModifyRecord(value);
-		// called by the modify button and pass 2 param back:equipmentId|equipmentType, searchValue
-		//call the api to get the data
-		setSelectedRows([]);
-	};
-
-	const mockModifyRecord = (value) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				console.log("before modify, data:", data);
-				resolve(setData(
-					data.map((item) => {
-						if (item.type_id === selectedRows[0].type_id) {
-							return {
-								...item,
-								...value,
-							};
-						}
-						return item;
-					}
-					)));
-				console.log("mockModifyRecord, data:", data);
-			}, 1000);
-		});
-	};
-			
-
 
 	const value = {
 		selectedRows,
@@ -187,10 +113,8 @@ const BorrowProvider = ({ children }) => {
 		fetchData,
 		onTableChange,
 		setSelectedRows,
-		onFormSubmit,
-		onDelete,
-		onEquipmentSearch,
-		onModify,
+		onSearch,
+		onConfirmCollection,
 	};
 
 	return (

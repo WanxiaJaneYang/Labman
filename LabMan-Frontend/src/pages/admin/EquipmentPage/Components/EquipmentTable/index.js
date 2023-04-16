@@ -19,7 +19,7 @@ const columns = [
 ];
 
 const EquipmentTable = () => {
-	const { data, loading, fetchData, tableParams, onTableChange, onRowSelected, selectedRows } = useEquipmentContext();
+	const { data, loading, fetchData, tableParams, setTableParams, setSelectedRows, selectedRows } = useEquipmentContext();
 
 	useEffect(() => {
 		fetchData();
@@ -29,13 +29,16 @@ const EquipmentTable = () => {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.type_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-			onRowSelected(selectedRows);//modify this line so we could set row as some identifier
+			setSelectedRows(selectedRows);//modify this line so we could set row as some identifier
 		},
-		getCheckboxProps: (record) => ({
-			disabled: record.name === "Disabled User",
-			// Column configuration not to be checked
-			name: record.name,
-		}),
+	};
+
+	const onTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			pagination,
+			filters,
+			...sorter,
+		});
 	};
 
 	return (
