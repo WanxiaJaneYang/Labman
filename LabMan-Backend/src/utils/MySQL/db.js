@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import fs from "fs";
-import mysql from 'mysql2/promise';
+import mysql from 'mysql';
+
+// import mysql from 'mysql2/promise';
 
 dotenv.config();
 
