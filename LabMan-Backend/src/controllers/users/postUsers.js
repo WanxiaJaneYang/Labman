@@ -3,7 +3,7 @@ import pool from "../../utils/MySQL/db.js";
 function newUser(req, res){
   const { user_name, email, password } = req.body;
   pool.query(
-    "INSERT INTO user (user_name, email, password) VALUES (?, ?, ?)",
+    "INSERT INTO students_user (user_name, email, password) VALUES (?, ?, ?)",
     [user_name, email, password],
     (err, results) => {
       if (err) {

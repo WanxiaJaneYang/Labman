@@ -1,22 +1,27 @@
 import dotenv from "dotenv";
-import mysql from "mysql";
 import fs from "fs";
+import mysql from 'mysql2/promise';
 
 dotenv.config();
 
 const pool = mysql.createPool({
-  host: process.env.HOST,
-  user: process.env.DBUSER,
-  password: process.env.DBPASS,
-  database: process.env.DBNAME,
-  port: process.env.DBPORT,
-  connectTimeout: 60000,
+  host: "labman.mysql.database.azure.com",
+  user: "a1866621",
+  password: "Adelaide123N",
+  database: "labman",
+  port: 3306,
+
+  // host: process.env.HOST,
+  // user: process.env.DBUSER,
+  // password: process.env.DBPASS,
+  // database: process.env.DBNAME,
+  // port: process.env.DBPORT,
   ssl: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: true,
     ca: fs.readFileSync("DigiCertGlobalRootCA.crt.pem")
   },
-  acquireTimeout: 10000,
-  waitForConnections: true
+  connectTimeout:60000,
+
 });
 console.log("Connection pool object created successfully");
 

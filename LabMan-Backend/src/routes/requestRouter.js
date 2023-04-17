@@ -6,13 +6,13 @@ import { pickRequest } from '../controllers/request/pickRequest.js';
 const requestRouter = Router();
 
 //query all request records
-requestRouter.get("/request", getRequests);
+requestRouter.get("/", getRequests);
 
-// Create a new request record and insert a log into request Log table
-requestRouter.post('/request', newRequest);
+// Create a new reqest record and insert a log into request Log table
+requestRouter.post("/", newRequest);
 
 // Create a new borrowing record and insert a log into Equipment Log table
-requestRouter.post('/request/pick', pickRequest);
+requestRouter.post("/pick", pickRequest);
 
 
 export { requestRouter };

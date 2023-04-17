@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { getAllUsers} from '../controllers/users/getUsers.js';
 import { newUser} from '../controllers/users/postUsers.js';
 
