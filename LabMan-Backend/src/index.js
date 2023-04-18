@@ -5,7 +5,9 @@ import dotenv from "dotenv";
 
 import { connectToDatabase } from './utils/MySQL/db.js';
 dotenv.config();
-const PORT = process.env.PORT;
+
+const PORT = 3008;
+;
 connectToDatabase();
 
 app.use(express.json());
