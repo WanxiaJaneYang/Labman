@@ -23,6 +23,7 @@
             "error",
             "always"
         ],
-        "no-unused-vars": "error"
+        "no-unused-vars": "error",
+        "no-multiple-empty-lines": ["error", {"max": 1, "maxEOF": 0}]
     }
 }
