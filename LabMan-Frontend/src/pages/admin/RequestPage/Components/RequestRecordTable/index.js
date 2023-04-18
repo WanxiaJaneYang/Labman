@@ -38,9 +38,7 @@ const RequestRecordTable = () => {
 				if (record.status === 0) {
 					return <span>Pending</span>;
 				} else if (record.status === 1) {
-					return <span>Approved</span>;
-				} else if (record.status === 2) {
-					return <span>Rejected</span>;
+					return <span>Collected</span>;
 				}
 			},
 		},
