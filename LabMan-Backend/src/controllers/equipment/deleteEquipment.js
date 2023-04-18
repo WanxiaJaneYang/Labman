@@ -7,7 +7,6 @@ function deleteEquipment(req, res) {
 		[type_id],
 		(err, results) => {
 			if (err) {
-				console.error(err);
 				return res.status(500).json({ error: "Error deleting equipment" });
 			}
 			if (results.affectedRows === 0) {

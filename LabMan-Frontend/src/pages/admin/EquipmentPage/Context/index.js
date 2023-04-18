@@ -8,21 +8,9 @@ export const useEquipmentContext = () => {
 
 const EquipmentProvider = ({ children }) => {
 	//declare variables
+	const apiURL = "http://localhost:3008/equipment";
 	const [selectedRows, setSelectedRows] = useState(null);
-	const [data, setData] = useState([
-		// {
-		// 	type_id: 1,
-		// 	type_name: "Microscope",
-		// 	available_amount: 1,
-		// 	total_amount: 1,
-		// },
-		// {
-		// 	type_id: 2,
-		// 	type_name: "Spectrophotometer",
-		// 	available_amount: 1,
-		// 	total_amount: 1,
-		// }
-	]);//data used by table
+	const [data, setData] = useState([]);//data used by table
 	const [loading, setLoading] = useState(false);//loading effect of table
 	const [tableParams, setTableParams] = useState({
 		pagination: {
@@ -50,7 +38,6 @@ const EquipmentProvider = ({ children }) => {
 
 	// function to get the equipment data
 	const getEquipmentData = async () => {
-		const apiURL = "/api/equipments";
 		try {
 			const response = await fetch(apiURL);
 			if (response.ok) {
@@ -76,18 +63,13 @@ const EquipmentProvider = ({ children }) => {
 	//function to call the api to add equipment
 	const addEquipment = async (values) => {
 		console.log("addEquipent, values:", values);
-		const apiURL = "/API:/equipments";
 		// set the request parameters
 		const requestParams = {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				type_name: values.type_name,
-				available_amount: values.available_amount,
-				total_amount: values.total_amount,
-			}),
+			body: JSON.stringify(values),
 		};
 
 		//get the response
@@ -123,26 +105,26 @@ const EquipmentProvider = ({ children }) => {
 	const onDelete = async() => {
 		console.log("row deleted:", selectedRows);
 		await  Promise.all(selectedRows.map((item) => deleteEquipment(item.type_id)));
+		await fetchData();
 		setSelectedRows([]);
 		// modify later to delete the data from the database and fetch data again
 	};
 
 	// function to call the api to delete equipment
 	const deleteEquipment = async (type_id) => {
-		const apiURL = "/API:/equipments/delete";
 		console.log("deleteEquipment, type_id:", type_id);
+		// set the request parameters
+		const URL = apiURL + "/" + type_id;
 		const requestParams = {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				type_id: type_id,
-			}),
 		};
 
+		//get the response
 		try {
-			const response = await fetch(apiURL, requestParams);
+			const response = await fetch(URL, requestParams);
 			if (response.ok) {
 				const data = await response.json();
 				console.log(data.message);
@@ -170,34 +152,25 @@ const EquipmentProvider = ({ children }) => {
 		const data=await searchEquipment(value);
 		setData(data);
 		setLoading(false);
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...tableParams.pagination,
-				total: data.length,
-			},
-		});
 	};
 
 	// function to call the api to search equipment
 	const searchEquipment = async (type_name) => {
-		const apiURL = "/API:/equipments/search";
+		const searchParams = new URLSearchParams({type_name: type_name});
+		const url=apiURL + "?" + searchParams.toString();
 		console.log("searchEquipment, value:", value);
 		const requestParams = {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				type_name:type_name,
-			}),
 		};
 
 		try {
-			const response = await fetch(apiURL, requestParams);
+			const response = await fetch(url, requestParams);
 			if (response.ok) {
 				const data = await response.json();
-				console.log(data.message);
+				console.log("data.message:",data.message);
 				return data;
 			} else {
 				throw new Error("Something went wrong");
@@ -228,22 +201,19 @@ const EquipmentProvider = ({ children }) => {
 
 	// function to call the api to edit equipment
 	const editEquipment = async (value) => {
-		const apiURL = "/API:/equipments/edit";
+		const url = apiURL + "/" + selectedRows[0].type_id;
 		console.log("editEquipment, value:", value);
 		const requestParams = {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				type_id: value.type_id,
-				type_name: value.type_name,
-				type_description: value.type_description,
-			}),
+			body: JSON.stringify(value),
 		};
 
 		try {
-			const response = await fetch(apiURL, requestParams);
+			const response = await fetch(url, requestParams);
+			console.log("response:", response);
 			if (response.ok) {
 				const data = await response.json();
 				console.log(data.message);

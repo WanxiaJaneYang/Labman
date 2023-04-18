@@ -29,6 +29,18 @@ const ModifyEquipmentForm = ({ form }) => {
 		}
 	};
 
+	const validateTotalAmount = (_, value) => {
+		const availableAmount = form.getFieldValue("available_amount");
+		if (value >= availableAmount) {
+			return Promise.resolve();
+		} else {
+			return Promise.reject(
+				new Error("Total Amount can not be less than Available Amount")
+			);
+		}
+	};
+	
+
 	return (
 		<Form form={form} layout="vertical">
 			<Form.Item label="Equipment Type" name="type_name">
@@ -44,7 +56,14 @@ const ModifyEquipmentForm = ({ form }) => {
 			>
 				<InputNumber />
 			</Form.Item>
-			<Form.Item label="Total Count" name="total_amount">
+			<Form.Item 
+				label="Total Count" 
+				name="total_amount"
+				rules={[
+					{ type: "number", min: 0, message: "Available Amount must be greater than 0" },
+					{ validator: validateTotalAmount },
+				]}
+			>
 				<InputNumber />
 			</Form.Item>
 		</Form>
