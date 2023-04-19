@@ -113,11 +113,12 @@ const EquipmentProvider = ({ children }) => {
 			}else if(response.status === 404) {
 				message.error("Equipment not found");
 			}else {
-				throw new Error("Something went wrong");
+				const errorData = await response.json();
+				message.error(errorData.message);
 			}
 		}
 		catch (error) {
-			message.error(error.message);
+			message.error("An error occurred while deleting the equipment type.");
 		}
 	};
 
