@@ -2,7 +2,6 @@ import { Row, Col, Space } from "antd";
 import EquipmentTable from "./Components/EquipmentTable";
 import NewEquipmentButton from "./Components/Buttons/NewEquipmentButton";
 import SearchEquipmentBar from "./Components/Buttons/SearchEquipmentBar";
-import ModifyEquipmentButton from "./Components/Buttons/ModifyEquipmentButton";
 import DeleteEquipmentButton from "./Components/Buttons/DeleteEquipmentButton";
 import EquipmentProvider from "./Context";
 
@@ -21,9 +20,6 @@ function EquipmentPage() {
 				<EquipmentTable />
 				<Row justify={"start"}>
 					<Space>
-						<Col>
-							<ModifyEquipmentButton />
-						</Col>
 						<Col>
 							<DeleteEquipmentButton />
 						</Col>

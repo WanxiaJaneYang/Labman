@@ -3,20 +3,20 @@ import { useEquipmentContext } from "../../../Context";
 import { useEffect } from "react";
 
 const ModifyEquipmentForm = ({ form }) => {
-	const { selectedRows } = useEquipmentContext();
+	const { modalData } = useEquipmentContext();
 
 	useEffect(() => {
-		if (selectedRows && selectedRows.length > 0) {
+		if (modalData) {
 			form.setFieldsValue({
-				type_id: selectedRows[0].type_id,
-				type_name: selectedRows[0].type_name,
-				available_amount: selectedRows[0].available_amount,
-				total_amount: selectedRows[0].total_amount,
+				type_id: modalData.type_id,
+				type_name: modalData.type_name,
+				available_amount: modalData.available_amount,
+				total_amount: modalData.total_amount,
 			});
 		} else {
 			form.resetFields();
 		}
-	}, [selectedRows, form]);
+	}, [modalData, form]);
 
 	const validateAvailableAmount = (_, value) => {
 		const totalAmount = form.getFieldValue("total_amount");
@@ -60,7 +60,7 @@ const ModifyEquipmentForm = ({ form }) => {
 				label="Total Count" 
 				name="total_amount"
 				rules={[
-					{ type: "number", min: 0, message: "Available Amount must be greater than 0" },
+					{ type: "number", min: 0, message: "Total Amount must be greater than 0" },
 					{ validator: validateTotalAmount },
 				]}
 			>

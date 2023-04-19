@@ -11,6 +11,8 @@ const EquipmentProvider = ({ children }) => {
 	const apiURL = "http://localhost:3008/equipment";
 	const [selectedRows, setSelectedRows] = useState(null);
 	const [data, setData] = useState([]);//data used by table
+	const [modalData, setModalData] = useState(null);
+	const [modifyModalVisible, setModifyModalVisible] = useState(false);
 	const [loading, setLoading] = useState(false);//loading effect of table
 	const [tableParams, setTableParams] = useState({
 		pagination: {
@@ -201,7 +203,7 @@ const EquipmentProvider = ({ children }) => {
 
 	// function to call the api to edit equipment
 	const editEquipment = async (value) => {
-		const url = apiURL + "/" + selectedRows[0].type_id;
+		const url = apiURL + "/" + value.type_id;
 		console.log("editEquipment, value:", value);
 		const requestParams = {
 			method: "PUT",
@@ -252,6 +254,10 @@ const EquipmentProvider = ({ children }) => {
 		setSelectedRows,
 		data,
 		setData,
+		modalData,
+		setModalData,
+		modifyModalVisible,
+		setModifyModalVisible,
 		loading,
 		tableParams,
 		setTableParams,
