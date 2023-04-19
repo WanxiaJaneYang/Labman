@@ -13,7 +13,6 @@ function DeleteEquipmentButton() {
 			showConfirm();
 		} else {
 			messageApi.warning("Please select a row.");
-			console.log("No Equipment selected for deletion");
 		}
 	};
 
@@ -24,10 +23,8 @@ function DeleteEquipmentButton() {
 			// content: "Some descriptions",
 			onOk() {
 				onDelete();
-				console.log("OK");
 			},
 			onCancel() {
-				console.log("Cancel");
 			},
 		});
 	};

@@ -21,6 +21,8 @@ function getEquipmentByTypeName(req, res) {
 		(err, results) => {
 			if (err) {
 				return res.status(500).json({ error: "Error retrieving equipment types" });
+			}else if (results.length === 0) {
+				return res.status(404).json({ error: "Equipment type not found" });
 			}
 			return res.status(200).json(results);
 		}

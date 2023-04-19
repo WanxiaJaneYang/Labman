@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-
+import {message} from "antd";
 const EquipmentContext = createContext();
 
 export const useEquipmentContext = () => {
@@ -44,19 +44,17 @@ const EquipmentProvider = ({ children }) => {
 			const response = await fetch(apiURL);
 			if (response.ok) {
 				const data = await response.json();
-				console.log("getEquipmentData, data:", data);
 				return data;
 			} else {
 				throw new Error("Something went wrong");
 			}
 		} catch (error) {
-			console.log(error);
+			message.error(error.message);
 		}
 	};
 
 	// function called when the user submit a new equipment form
 	const onFormSubmit = async (values) => {
-		console.log("onFormSubmit, values:", values);
 		// await mockCreateRecord(values);
 		await addEquipment(values);
 		await fetchData();
@@ -64,7 +62,6 @@ const EquipmentProvider = ({ children }) => {
 
 	//function to call the api to add equipment
 	const addEquipment = async (values) => {
-		console.log("addEquipent, values:", values);
 		// set the request parameters
 		const requestParams = {
 			method: "POST",
@@ -79,33 +76,17 @@ const EquipmentProvider = ({ children }) => {
 			const response = await fetch(apiURL, requestParams);
 			if (response.ok) {
 				const data = await response.json();
-				console.log(data.message);
+				message.success(data.message);
 			} else {
 				throw new Error("Something went wrong");
 			}
 		}
 		catch (error) {
-			console.log("addEquipent, error:", error);
+			message.error(error.message);
 		}
 	};
 
-	//mock function to create a new record
-	// const mockCreateRecord = (values) => {
-	// 	return new Promise((resolve) => {
-	// 		setTimeout(() => {
-	// 			resolve(setData(data.concat(
-	// 				{
-	// 					...values,
-	// 					type_id: data.length + 1,
-	// 				}
-						
-	// 			)));
-	// 		}, 1000);
-	// 	});
-	// };
-
 	const onDelete = async() => {
-		console.log("row deleted:", selectedRows);
 		await  Promise.all(selectedRows.map((item) => deleteEquipment(item.type_id)));
 		await fetchData();
 		setSelectedRows([]);
@@ -114,7 +95,6 @@ const EquipmentProvider = ({ children }) => {
 
 	// function to call the api to delete equipment
 	const deleteEquipment = async (type_id) => {
-		console.log("deleteEquipment, type_id:", type_id);
 		// set the request parameters
 		const URL = apiURL + "/" + type_id;
 		const requestParams = {
@@ -129,27 +109,20 @@ const EquipmentProvider = ({ children }) => {
 			const response = await fetch(URL, requestParams);
 			if (response.ok) {
 				const data = await response.json();
-				console.log(data.message);
-			} else {
+				message.success(data.message);
+			}else if(response.status === 404) {
+				message.error("Equipment not found");
+			}else {
 				throw new Error("Something went wrong");
 			}
 		}
 		catch (error) {
-			console.log("deleteEquipment, error:", error);
+			message.error(error.message);
 		}
 	};
 
-	// const mockDeleteRecord = (type_id) => {
-	// 	return new Promise((resolve) => {
-	// 		setTimeout(() => {
-	// 			resolve(setData(prevData => prevData.filter((item) => item.type_id !== type_id)));
-	// 		}, 1000);
-	// 	});
-	// };
-
 	// function to handle the search
 	const onEquipmentSearch =  async(value) => {
-		console.log("onEquipmentSearch, searchParams:", value);
 		setLoading(true);
 		const data=await searchEquipment(value);
 		setData(data);
@@ -160,7 +133,6 @@ const EquipmentProvider = ({ children }) => {
 	const searchEquipment = async (type_name) => {
 		const searchParams = new URLSearchParams({type_name: type_name});
 		const url=apiURL + "?" + searchParams.toString();
-		console.log("searchEquipment, value:", value);
 		const requestParams = {
 			method: "GET",
 			headers: {
@@ -172,30 +144,20 @@ const EquipmentProvider = ({ children }) => {
 			const response = await fetch(url, requestParams);
 			if (response.ok) {
 				const data = await response.json();
-				console.log("data.message:",data.message);
 				return data;
-			} else {
+			} else if(response.status === 404) {
+				message.error("Equipment not found");
+			}else {
 				throw new Error("Something went wrong");
 			}
 		}
 		catch (error) {
-			console.log("searchEquipment, error:", error);
+			message.error(error.message);
 		}
 	};
 
-	// const mockSearchRecord = (type_name) => {
-	// 	return new Promise((resolve) => {
-	// 		setTimeout(() => {
-	// 			console.log("before search, data:", data);
-	// 			resolve(setData(data.filter((item) => item.type_name === type_name)));
-	// 			console.log("mockSearchRecord, data:", data);
-	// 		}, 1000);
-	// 	});
-	// };
-
 	// function to handle the modify
 	const onModify = async (value) => {
-		console.log("onModify, form value:", value);
 		await editEquipment(value);
 		await fetchData();
 		setSelectedRows([]);
@@ -204,7 +166,6 @@ const EquipmentProvider = ({ children }) => {
 	// function to call the api to edit equipment
 	const editEquipment = async (value) => {
 		const url = apiURL + "/" + value.type_id;
-		console.log("editEquipment, value:", value);
 		const requestParams = {
 			method: "PUT",
 			headers: {
@@ -215,38 +176,19 @@ const EquipmentProvider = ({ children }) => {
 
 		try {
 			const response = await fetch(url, requestParams);
-			console.log("response:", response);
 			if (response.ok) {
 				const data = await response.json();
-				console.log(data.message);
-			} else {
+				message.success(data.message);
+			} else if(response.status === 404) {
+				message.error("Equipment not found");
+			}else {
 				throw new Error("Something went wrong");
 			}
 		}
 		catch (error) {
-			console.log("editEquipment, error:", error);
+			message.error(error.message);
 		}
-	};
-
-	// const mockModifyRecord = (value) => {
-	// 	return new Promise((resolve) => {
-	// 		setTimeout(() => {
-	// 			console.log("before modify, data:", data);
-	// 			resolve(setData(
-	// 				data.map((item) => {
-	// 					if (item.type_id === selectedRows[0].type_id) {
-	// 						return {
-	// 							...item,
-	// 							...value,
-	// 						};
-	// 					}
-	// 					return item;
-	// 				}
-	// 				)));
-	// 			console.log("mockModifyRecord, data:", data);
-	// 		}, 1000);
-	// 	});
-	// };			
+	};	
 
 	// export the context value
 	const value = {
