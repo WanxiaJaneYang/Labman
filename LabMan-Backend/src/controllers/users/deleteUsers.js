@@ -6,7 +6,6 @@ function deleteUser(req, res) {
   
 	pool.query("DELETE FROM students_user WHERE user_id = ?", [user_id], (err, results) => {
 		if (err) {
-			console.error(err);
 			return res.status(500).json({ error: "Error deleting user" });
 		}
     

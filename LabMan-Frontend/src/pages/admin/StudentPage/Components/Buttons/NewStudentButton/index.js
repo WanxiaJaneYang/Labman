@@ -22,7 +22,7 @@ const NewStudentButton = () => {
 		try {
 			const values = await form.validateFields();
 			values.email=values.user_name+"@adelaide.edu.au";
-			console.log("Form values:", values);
+			values.password="123456";
 			onAdd(values);
 			// call the API to create a new request record here
 			hideModal();

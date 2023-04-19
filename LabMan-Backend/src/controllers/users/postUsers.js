@@ -8,7 +8,6 @@ function newUser(req, res) {
 		[user_name, email, password],
 		(err) => {
 			if (err) {
-				console.error(err);
 				return res.status(500).json({ error: "Error inserting user" });
 			}
 			return res.status(201).json({ message: "User created successfully" });
@@ -25,7 +24,6 @@ function editUser(req, res) {
 		[user_name, email, password, user_id],
 		(err) => {
 			if (err) {
-				console.error(err);
 				return res.status(500).json({ error: "Error updating user" });
 			}
 

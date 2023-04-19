@@ -4,9 +4,7 @@ function ShowStudentDetailModal() {
 	const {modalData, detailModalVisible, setDetailModalVisible} = useStudentContext();
 
 	const hideDetailModal = () => {
-		console.log("showing detail modal");
 		setDetailModalVisible(false);
-		console.log("detail modal visible:",detailModalVisible);
 	};
 
 	return (

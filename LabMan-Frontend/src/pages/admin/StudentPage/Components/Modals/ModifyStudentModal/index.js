@@ -19,8 +19,9 @@ function ModifyStudentModal() {
 	const handleModify = async() => {
 		try {
 			const values = await form.validateFields();
-			console.log("Form values:", values);
 			values.user_id=modalData.user_id;
+			values.email=values.user_name+"@adelaide.edu.au";
+			values.password=modalData.password;
 			onModify(values);
 			hideModifyModal();
 			form.resetFields();

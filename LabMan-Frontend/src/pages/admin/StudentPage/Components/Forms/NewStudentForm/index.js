@@ -18,9 +18,6 @@ function NewStudentForm({ form }) {
 			<Form.Item label="Student Email"  >
 				{generateStudentEmail() }
 			</Form.Item>
-			<Form.Item label="Student Password" name="password" rules={[{ required: true }]}>
-				<Input />
-			</Form.Item>
 		</Form>
 	);
 }
