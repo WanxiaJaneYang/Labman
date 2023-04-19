@@ -7,7 +7,7 @@ import mysql from 'mysql';
 dotenv.config();
 
 const pool = mysql.createPool({
-  host: "labman.mysql.database.azure.com",
+  host: "labman3.mysql.database.azure.com",
   user: "a1866621",
   password: "Adelaide123N",
   database: "labman",
