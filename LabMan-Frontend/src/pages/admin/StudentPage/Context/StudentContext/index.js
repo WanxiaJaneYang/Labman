@@ -61,7 +61,6 @@ const StudentProvider = ({ children }) => {
 
 	// add the new student
 	const onAdd = async (values) => {
-		console.log("onFormSubmit, values:", values);
 		// Call the mock function to create a new record and pass the form values
 		await postStudent(values);
 		await fetchData();

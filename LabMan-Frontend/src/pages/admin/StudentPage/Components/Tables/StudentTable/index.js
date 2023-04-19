@@ -4,7 +4,7 @@ import ModifyStudentModal from "../../Modals/ModifyStudentModal";
 import { useEffect } from "react";
 
 const StudentTable = () => {
-	const { data,fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows,setModalData, setModifyModalVisible } = useStudentContext();
+	const { data, fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows,setModalData, setModifyModalVisible } = useStudentContext();
 	
 	const handelModifyClick = (record) => {
 		setModalData(record);
@@ -17,7 +17,7 @@ const StudentTable = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, [JSON.stringify(tableParams)]);
+	}, []);
 
 	const handleTableChange = (pagination, filters, sorter) => {
 		setTableParams({
@@ -25,7 +25,6 @@ const StudentTable = () => {
 			filters,
 			...sorter,
 		});
-		fetchData();
 	};
 
 	const columns = [
