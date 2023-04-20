@@ -3,15 +3,8 @@ import pool from '../../utils/MySQL/db.js';
 async function newRequest(req, res) {
     let connection;
     try {
-        const { type_id, user_name, borrow_amount, return_date } = req.body;
+        const { type_id, student_id, borrow_amount, return_date } = req.body;
 
-        //Get user_id from user_name
-        // pool.query('SELECT user_id FROM students_user WHERE user_name = ?', [user_name], (error, results) => {
-        //     if (error) {
-        //             console.error(err);
-        
-        //     }
-        //     const user_id= Array.isArray(results) ? results[0].user_id : results.user_id;
 
             // Get type_name from type_id
             pool.query('SELECT type_name FROM equipment_type WHERE type_id = ?', [type_id], (error, results) => {
@@ -25,8 +18,7 @@ async function newRequest(req, res) {
 
                 // Create new request record
                 const requestRecord = {
-                    // user_id,
-                    user_name,
+                    student_id,
                     type_id,
                     type_name,
                     borrow_amount,
@@ -60,8 +52,7 @@ async function newRequest(req, res) {
                             const requestLog = {
                                 type_id,
                                 type_name,
-                                // user_id,
-                                user_name,
+                                student_id,
                                 borrow_amount,
                                 log_type: 0, // 0 = new request
                                 log_time: current_time,

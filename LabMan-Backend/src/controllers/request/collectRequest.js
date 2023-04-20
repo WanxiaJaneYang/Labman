@@ -27,8 +27,7 @@ async function collectRequest(req, res) {
             const current_time = moment().format('YYYY-MM-DD HH:mm:ss');
 
             const borrowRecord = {
-                user_id: borrowingRequest.user_id,
-                user_name: borrowingRequest.user_name,
+                student_id: borrowingRequest.student_id,
                 type_id: borrowingRequest.type_id,
                 type_name: borrowingRequest.type_name,
                 borrow_amount: 1,
@@ -57,8 +56,7 @@ async function collectRequest(req, res) {
                         const borrowLog = {
                             type_id: borrowingRequest.type_id,
                             type_name: borrowingRequest.type_name,
-                            user_id: borrowingRequest.user_id,
-                            user_name: borrowingRequest.user_name,
+                            student_id: borrowingRequest.student_id,
                             borrow_amount: 1,
                             log_type: 1,  // 1 = borrow
                             log_time: current_time,
@@ -92,7 +90,6 @@ async function runTransaction(callback) {
         if (error) {
             throw error;
         }
-
         try {
             connection.beginTransaction();
             callback(connection);
