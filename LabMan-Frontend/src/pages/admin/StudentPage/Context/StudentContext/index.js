@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { message } from "antd";
 // import qs from "qs";
 
 const StudentContext = createContext();
@@ -8,28 +9,9 @@ export const useStudentContext = () => {
 };
 
 const StudentProvider = ({ children }) => {
+	const apiURL = "http://localhost:3008/users";
 	const [selectedRows, setSelectedRows] = useState(null);
-	const [data, setData] = useState([
-		{
-			user_id: "1",
-			user_name: "a1888888",
-			email: "a18888@adelaide.edu.au",
-			password: "123456",
-		},
-		{
-			user_id: "2",
-			user_name: "a1888889",
-			email: "a1888889@adelaide.edu.au",
-			password: "123456",
-		},
-		{
-			user_id: "3",
-			user_name: "a1888890",
-			email: "a1888890@adelaide.edu.au",
-			password: "123456",
-		},
-
-	]);
+	const [data, setData] = useState([]);
 
 	const [loading, setLoading] = useState(false);
 
@@ -45,8 +27,10 @@ const StudentProvider = ({ children }) => {
 		},
 	});
 	
+	// fetch data from the database and set the data to the state
 	const fetchData = async () => {
 		setLoading(true);
+		const data = await getStudentData();
 		setData(data);
 		setLoading(false);
 		setTableParams({
@@ -58,114 +42,152 @@ const StudentProvider = ({ children }) => {
 				// total: data.totalCount,
 			},
 		});
-
-		// fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-		// 	.then((res) => res.json())
-		// 	.then(({ results }) => {
-		// 		setData(results);
-		// 		setLoading(false);
-		// 		setTableParams({
-		// 			...tableParams,
-		// 			pagination: {
-		// 				...tableParams.pagination,
-		// 				total: 200,
-		// 				// 200 is mock data, you should read it from server
-		// 				// total: data.totalCount,
-		// 			},
-		// 		});
-		// 	});
 	};
 
-	// const getRandomuserParams = (params) => ({
-	// 	results: params.pagination?.pageSize,
-	// 	page: params.pagination?.current,
-	// 	...params,
-	// });
+	//calling the api to get student data 
+	const getStudentData = async () => {
+		try {
+			const response = await fetch(apiURL);
+			const data = await response.json();
+			if (response.ok) {
+				return data;
+			} else {
+				throw new Error(data.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
 
+	// add the new student
 	const onAdd = async (values) => {
-		console.log("onFormSubmit, values:", values);
 		// Call the mock function to create a new record and pass the form values
-		await mockCreateRecord(values);
-		// Add the new record to the 'data' state to update the table
+		await postStudent(values);
+		await fetchData();
 	};
 
-	const mockCreateRecord = (values) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				resolve(setData(data.concat(
-					{
-						...values,
-						user_id: data.length + 1,
-					}
-				)));
-			}, 1000);
-		});
+	// add the new student using API
+	const postStudent= async (values) => {
+		const requestParams = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(values),
+		};
+		try {
+			const response = await fetch(apiURL, requestParams);
+			const data = await response.json();
+			if (response.ok) {
+				message.success(data.message);
+			} else {
+				throw new Error(data.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
 
+	// delete the selected rows
 	const onDelete = async() => {
-		console.log("row deleted:", selectedRows);
 		await Promise.all (
-			selectedRows.map((item) => mockDeleteStudent(item.user_id))
+			selectedRows.map((item) => deleteStudent(item.student_id))
 		);
+		await fetchData();
 		setSelectedRows([]);
 		// modify later to delete the data from the database and fetch data again
 	};
 
-	const mockDeleteStudent = (user_id) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				console.log("deleting student_id:", user_id);
-				setData((prevState) => prevState.filter((item) => item.user_id !== user_id));
-				resolve();
-			}, 1000);
-		});
+	// call the api to delete the data
+	const deleteStudent = async (student_id) => {
+		const url= `${apiURL}/${student_id}`;
+		const requestParams = {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		try {
+			const response = await fetch(url, requestParams);
+			const data = await response.json();
+			if (response.ok) {
+				message.success(data.message);
+			} else {
+				throw new Error(data.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
 
+	// search the data by the student_id
 	const onStudentSearch =  async(value) => {
-		console.log("onEquipmentSearch, searchParams:", value);
-		await mockSearchRecord(value);
+		const data=await searchStudent(value);
+		setData(data);
+		setTableParams({
+			...tableParams,
+			pagination: {
+				...tableParams.pagination,
+				total: data.length,
+			},
+		});
 		//modify later to call the api to get the data
 	};
 
-	const mockSearchRecord = (user_name) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				console.log("before search, data:", data);
-				resolve(setData(data.filter((item) => item.user_name === user_name)));
-				console.log("mockSearchRecord, data:", data);
-			}, 1000);
-		});
+	// call the api to search the data
+	const searchStudent = async (value) => {
+		const url = `${apiURL}?student_id=${value}`;
+		const requestParams = {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		try {
+			const response = await fetch(url, requestParams);
+			const data = await response.json();
+			if (response.ok) {
+				return data;
+			} else {
+				throw new Error(data.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
 
-
+	//modify the data
 	const onModify = async (value) => {
-		console.log("onModify, form value:", value);
-		await mockModifyRecord(value);
-		// called by the modify button and pass 2 param back:equipmentId|equipmentType, searchValue
-		//call the api to get the data
+		await updateStudent(value);
+		await fetchData();
 		setSelectedRows([]);
 	};
 
-	const mockModifyRecord = (value) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				console.log("before modify, data:", data);
-				resolve(setData(
-					data.map((item) => {
-						if (item.user_id === value.user_id) {
-							return {
-								...item,
-								...value,
-							};
-						}
-						return item;
-					}
-					)));
-				console.log("mockModifyRecord, data:", data);
-			}, 1000);
-		});
+	// call the api to update the data
+	const updateStudent = async (values) => {
+		const url = `${apiURL}/${values.student_id}`;
+		const requestParams = {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(values),
+		};
+
+		try {
+			const response = await fetch(url, requestParams);
+			const data = await response.json();
+			if (response.ok) {
+				message.success(data.message);
+			} else {
+				throw new Error(data.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
-			
+
+	//expose the variables
 	const value = {
 		selectedRows,
 		setSelectedRows,

@@ -34,7 +34,7 @@ function ShowStudentDetailButton() {
             Detail
 			</Button>
 			<Modal title="Student Detail" width="70vw" open={isModalOpen} onCancel={hideModal} onOk={hideModal}>
-				<p>Student ID: {selectedRows?selectedRows[0].user_name:""}</p>
+				<p>Student ID: {selectedRows?selectedRows[0].student_id:""}</p>
 				<p>Student Email: {selectedRows?selectedRows[0].email:""}</p>
 				{/* <p>Student Password: {selectedRows?selectedRows[0].password:""}</p> */}
 			</Modal>

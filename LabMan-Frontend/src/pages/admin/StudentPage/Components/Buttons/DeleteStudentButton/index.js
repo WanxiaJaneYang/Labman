@@ -9,17 +9,17 @@ function DeleteStudentButton() {
 	const{selectedRows, onDelete}=useStudentContext();
 
 	const handleDelete = () => {
-		if (selectedRows) {
+		if (selectedRows && selectedRows.length > 0) {
+			console.log("selectedRows:", selectedRows);
 			showConfirm();
 		} else {
-			messageApi.warning("Please select at least row.");
-			console.log("No Student selected for deletion");
+			messageApi.warning("Please select at least one row.");
 		}
 	};
 
 	const showConfirm = () => {
 		confirm({
-			title: "Do you Want to delete the Student(s)?",
+			title: "Do you want to delete the student(s)?",
 			icon: <ExclamationCircleFilled />,
 			// content: "Some descriptions",
 			onOk() {
