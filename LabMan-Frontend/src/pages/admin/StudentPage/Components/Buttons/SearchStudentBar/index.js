@@ -10,7 +10,7 @@ const SearchStudentBar = () => {
 	};
 
 	return (
-		<Search placeholder="input student id" onSearch={onSearch} enterButton />
+		<Search placeholder="input student ID" onSearch={onSearch} enterButton />
 	);
 };
 

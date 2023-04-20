@@ -91,7 +91,7 @@ const StudentProvider = ({ children }) => {
 	// delete the selected rows
 	const onDelete = async() => {
 		await Promise.all (
-			selectedRows.map((item) => deleteStudent(item.user_id))
+			selectedRows.map((item) => deleteStudent(item.student_id))
 		);
 		await fetchData();
 		setSelectedRows([]);
@@ -99,8 +99,8 @@ const StudentProvider = ({ children }) => {
 	};
 
 	// call the api to delete the data
-	const deleteStudent = async (user_id) => {
-		const url= `${apiURL}/${user_id}`;
+	const deleteStudent = async (student_id) => {
+		const url= `${apiURL}/${student_id}`;
 		const requestParams = {
 			method: "DELETE",
 			headers: {
@@ -120,16 +120,23 @@ const StudentProvider = ({ children }) => {
 		}
 	};
 
-	// search the data by the user_name
+	// search the data by the student_id
 	const onStudentSearch =  async(value) => {
 		const data=await searchStudent(value);
 		setData(data);
+		setTableParams({
+			...tableParams,
+			pagination: {
+				...tableParams.pagination,
+				total: data.length,
+			},
+		});
 		//modify later to call the api to get the data
 	};
 
 	// call the api to search the data
 	const searchStudent = async (value) => {
-		const url = `${apiURL}?user_name=${value}`;
+		const url = `${apiURL}?student_id=${value}`;
 		const requestParams = {
 			method: "GET",
 			headers: {
@@ -158,7 +165,7 @@ const StudentProvider = ({ children }) => {
 
 	// call the api to update the data
 	const updateStudent = async (values) => {
-		const url = `${apiURL}/${values.user_id}`;
+		const url = `${apiURL}/${values.student_id}`;
 		const requestParams = {
 			method: "PUT",
 			headers: {

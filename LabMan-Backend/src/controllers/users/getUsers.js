@@ -1,8 +1,8 @@
 import pool from "../../utils/MySQL/db.js";
 
 function getUser(req, res) {
-	if (req.query.user_name) {
-		return getUserByName(req, res);
+	if (req.query.student_id) {
+		return getUserByStudentID(req, res);
 	}else{
 		pool.query("SELECT * FROM students_user", (err, results) => {
 			if (err) {
@@ -13,9 +13,9 @@ function getUser(req, res) {
 	}
 }
 
-function getUserByName(req, res) {
-	const { user_name } = req.query;
-	pool.query("SELECT user_id, user_name, email FROM students_user WHERE user_name = ?", [user_name], (err, results) => {
+function getUserByStudentID(req, res) {
+	const { student_id } = req.query;
+	pool.query("SELECT student_id, email FROM students_user WHERE student_id = ?", [student_id], (err, results) => {
 		if (err) {
 			return res.status(500).json({ error: "Error retrieving user" });
 		}

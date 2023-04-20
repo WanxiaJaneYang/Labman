@@ -1,18 +1,14 @@
 import { Table } from "antd";
 import { useStudentContext } from "../../../Context/StudentContext";
-import ModifyStudentModal from "../../Modals/ModifyStudentModal";
+import ShowStudentDetailModal from "../../Modals/ShowStudentDetailModal";
 import { useEffect } from "react";
 
 const StudentTable = () => {
-	const { data, fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows,setModalData, setModifyModalVisible } = useStudentContext();
+	const { data, fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows,setModalData, setDetailModalVisible } = useStudentContext();
 	
-	const handelModifyClick = (record) => {
+	const handleClick = (record) => {
 		setModalData(record);
-		showModifyModal();
-	};
-
-	const showModifyModal = () => {
-		setModifyModalVisible(true);
+		setDetailModalVisible(true);
 	};
 
 	useEffect(() => {
@@ -30,12 +26,12 @@ const StudentTable = () => {
 	const columns = [
 		{
 			title: "Student ID",
-			dataIndex: "user_name",
+			dataIndex: "student_id",
 			render: (text, record) => {
 				return (
 					<>
-						<a onClick={() => handelModifyClick(record)}>{text}</a>
-						<ModifyStudentModal/>
+						<a onClick={() => handleClick(record)}>{text}</a>
+						<ShowStudentDetailModal/>
 					</>
 				);
 			},
@@ -43,7 +39,7 @@ const StudentTable = () => {
 	];
 
 	const rowSelection = {
-		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.user_id) : [],
+		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.student_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
 			setSelectedRows(selectedRows);
 		},
@@ -52,7 +48,7 @@ const StudentTable = () => {
 	return (
 		<Table
 			columns={columns}
-			rowKey={(record) => record.user_id}
+			rowKey={(record) => record.student_id}
 			rowSelection={rowSelection}
 			dataSource={data}
 			pagination={tableParams.pagination}

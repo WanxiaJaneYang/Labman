@@ -13,8 +13,8 @@ userRouter.get("/", getUser);
 //insert a new user/student
 userRouter.post("/", newUser);
 
-userRouter.put("/:user_id", updateUser);
+userRouter.put("/:student_id", updateUser);
 
-userRouter.delete("/:user_id", deleteUser);
+userRouter.delete("/:student_id", deleteUser);
 
 export { userRouter };

@@ -2,9 +2,9 @@ import pool from "../../utils/MySQL/db.js";
 
 //Delete a user
 function deleteUser(req, res) {
-	const user_id = req.params.user_id;
+	const student_id = req.params.student_id;
   
-	pool.query("DELETE FROM students_user WHERE user_id = ?", [user_id], (err, results) => {
+	pool.query("DELETE FROM students_user WHERE student_id = ?", [student_id], (err, results) => {
 		if (err) {
 			return res.status(500).json({ error: "Error deleting user" });
 		}
