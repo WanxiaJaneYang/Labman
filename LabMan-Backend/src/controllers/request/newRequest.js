@@ -9,7 +9,7 @@ async function newRequest(req, res) {
             // Get type_name from type_id
             pool.query('SELECT type_name FROM equipment_type WHERE type_id = ?', [type_id], (error, results) => {
                 if (error) {
-                    console.error(err);
+                    console.error(error);
                 }
                 const type_name = Array.isArray(results) ? results[0].type_name : results.type_name;
 
@@ -30,22 +30,21 @@ async function newRequest(req, res) {
                 // Get a connection from the pool
                 pool.getConnection((error, conn) => {
                     if (error) {
-                        console.error(err);
+                        console.error(error);
                     }
                     connection = conn;
 
                     // Start a transaction
                     connection.beginTransaction((error) => {
                         if (error) {
-                            console.error(err);                            
+                            console.error(error);                            
                         }
 
                         // Insert requestRecord into requests table
                         connection.query('INSERT INTO requests SET ?', requestRecord, (error, resultId) => {
                             if (error) {
-                                console.error(err);                                
+                                console.error(error);                                
                             }
-                            //const [{ insertId }] = resultId;
                             const insertId = Array.isArray(resultId) ? resultId[0].insertId : resultId.insertId;
 
                             // Create a new request log for the new request
@@ -62,13 +61,13 @@ async function newRequest(req, res) {
                             // Insert requestLog into request_Log table
                             connection.query('INSERT INTO request_Log SET ?', requestLog, (error) => {
                                 if (error) {
-                                    console.error(err);                                    
+                                    console.error(error);                                    
                                 }
 
                                 // Commit the transaction
                                 connection.commit((error) => {
                                     if (error) {
-                                        console.error(err);                                        
+                                        console.error(error);                                        
                                     }
 
                                     // Release the connection back to the pool
