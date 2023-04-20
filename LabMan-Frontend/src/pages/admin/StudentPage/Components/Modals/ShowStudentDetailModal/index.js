@@ -16,7 +16,9 @@ function ShowStudentDetailModal() {
 			footer={[
 				<Button key="ok" type="primary" onClick={hideDetailModal}>OK</Button>,
 			]
-			} >
+			} 
+			maskStyle={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
+		>
 			<p>Student ID: {modalData?modalData.student_id:""}</p>
 			<p>Student Email: {modalData?modalData.email:""}</p>
 			{/* <p>Student Password: {selectedRows?selectedRows[0].password:""}</p> */}
