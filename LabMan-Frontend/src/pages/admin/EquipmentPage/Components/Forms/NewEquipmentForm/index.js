@@ -6,7 +6,7 @@ function NewEquipmentForm({ form }) {
 			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
 				<Input />
 			</Form.Item>
-			<Form.Item label="Total Number" name="total_amount" rules={[{ required: true },{type:Number}]}>
+			<Form.Item label="Total Number" name="total_amount" rules={[{ required: true },{type:"number", min:0, message:"Total amount be be positive"}]}>
 				<InputNumber />
 			</Form.Item>
 		</Form>

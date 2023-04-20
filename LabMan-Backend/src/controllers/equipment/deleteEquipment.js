@@ -7,8 +7,7 @@ function deleteEquipment(req, res) {
 		[type_id],
 		(err, results) => {
 			if (err) {
-				console.error(err);
-				return res.status(500).json({ error: "Error deleting equipment" });
+				return res.status(500).json({ message: "Cannot delete or update this equipment type as it is currently in use by other records.", errorDetails: err.message });
 			}
 			if (results.affectedRows === 0) {
 				return res.status(404).json({ error: "Equipment not found" });

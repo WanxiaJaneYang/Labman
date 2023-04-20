@@ -13,21 +13,18 @@ function DeleteEquipmentButton() {
 			showConfirm();
 		} else {
 			messageApi.warning("Please select a row.");
-			console.log("No Equipment selected for deletion");
 		}
 	};
 
 	const showConfirm = () => {
 		confirm({
-			title: "Do you Want to delete the Equipment?",
+			title: "Do you want to delete the equipment?",
 			icon: <ExclamationCircleFilled />,
 			// content: "Some descriptions",
 			onOk() {
 				onDelete();
-				console.log("OK");
 			},
 			onCancel() {
-				console.log("Cancel");
 			},
 		});
 	};
