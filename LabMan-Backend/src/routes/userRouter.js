@@ -1,14 +1,20 @@
 import { Router } from "express";
 
-import { getAllUsers} from "../controllers/users/getUsers.js";
+import { getUser} from "../controllers/users/getUsers.js";
 import { newUser} from "../controllers/users/postUsers.js";
+import { updateUser} from "../controllers/users/putUser.js";
+import { deleteUser} from "../controllers/users/deleteUsers.js";
 
 const userRouter = Router();
 
-//query all users
-userRouter.get("/", getAllUsers);
+//query users
+userRouter.get("/", getUser);
   
 //insert a new user/student
 userRouter.post("/", newUser);
+
+userRouter.put("/:student_id", updateUser);
+
+userRouter.delete("/:student_id", deleteUser);
 
 export { userRouter };

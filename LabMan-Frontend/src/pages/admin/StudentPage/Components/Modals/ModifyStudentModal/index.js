@@ -1,4 +1,4 @@
-import { Modal,Form } from "antd";
+import { Modal,Form, message } from "antd";
 import { useStudentContext } from "../../../Context/StudentContext";
 import ModifyStudentForm from "../../Forms/ModifyStudentForm";
 
@@ -19,13 +19,13 @@ function ModifyStudentModal() {
 	const handleModify = async() => {
 		try {
 			const values = await form.validateFields();
-			console.log("Form values:", values);
-			values.user_id=modalData.user_id;
+			values.student_id=modalData.student_id;
+			values.email=values.student_id+"@adelaide.edu.au";
 			onModify(values);
 			hideModifyModal();
 			form.resetFields();
 		} catch (error) {
-			console.log("Form validation failed:", error);
+			message.error(error.message);
 		}
 	};
 

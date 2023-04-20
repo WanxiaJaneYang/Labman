@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 const ModifyStudentForm = ({form}) => {
 	const {modalData} = useStudentContext();
-	const studentIdValue=Form.useWatch("user_name",form);
+	const studentIdValue=Form.useWatch("student_id",form);
 	const generateStudentEmail=()=>{
 		if(studentIdValue){
 			return studentIdValue+"@adelaide.edu.au";
@@ -19,7 +19,7 @@ const ModifyStudentForm = ({form}) => {
 	useEffect(() => {
 		if (modalData) {
 			form.setFieldsValue({
-				user_name: modalData.user_name,
+				student_id: modalData.student_id,
 				student_email: modalData.email,
 				// password: selectedRows[0].password,
 			});
@@ -30,7 +30,7 @@ const ModifyStudentForm = ({form}) => {
 
 	return (
 		<Form form={form} layout="vertical" >
-			<Form.Item label="Student ID" name="user_name" >
+			<Form.Item label="Student ID" name="student_id" >
 				<Input/>
 			</Form.Item>
 			<Form.Item label="Student Email" >
