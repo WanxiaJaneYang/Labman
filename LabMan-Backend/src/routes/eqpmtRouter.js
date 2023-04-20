@@ -10,7 +10,7 @@ const eqpmtRouter = Router();
 
 eqpmtRouter.get("/", getAllEquipmentTypes);
 
-eqpmtRouter.get("/search", searchEquipment);
+eqpmtRouter.get("/searchEquipment", searchEquipment);
 
 eqpmtRouter.put("/", editEquipment);
 
