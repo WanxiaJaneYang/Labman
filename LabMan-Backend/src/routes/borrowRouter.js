@@ -10,9 +10,9 @@ const borrowRouter = Router();
 
 borrowRouter.get("/", getBorrowedEquipments);
 
-borrowRouter.get("/searchBorrow", getBorrowSearch);
+borrowRouter.get("/borrowSearch", getBorrowSearch);
 
-borrowRouter.post("/changeBorrowStatus", changeBorrowStatus);
+borrowRouter.post("/borrowStatus", changeBorrowStatus);
 
 borrowRouter.post("/cancelReturn", cancelReturn);
 
