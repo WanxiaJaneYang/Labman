@@ -18,7 +18,7 @@ function DeleteEquipmentButton() {
 
 	const showConfirm = () => {
 		confirm({
-			title: "Do you Want to delete the Equipment?",
+			title: "Do you want to delete the equipment?",
 			icon: <ExclamationCircleFilled />,
 			// content: "Some descriptions",
 			onOk() {

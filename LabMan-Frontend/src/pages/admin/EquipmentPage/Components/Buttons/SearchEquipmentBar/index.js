@@ -10,7 +10,7 @@ const SearchEquipmentBar = () => {
 	};
 
 	return (
-		<Search placeholder="input equipment type" onSearch={onSearch} enterButton />
+		<Search placeholder="Input Equipment Type" onSearch={onSearch} enterButton />
 	);
 };
 

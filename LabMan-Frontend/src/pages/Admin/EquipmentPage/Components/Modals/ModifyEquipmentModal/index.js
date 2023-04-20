@@ -30,7 +30,14 @@ function ModifyEquipmentModal() {
 	};
 
 	return (
-		<Modal title="Modify Equipment" width="70vw" open={modifyModalVisible} onCancel={hideModifyModal} onOk={handleModify}>
+		<Modal
+			title="Modify Equipment" 
+			width="70vw" 
+			open={modifyModalVisible} 
+			onCancel={hideModifyModal} 
+			onOk={handleModify}
+			maskStyle={{backgroundColor:"rgba(0,0,0,0.1)"}}
+		>
 			<ModifyEquipmentForm form={form}/>
 		</Modal>
 	);

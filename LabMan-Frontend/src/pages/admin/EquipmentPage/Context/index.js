@@ -127,6 +127,13 @@ const EquipmentProvider = ({ children }) => {
 		setLoading(true);
 		const data=await searchEquipment(value);
 		setData(data);
+		setTableParams({
+			...tableParams,
+			pagination: {
+				...tableParams.pagination,
+				total: data.length,
+			},
+		});
 		setLoading(false);
 	};
 

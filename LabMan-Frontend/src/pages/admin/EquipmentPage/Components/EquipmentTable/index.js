@@ -36,7 +36,7 @@ const EquipmentTable = () => {
 
 	useEffect(() => {
 		fetchData();
-	}, [JSON.stringify(tableParams)]);
+	}, []);
 
 	const rowSelection = {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.type_id) : [],
