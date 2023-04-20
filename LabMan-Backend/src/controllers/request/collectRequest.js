@@ -74,6 +74,10 @@ async function collectRequest(req, res) {
                 //reduce the available amount of the equipment type
                 const updateAmountQuery = 'UPDATE equipment_type SET available_amount = available_amount - ? WHERE type_id = ?';
                 await connection.query(updateAmountQuery, [amount, borrowingRequest.type_id]);
+
+                //update the 'removable' status of the equipment type to be 0
+                const updateRemovableQuery = 'UPDATE equipment_type SET removable = 0 WHERE type_id = ?';
+                await connection.query(updateRemovableQuery, [borrowingRequest.type_id]);
             });
 
             // Send response indicating success
