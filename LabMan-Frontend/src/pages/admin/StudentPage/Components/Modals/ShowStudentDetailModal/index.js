@@ -12,6 +12,7 @@ function ShowStudentDetailModal() {
 			title="Student Detail" 
 			width="70vw" 
 			open={detailModalVisible} 
+			closable={false}
 			footer={[
 				<Button key="ok" type="primary" onClick={hideDetailModal}>OK</Button>,
 			]
