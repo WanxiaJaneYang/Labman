@@ -1,12 +1,9 @@
 import { Router } from "express";
-import { getAllLogs} from '../controllers/logs/getAllLogs.js';
-
-
+import { getRequestLogs} from '../controllers/logs/getRequestLogs.js';
 
 const logRouter = Router();
 
 //query all users
-logRouter.get("/", getAllLogs);
+logRouter.get("/request", getRequestLogs);
   
-
 export { logRouter };
