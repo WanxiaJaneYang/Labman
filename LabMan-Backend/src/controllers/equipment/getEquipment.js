@@ -1,19 +1,19 @@
 import pool from "../../utils/MySQL/db.js";
 
-function getAllEquipmentTypes(req, res) {
+function getEquipmentTypes(req, res) {
 	if (req.query.type_name) {
-		return getEquipmentByTypeName(req, res);
-	}else{
+		return getEquipmentTypeByName(req, res);
+	} else {
 		pool.query("SELECT * FROM equipment_type", (err, results) => {
 			if (err) {
-				return res.status(500).json({ error: "Error retrieving equipment types"});
+				return res.status(500).json({ error: "Error retrieving equipment types" });
 			}
 			return res.status(200).json(results);
 		});
 	}
 }
 
-function getEquipmentByTypeName(req, res) {
+function getEquipmentTypeByName(req, res) {
 	const type_name = req.query.type_name;
 	pool.query(
 		"SELECT * FROM equipment_type WHERE LOWER(type_name) = LOWER(?)",
@@ -21,7 +21,7 @@ function getEquipmentByTypeName(req, res) {
 		(err, results) => {
 			if (err) {
 				return res.status(500).json({ error: "Error retrieving equipment types" });
-			}else if (results.length === 0) {
+			} else if (results.length === 0) {
 				return res.status(404).json({ error: "Equipment type not found" });
 			}
 			return res.status(200).json(results);
@@ -29,4 +29,4 @@ function getEquipmentByTypeName(req, res) {
 	);
 }
 
-export  { getAllEquipmentTypes };
+export { getEquipmentTypes };
