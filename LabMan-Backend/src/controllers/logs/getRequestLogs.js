@@ -1,6 +1,6 @@
 import pool from "../../utils/MySQL/db.js";
 
-function getAllLogs(req, res) {
+function getRequestLogs(req, res) {
   pool.query(
     "SELECT * FROM request_log " ,(err, results) => {
       if (err) {
@@ -10,7 +10,6 @@ function getAllLogs(req, res) {
       return res.status(200).json(results);
     }
   );
-
 }
 
-export { getAllLogs };
+export { getRequestLogs };
