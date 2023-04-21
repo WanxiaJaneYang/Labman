@@ -1,20 +1,16 @@
 import pool from "../../utils/MySQL/db.js";
 
 function getUser(req, res) {
-	if (req.query.student_id) {
-		return getUserByStudentID(req, res);
-	}else{
-		pool.query("SELECT * FROM students_user", (err, results) => {
-			if (err) {
-				return res.status(500).json({ error: "Error retrieving users" });
-			}
-			return res.status(200).json(results);
-		});
-	}
+	pool.query("SELECT * FROM students_user", (err, results) => {
+		if (err) {
+			return res.status(500).json({ error: "Error retrieving users" });
+		}
+		return res.status(200).json(results);
+	});
 }
 
 function getUserByStudentID(req, res) {
-	const { student_id } = req.query;
+	const  student_id  = req.params.student_id;
 	pool.query("SELECT student_id, email FROM students_user WHERE student_id = ?", [student_id], (err, results) => {
 		if (err) {
 			return res.status(500).json({ error: "Error retrieving user" });
@@ -26,4 +22,4 @@ function getUserByStudentID(req, res) {
 	});
 }
 
-export { getUser};
+export { getUser, getUserByStudentID};
