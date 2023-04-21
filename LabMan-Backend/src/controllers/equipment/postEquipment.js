@@ -3,6 +3,7 @@ import pool from "../../utils/MySQL/db.js";
 function newEquipmentType(req, res) {
 	const { type_name, total_amount, available_amount } = req.body;
 	const removable = true;
+
 	pool.query(
 		"INSERT INTO equipment_type (type_name, total_amount,available_amount, removable) VALUES (?, ?, ?, ?)",
 		[type_name, total_amount, available_amount, removable],
