@@ -135,8 +135,8 @@ const StudentProvider = ({ children }) => {
 	};
 
 	// call the api to search the data
-	const searchStudent = async (value) => {
-		const url = `${apiURL}?student_id=${value}`;
+	const searchStudent = async (student_id) => {
+		const url = apiURL+"/" + student_id;
 		const requestParams = {
 			method: "GET",
 			headers: {
