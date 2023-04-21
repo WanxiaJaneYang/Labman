@@ -123,13 +123,17 @@ const RequestRecordTable = () => {
 	}, []);
 
 	useEffect(() => {
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...tableParams.pagination,
-				total: data.length,
-			},
-		});
+		try{
+			setTableParams({
+				...tableParams,
+				pagination: {
+					...tableParams.pagination,
+					total: data.length,
+				},
+			});
+		}catch(err){
+			console.log(err);
+		}
 	}, [data]);
 	
 	const handleTableChange = (pagination, filters, sorter) => {

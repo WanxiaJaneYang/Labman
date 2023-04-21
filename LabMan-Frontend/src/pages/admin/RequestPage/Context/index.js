@@ -32,14 +32,19 @@ const RequestRecordProvider = ({ children }) => {
 	const fetchData = async () => {
 		setLoading(true);
 		const data = await getRequest(tableParams);
-		setData(data);
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...tableParams.pagination,
-				total: data.length,
-			},
-		});
+		try{
+			setData(data);
+			setTableParams({
+				...tableParams,
+				pagination: {
+					...tableParams.pagination,
+					total: data.length,
+				},
+			});
+		}catch(error){
+			message.error(error.message);
+		}
+		
 		setLoading(false);
 	};
 

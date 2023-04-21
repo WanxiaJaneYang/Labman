@@ -18,6 +18,7 @@ const NewRequestRecordButton = () => {
 	const okHandler = async () => {
 		try {
 			const values = form.getFieldsValue();
+			console.log("Received values of form: ", values);
 			await onAdd(values);
 			hideModal();
 			form.resetFields();

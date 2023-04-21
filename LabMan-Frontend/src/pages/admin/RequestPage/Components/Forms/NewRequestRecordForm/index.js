@@ -2,9 +2,11 @@ import { Form, Input, InputNumber, DatePicker } from "antd";
 import { useRequestRecordContext } from "../../../Context";
 import EquipmentTypeSelector from "../../Selector/EquipmentTypeSelector";
 import { useEffect } from "react";
+// import { useState } from "react";
 
 function NewRequestRecordForm({ form }) {
 	const {selectedEquipmentType, equipmentTypeList, searchStudentID} = useRequestRecordContext();
+	// const [studentExists, setStudentExists] = useState(false);
 
 	//when selected tppe change, update the type name value
 	useEffect(() => {
@@ -16,7 +18,7 @@ function NewRequestRecordForm({ form }) {
 	const equipmentTypeName=Form.useWatch("type_name",form);
 
 	const localAvailableNumber=equipmentTypeList.find((type)=>type.type_name===equipmentTypeName)?.available_amount;
-	
+
 	//render the available number when localAvailableNumber changes
 	useEffect(() => {
 		form.setFieldsValue({
@@ -40,7 +42,8 @@ function NewRequestRecordForm({ form }) {
 		if (/^a\d{7}$/.test(value) ) {
 			const existed =await searchStudentID(value);
 			if(existed){
-				return Promise.resolve();
+				// setStudentExists(true);
+				return Promise.resolve("Student exists");
 			}else{
 				return Promise.reject(
 					new Error("Student ID does not exist")
