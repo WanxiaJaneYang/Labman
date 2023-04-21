@@ -1,34 +1,29 @@
 import RequestRecordProvider from "./Context";
 import RequestRecordTable from "./Components/RequestRecordTable";
-import ModifyRequestRecordButton from "./Components/Buttons/ModifyRequestRecordButton";
-import DeleteRequestRecordButton from "./Components/Buttons/DeleteRequestRecordButton";
+import CancelRequestRecordButton from "./Components/Buttons/CancelRequestRecordButton";
 import NewRequestRecordButton from "./Components/Buttons/NewRequestRecordButton";
 import SearchRequestRecordBar from "./Components/Buttons/SearchRequestRecordBar";
-import { Row, Col, Space } from "antd";
+import { Row, Col, Space, Divider } from "antd";
 
 function RequestPage() {
 	return (
 		<div>
 			<RequestRecordProvider>
 				<Row justify="space-between" align="middle">
-					<Col>
-						<NewRequestRecordButton />
-					</Col>
+					<Space>
+						<Col>
+							<NewRequestRecordButton />
+						</Col>
+						<Col>
+							<CancelRequestRecordButton />
+						</Col>
+					</Space>
 					<Col>
 						<SearchRequestRecordBar />
 					</Col>
 				</Row>
+				<Divider/>
 				<RequestRecordTable/>
-				<Row justify={"start"}>
-					<Space>
-						<Col>
-							<ModifyRequestRecordButton />
-						</Col>
-						<Col>
-							<DeleteRequestRecordButton />
-						</Col>
-					</Space>
-				</Row>
 			</RequestRecordProvider>
 		</div>
 		
