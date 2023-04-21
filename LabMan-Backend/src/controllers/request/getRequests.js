@@ -1,5 +1,20 @@
 import pool from "../../utils/MySQL/db.js";
 
+function getRequests(req, res) {
+
+  if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date || req.query.request_status) {
+    return getfilteredRequests(req, res);
+  } else {
+    pool.query("SELECT * FROM requests", (error, results) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Error retrieving request records" });
+      }
+      return res.status(200).json(results);
+    });
+  }
+}
+
 function getfilteredRequests(req, res) {
 
   const { student_id, type_name, start_date, end_date, request_status } = req.query;
@@ -42,8 +57,8 @@ function getfilteredRequests(req, res) {
   // Add ORDER BY clause to sort by request_time
   sql += " ORDER BY request_time ASC";
 
-  pool.query(sql, params, (err, results) => {
-    if (err) {
+  pool.query(sql, params, (error, results) => {
+    if (error) {
       return res.status(500).json({ error: "Error retrieving request records" });
     }
 
@@ -51,5 +66,4 @@ function getfilteredRequests(req, res) {
   });
 }
 
-
-export { getfilteredRequests };
+export { getRequests };

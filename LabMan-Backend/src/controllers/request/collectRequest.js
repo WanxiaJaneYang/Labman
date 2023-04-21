@@ -15,7 +15,7 @@ async function collectRequest(req, res) {
             if (error) {
                 console.error(err);
             }
-            const borrowingRequest = Array.isArray(results) ? results[0] : results;
+            const borrowingRequest = results;
             //console.log(results);
 
             const amount = borrowingRequest.borrow_amount;
