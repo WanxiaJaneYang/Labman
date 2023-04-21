@@ -38,6 +38,7 @@ const NewRequestRecordButton = () => {
 				onCancel={hideModal}
 				onOk={okHandler}
 				destroyOnClose={true}
+				maskStyle={{backgroundColor: "rgba(0,0,0,0.3)"}}
 			>
 				<NewRequestRecordForm form={form}/>
 			</Modal>

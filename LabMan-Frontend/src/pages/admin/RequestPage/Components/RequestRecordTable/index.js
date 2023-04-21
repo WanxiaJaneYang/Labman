@@ -23,7 +23,6 @@ const RequestRecordTable = () => {
 		{
 			title:"Request Time",
 			dataIndex:"request_time",
-			sorter: true,
 			render: (text, record) => {
 				return formatDate(record.request_time);
 			},
@@ -136,12 +135,11 @@ const RequestRecordTable = () => {
 		}
 	}, [data]);
 	
-	const handleTableChange = (pagination, filters, sorter) => {
+	const handleTableChange = (pagination, filters) => {
 		setTableParams({
 			...tableParams,
 			pagination: pagination,
 			filters: filters,
-			sorter: sorter,
 		});
 	};
 

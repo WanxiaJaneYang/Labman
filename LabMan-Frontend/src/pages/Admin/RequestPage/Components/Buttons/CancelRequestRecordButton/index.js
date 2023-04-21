@@ -1,16 +1,16 @@
 import { useRequestRecordContext } from "../../../Context";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { Button, Modal } from "antd";
+import { Button, Modal, message } from "antd";
 const { confirm } = Modal;
 
 function CancelRequestRecordButton() {
-	const { selectedRows, onCancel } = useRequestRecordContext();
+	const { selectedRows, onCancelRequest } = useRequestRecordContext();
   
 	const handleCancel = () => {
 		if (selectedRows && selectedRows.length > 0) {
 			showConfirm();
 		} else {
-			console.log("No record selected for deletion");
+			message.warning("Please select at least one row.");
 		}
 	};
   
@@ -19,22 +19,13 @@ function CancelRequestRecordButton() {
 			title: "Do you want to cancel the request?",
 			icon: <ExclamationCircleFilled />,
 			onOk() {
-			// Call the API to delete the record from the server
-			// ...
-  
-				// After the deletion is successful, call the fetchData function to refetch the data
-				onCancel();
-  
-				console.log("OK");
-			},
-			onCancel() {
-				console.log("Cancel");
+				onCancelRequest();
 			},
 		});
 	};
   
 	return (
-		<Button type="primary" danger onClick={handleCancel}>
+		<Button onClick={handleCancel}>
 		Cancel
 		</Button>
 	);
