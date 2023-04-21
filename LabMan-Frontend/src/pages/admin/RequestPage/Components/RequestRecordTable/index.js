@@ -75,7 +75,7 @@ const RequestRecordTable = () => {
 		// 	responive: ["md"],				
 		// },
 		{
-			title:"Return Date",
+			title:"Due Date",
 			dataIndex:"return_date",
 			responsive: ["md"],
 		},
