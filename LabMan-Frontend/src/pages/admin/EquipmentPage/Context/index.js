@@ -114,7 +114,7 @@ const EquipmentProvider = ({ children }) => {
 				message.error("Equipment not found");
 			}else {
 				const errorData = await response.json();
-				message.error(errorData.message);
+				message.error(errorData.error);
 			}
 		}
 		catch (error) {
@@ -155,6 +155,7 @@ const EquipmentProvider = ({ children }) => {
 				return data;
 			} else if(response.status === 404) {
 				message.error("Equipment not found");
+				return [];
 			}else {
 				throw new Error("Something went wrong");
 			}
