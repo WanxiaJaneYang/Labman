@@ -1,48 +1,113 @@
 import { Table } from "antd";
 import { useRequestRecordContext } from "../../Context";
+import { useEffect } from "react";
+import EditRequestModal from "../Modals/EditRequestModal";
 
 const RequestRecordTable = () => {
-	const {selectedRows, setSelectedRows, data, loading, tableParams, handleTableChange} = useRequestRecordContext();
+	const {
+		selectedRows, 
+		setSelectedRows, 
+		data, 
+		fetchData,
+		loading, 
+		tableParams, 
+		setTableParams, 
+		equipmentTypeList, 
+		getEquipmentTypeList,
+		setModalData,
+		editModalVisible,
+		setEditModalVisible 
+	} = useRequestRecordContext();
+
 	const columns = [
 		{
 			title:"Request Time",
 			dataIndex:"request_time",
 			sorter: true,
+			render: (text, record) => {
+				return formatDate(record.request_time);
+			},
+			responive: ["md"],
 		},
 		{
 			title:"Equipment Name",
 			dataIndex:"type_name",
-			filters: [
-				{
-					text: "Macbook Pro",
-					value: "Macbook Pro",
-				},
-				{
-					text: "Macbook Air",
-					value: "Macbook Air",
-				},
-			],
+			filters: equipmentTypeList.map((type) => {
+				return {
+					text: type.type_name,
+					value: type.type_name,
+				};
+			}),
 		},
 		{
 			title:"Student ID",
-			dataIndex:"user_name",
+			dataIndex:"student_id",
 		},
 		{
 			title:"Amount",
 			dataIndex:"borrow_amount",
 		},
+		// {
+		// 	title:"Status",
+		// 	dataIndex:"request_status",
+		// 	render: (text, record) => {
+		// 		if (record.request_status === 0) {
+		// 			return <span>Pending</span>;
+		// 		} else if (record.request_status === 1) {
+		// 			return <span>Collected</span>;
+		// 		}else if (record.request_status === 2) {
+		// 			return <span>Cancelled</span>;
+		// 		}
+		// 	},
+		// 	filters: [
+		// 		{
+		// 			text: "Pending",
+		// 			value: 0,
+		// 		},
+		// 		{
+		// 			text: "Collected",
+		// 			value: 1,
+		// 		},
+		// 		{
+		// 			text: "Cancelled",
+		// 			value: 2,
+		// 		},
+		// 	],
+		// 	responive: ["md"],				
+		// },
 		{
-			title:"Status",
-			dataIndex:"status",
-			render: (text, record) => {
-				if (record.status === 0) {
-					return <span>Pending</span>;
-				} else if (record.status === 1) {
-					return <span>Collected</span>;
-				}
-			},
+			title:"Return Date",
+			dataIndex:"return_date",
+			responsive: ["md"],
 		},
+		{
+			title:"Action",
+			render: (_, record) => {
+				return (
+					<>
+						<a onClick={handleEditClick(record)}>edit</a>
+						<EditRequestModal/>
+					</>
+				);
+			}
+		}
 	];
+
+	const handleEditClick = (record) => () => {
+		console.log("Edit record: ", record);
+		setModalData(record);
+		setEditModalVisible(true);
+		console.log("Edit modal visible: ", editModalVisible);
+	};
+
+
+	const formatDate = (dateString) => {
+		const date = new Date(dateString);
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, "0");
+		const day = String(date.getDate()).padStart(2, "0");
+		return `${year}-${month}-${day}`;
+	};
 
 	const rowSelection = {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.request_id) : [],
@@ -50,19 +115,38 @@ const RequestRecordTable = () => {
 			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
 			setSelectedRows(selectedRows);
 		},
-		getCheckboxProps: (record) => ({
-			disabled: record.name === "Disabled User",
-			// Column configuration not to be checked
-			name: record.name,
-		}),
+	};
+
+	useEffect(() => {
+		getEquipmentTypeList();
+		fetchData();
+	}, []);
+
+	useEffect(() => {
+		setTableParams({
+			...tableParams,
+			pagination: {
+				...tableParams.pagination,
+				total: data.length,
+			},
+		});
+	}, [data]);
+	
+	const handleTableChange = (pagination, filters, sorter) => {
+		setTableParams({
+			...tableParams,
+			pagination: pagination,
+			filters: filters,
+			sorter: sorter,
+		});
 	};
 
 	return (
 		<Table
 			columns={columns}
 			rowSelection={rowSelection}
-			rowKey={(record) => record.request_id} // Use request_id as the key
-			dataSource={data} // Use data from props instead of the local state
+			rowKey={(record) => record.request_id} 
+			dataSource={data}
 			loading={loading}
 			pagination={tableParams.pagination}
 			onChange={handleTableChange}

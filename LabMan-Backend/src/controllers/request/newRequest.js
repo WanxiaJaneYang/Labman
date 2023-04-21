@@ -1,12 +1,12 @@
-import moment from 'moment';
-import pool from '../../utils/MySQL/db.js';
+import moment from "moment";
+import pool from "../../utils/MySQL/db.js";
 async function newRequest(req, res) {
     let connection;
     try {
         const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
 
-            // Get the current date and time
-            const current_time = moment().format('YYYY-MM-DD HH:mm:ss');
+			// Get the current date and time
+			const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
             // Create new request record
             const requestRecord = {
@@ -81,16 +81,16 @@ async function newRequest(req, res) {
     } catch (err) {
         console.error(err);
 
-        // Rollback the transaction on error
-        if (connection) {
-            connection.rollback(() => {
-                connection.release();
-            });
-        }
+		// Rollback the transaction on error
+		if (connection) {
+			connection.rollback(() => {
+				connection.release();
+			});
+		}
 
-        // Send error response
-        res.status(500).json({ error: 'Failed to create new request' });
-    }
+		// Send error response
+		res.status(500).json({ error: "Failed to create new request" });
+	}
 }
 
 export { newRequest };
