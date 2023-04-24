@@ -1,14 +1,17 @@
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { Button, Modal } from "antd";
+import { Button, Modal, message } from "antd";
+import { useReturnRecordContext } from "../../../ReturnRecordContext";
 
 const { confirm } = Modal;
 
-const ReturnEquipment = (props) => {
-	const handleReturn = () => {
-		if (props.selectedRow) {
+const ReturnEquipment = () => {
+	const {selectedRows, onReturnEquipment}= useReturnRecordContext();
+
+	const onClick = () => {
+		if (selectedRows && selectedRows.length >0) {
 			showConfirm();
 		} else {
-			console.log("No record selected for deletion");
+			message.error("Please select at least one record to return");
 		}
 	};
 
@@ -18,22 +21,13 @@ const ReturnEquipment = (props) => {
 			icon: <ExclamationCircleFilled />,
 			// content: "Some descriptions",
 			onOk() {
-				// Call the API to delete the record from the DB
-				// ...
-
-				// After the deletion is successful, call the onDelete function (which is fetchData) to refetch the data
-				props.onReturn();
-
-				console.log("OK");
-			},
-			onCancel() {
-				console.log("Cancel");
-			},
+				onReturnEquipment();
+			}
 		});
 	};
 
 	return (
-		<Button type='primary' onClick={handleReturn}>Return</Button>
+		<Button type='primary' onClick={onClick}>Return</Button>
 	);
 };
 

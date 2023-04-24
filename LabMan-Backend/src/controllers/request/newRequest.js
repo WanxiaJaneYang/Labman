@@ -43,16 +43,16 @@ function newRequest(req, res) {
                         //console.log(resultId);
                         const insertId = resultId.insertId;
 
-                        // Create a new request log for the new request
-                        const requestLog = {
-                            type_id,
-                            type_name,
-                            student_id,
-                            borrow_amount,
-                            log_type: 0, // 0 = new request
-                            log_time: current_time,
-                            request_id: insertId,
-                        };
+					// Create a new request log for the new request
+					const requestLog = {
+						type_id,
+						type_name,
+						student_id,
+						borrow_amount,
+						log_type: 0, // 0 = new request
+						log_time: current_time,
+						request_id: insertId,
+					};
 
                         // Insert requestLog into request_Log table
                         connection.query('INSERT INTO request_Log SET ?', requestLog, (error) => {

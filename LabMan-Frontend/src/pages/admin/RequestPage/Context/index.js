@@ -8,6 +8,7 @@ export const useRequestRecordContext = () => {
 };
 
 const RequestRecordProvider = ({ children }) => {
+	// declare variables
 	const apiURL = "http://localhost:3008/request";
 	const [loading,setLoading] = useState(false);
 	const [selectedRows, setSelectedRows] = useState(null);
@@ -29,32 +30,32 @@ const RequestRecordProvider = ({ children }) => {
 		},
 	});
 
+	//fetch data
 	const fetchData = async () => {
-		setLoading(true);
-		const data = await getRequest(tableParams);
-		setData(data);
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...tableParams.pagination,
-				total: data.length,
-			},
-		});
-		setLoading(false);
+		try{
+			setLoading(true);
+			const data = await getRequest();
+			setData(data);
+			setTableParams({
+				...tableParams,
+				pagination: {
+					...tableParams.pagination,
+					total: data.length,
+				},
+			});		
+			setLoading(false);
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
 
 	const getRequest= async () => {
-		const urlParams = new URLSearchParams(tableParams.filters);
-		const url = apiURL + "?" + urlParams.toString();
-		console.log("current get request url",url);
 		try {
-			const response = await fetch(url);
+			const response = await fetch(apiURL);
 			if (response.ok) {
 				const data = await response.json();
-				console.log(data);
 				return data;
-			}
-			else {
+			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
 			}
@@ -64,6 +65,7 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onAdd = async (values) => {
+		console.log(values);
 		await addNewRequest(values);
 		await fetchData();
 	};
@@ -90,15 +92,21 @@ const RequestRecordProvider = ({ children }) => {
 		}
 	};
 
-	const onCancel= async (values) => {
-		await cancelRequest(values);
-		await fetchData();
+	const onCancelRequest= async () => {
+		try{
+			selectedRows.map(async (row) => {
+				await cancelRequest(row.request_id);
+			});
+			await fetchData();
+		}catch(error){
+			message.error(error.message);
+		}
 	};
 
 	const cancelRequest = async (request_id) => {
 		const url=apiURL+"/cancel/"+request_id;
 		try {
-			const response = await fetch(url, {method: "PUT"});
+			const response = await fetch(url, {method: "PATCH"});
 			if (response.ok) {
 				const data = await response.json();
 				message.success(data.message);
@@ -111,15 +119,21 @@ const RequestRecordProvider = ({ children }) => {
 		}
 	};
 
-	const onDelete = async (values) => {
-		await deleteRequest(values);
-		await fetchData();
+	const onCollect= async () => {
+		try{
+			selectedRows.map(async (row) => {
+				await collectRequest(row.request_id);
+			});
+			await fetchData();
+		}catch(error){
+			message.error(error.message);
+		}
 	};
 
-	const deleteRequest = async (request_id) => {
-		const url=apiURL+"/"+request_id;
+	const collectRequest = async (request_id) => {
+		const url=apiURL+"/collect/"+request_id;
 		try {
-			const response = await fetch(url, {method: "DELETE"});
+			const response = await fetch(url, {method: "PATCH"});
 			if (response.ok) {
 				const data = await response.json();
 				message.success(data.message);
@@ -251,8 +265,8 @@ const RequestRecordProvider = ({ children }) => {
 		setTableParams,
 		fetchData,
 		onAdd,
-		onCancel,
-		onDelete,
+		onCancelRequest,
+		onCollect,
 		onEdit,
 		onSearch,
 		equipmentTypeList,

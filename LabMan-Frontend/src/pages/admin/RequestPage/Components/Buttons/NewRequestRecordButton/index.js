@@ -18,6 +18,8 @@ const NewRequestRecordButton = () => {
 	const okHandler = async () => {
 		try {
 			const values = form.getFieldsValue();
+			values.return_date = values.return_date.format("YYYY-MM-DD HH:mm:ss");
+			console.log("Received values of form: ", values);
 			await onAdd(values);
 			hideModal();
 			form.resetFields();
@@ -25,7 +27,6 @@ const NewRequestRecordButton = () => {
 			console.log("Validation failed:", error);
 		}
 	};
-
 
 	return (
 		<>
@@ -37,6 +38,7 @@ const NewRequestRecordButton = () => {
 				onCancel={hideModal}
 				onOk={okHandler}
 				destroyOnClose={true}
+				maskStyle={{backgroundColor: "rgba(0,0,0,0.3)"}}
 			>
 				<NewRequestRecordForm form={form}/>
 			</Modal>

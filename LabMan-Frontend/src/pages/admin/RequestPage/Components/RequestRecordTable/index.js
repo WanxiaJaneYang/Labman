@@ -23,7 +23,6 @@ const RequestRecordTable = () => {
 		{
 			title:"Request Time",
 			dataIndex:"request_time",
-			sorter: true,
 			render: (text, record) => {
 				return formatDate(record.request_time);
 			},
@@ -76,7 +75,7 @@ const RequestRecordTable = () => {
 		// 	responive: ["md"],				
 		// },
 		{
-			title:"Return Date",
+			title:"Due Date",
 			dataIndex:"return_date",
 			responsive: ["md"],
 		},
@@ -123,21 +122,24 @@ const RequestRecordTable = () => {
 	}, []);
 
 	useEffect(() => {
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...tableParams.pagination,
-				total: data.length,
-			},
-		});
+		try{
+			setTableParams({
+				...tableParams,
+				pagination: {
+					...tableParams.pagination,
+					total: data.length,
+				},
+			});
+		}catch(err){
+			console.log(err);
+		}
 	}, [data]);
 	
-	const handleTableChange = (pagination, filters, sorter) => {
+	const handleTableChange = (pagination, filters) => {
 		setTableParams({
 			...tableParams,
 			pagination: pagination,
 			filters: filters,
-			sorter: sorter,
 		});
 	};
 

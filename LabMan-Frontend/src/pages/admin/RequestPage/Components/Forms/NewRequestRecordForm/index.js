@@ -6,7 +6,7 @@ import { useEffect } from "react";
 function NewRequestRecordForm({ form }) {
 	const {selectedEquipmentType, equipmentTypeList, searchStudentID} = useRequestRecordContext();
 
-	//when selected tppe change, update the type name value
+	//when selected type change, update the type name value
 	useEffect(() => {
 		form.setFieldsValue({
 			type_name: selectedEquipmentType,
@@ -16,7 +16,7 @@ function NewRequestRecordForm({ form }) {
 	const equipmentTypeName=Form.useWatch("type_name",form);
 
 	const localAvailableNumber=equipmentTypeList.find((type)=>type.type_name===equipmentTypeName)?.available_amount;
-	
+
 	//render the available number when localAvailableNumber changes
 	useEffect(() => {
 		form.setFieldsValue({
@@ -40,7 +40,8 @@ function NewRequestRecordForm({ form }) {
 		if (/^a\d{7}$/.test(value) ) {
 			const existed =await searchStudentID(value);
 			if(existed){
-				return Promise.resolve();
+				// setStudentExists(true);
+				return Promise.resolve("Student exists");
 			}else{
 				return Promise.reject(
 					new Error("Student ID does not exist")
@@ -80,8 +81,8 @@ function NewRequestRecordForm({ form }) {
 				]}>
 				<Input />
 			</Form.Item>
-			<Form.Item label="Due Date" name="dueDate" rules={[{ required: true }]}>
-				<DatePicker />
+			<Form.Item label="Due Date" name="return_date" rules={[{ required: true }]}>
+				<DatePicker allowClear/>
 			</Form.Item>
 			{/* Add more form items as needed */}
 		</Form>

@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getRequests } from '../controllers/request/getRequests.js';
-import { newRequest } from '../controllers/request/newRequest.js';
-import { collectRequest } from '../controllers/request/collectRequest.js';
-import { cancelRequest } from '../controllers/request/cancelRequest.js';
+import { getRequests } from "../controllers/request/getRequests.js";
+import { newRequest } from "../controllers/request/newRequest.js";
+import { collectRequest } from "../controllers/request/collectRequest.js";
+import { cancelRequest } from "../controllers/request/cancelRequest.js";
 
 const requestRouter = Router();
 
@@ -17,5 +17,6 @@ requestRouter.patch("/collect/:request_id", collectRequest);
 
 //change the status of request to be cancelled
 requestRouter.patch("/cancel/:request_id", cancelRequest);
+requestRouter.post("/collect", collectRequest);
 
 export { requestRouter };

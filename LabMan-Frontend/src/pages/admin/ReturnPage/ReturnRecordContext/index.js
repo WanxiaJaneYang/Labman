@@ -1,7 +1,6 @@
+import { message } from "antd";
 import { createContext, useContext, useState } from "react";
-import { useEffect } from "react";
-// Add an import statement for your API functions
-// import { createRecord, fetchRecords } from './your-api';
+import Prosime from "promise";
 
 const ReturnRecordContext = createContext();
 
@@ -10,43 +9,13 @@ export const useReturnRecordContext = () => {
 };
 
 const ReturnRecordProvider = ({ children }) => {
+	const apiURL = "http://localhost:3008/return";
 	const[loading,setLoading] = useState(false);
 	const [selectedRows, setSelectedRows] = useState(null);
-	const [data, setData] = useState([
-		{
-			borrow_id: 1,
-			user_id: 1,
-			user_name:"a1888888",
-			type_id: 1,
-			type_name:"Macbook Pro",
-			borrow_amount: 1,
-			request_time: "2021-04-30",
-			return_date: "2021-05-01",
-			status: 0,
-		},
-		{
-			borrow_id: 2,
-			user_id: 2,
-			user_name:"a1888899",
-			type_id: 2,
-			type_name:"Macbook Air",
-			borrow_amount: 2,
-			request_time: "2021-04-30",
-			return_date: "2021-05-02",
-			status: 1,
-		},
-		{
-			borrow_id: 3,
-			user_id: 3,
-			user_name:"a1888800",
-			type_id: 3,
-			type_name:"Microsoft",
-			borrow_amount: 3,
-			request_time: "2021-04-30",
-			return_date: "2021-05-03",
-			status: 0,
-		},
-	]);
+	const [data, setData] = useState([]);
+	const [EquipmentTypeList, setEquipmentTypeList] = useState([]);
+	const [modalData, setModalData] = useState(null);
+	const [modalVisible, setModalVisible] = useState(false);
 
 	const [tableParams, setTableParams] = useState({
 		pagination: {
@@ -57,41 +26,98 @@ const ReturnRecordProvider = ({ children }) => {
 		},
 	});
 
-	const handleTableChange = (pagination, filters, sorter) => {
-		setTableParams({
-			pagination,
-			filters,
-			...sorter,
-		});
+	const fetchData = async () => {
+		try{
+			setLoading(true);
+			await getBorrowedRecords();
+			setLoading(false);
+		}
+		catch(error){
+			message.error(error.message);
+		}
 	};
 
-	const fetchData = async () => {
-		// Set the 'loading' state to true to show the loading indicator
+	const getBorrowedRecords = async () => {
+		try {
+			const response = await fetch(apiURL);
+			if (response.ok) {
+				const data = await response.json();
+				setData(data);
+			}else{
+				const err = await response.json();
+				throw new Error(err.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const onReturnEquipment = async () => {
+		try{
+			await Prosime.all(selectedRows.map((row) => returnEquipment(row)));
+			message.success("Return equipment successfully");
+			setSelectedRows(null);
+			fetchData();
+		}
+		catch(error){
+			message.error(error.message);
+		}
+	};
+
+	const returnEquipment = async (row) => {
+		const url= `${apiURL}/${row.borrow_id}/`;
+		
+		try{
+			const response = await fetch(url,{
+				method: "PATCH",
+			});
+			if(!response.ok){
+				const err = await response.json();
+				throw new Error(err.error);
+			}
+		}
+		catch(error){
+			message.error(error.message);
+		}
+	};
+	
+	const getEquipmentTypeList = async () => {
+		try {
+			const response = await fetch("http://localhost:3008/equipment");
+			if (response.ok) {
+				const data = await response.json();
+				setEquipmentTypeList(data);
+			}else{
+				const err = await response.json();
+				throw new Error(err.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const onSearch = async (values) => {
 		setLoading(true);
-		// Call the API function to fetch the data and update the 'data' state
-		// const fetchedData = await fetchRecords(/* ...params */);
-		setData(data);
-		// Set the 'loading' state to false to hide the loading indicator
+		await searchBorrowRecord(values);
 		setLoading(false);
 	};
 
-	const handleFormSubmit = async (values) => {
-		// Call the mock function to create a new record and pass the form values
-		const newRecord = await mockCreateRecord(values);
-		// Add the new record to the 'data' state to update the table
-		setData((prevData) => [...prevData, newRecord]);
-	};
-
-	useEffect(() => {
-		fetchData();
-	}, [JSON.stringify(tableParams)]);
-
-	const mockCreateRecord = (values) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				resolve({ id: Date.now(), ...values });
-			}, 1000);
-		});
+	const searchBorrowRecord = async (values) => {
+		try{
+			const urlParams= new URLSearchParams(values);
+			const response = await fetch(`${apiURL}/?${urlParams}`);
+			if (response.ok) {
+				const data = await response.json();
+				message.success("Borrow Record Found");
+				setData(data);
+			}else{
+				const err = await response.json();
+				throw new Error(err.error);
+			}
+		}
+		catch(error){
+			message.error(error.message);
+		}
 	};
 	
 	const value = {
@@ -103,8 +129,14 @@ const ReturnRecordProvider = ({ children }) => {
 		tableParams,
 		setTableParams,
 		fetchData,
-		handleFormSubmit,
-		handleTableChange,
+		onReturnEquipment,
+		EquipmentTypeList,
+		getEquipmentTypeList,
+		modalData,
+		setModalData,
+		modalVisible,
+		setModalVisible,
+		onSearch,
 	};
 
 	return (
@@ -113,5 +145,6 @@ const ReturnRecordProvider = ({ children }) => {
 		</ReturnRecordContext.Provider>
 	);
 };
+
 
 export default ReturnRecordProvider;
