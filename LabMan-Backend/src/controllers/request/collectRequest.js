@@ -4,7 +4,7 @@ import moment from "moment";
 async function collectRequest(req, res) {
 	try {
 		// Extract data from request body
-		const { request_id } = req.body;
+		const { request_id } = req.params;
 
 		// Define the SQL query
 		const sql = "SELECT * FROM requests WHERE request_id = ?";
