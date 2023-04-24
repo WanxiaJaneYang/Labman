@@ -1,8 +1,9 @@
 import pool from "../../utils/MySQL/db.js";
 import moment from "moment";
+import runTransaction from "./transaction.js";
 
 
-async function collectRequest(req, res) {
+function collectRequest(req, res) {
     try {
         // Extract data from request body
         const { request_id } = req.body;
@@ -14,14 +15,13 @@ async function collectRequest(req, res) {
         pool.query(sql, [request_id], async (error, results) => {
             if (error) {
                 console.error(err);
+                return;
             }
             const borrowingRequest = results;
             //console.log(results);
 
             const amount = borrowingRequest.borrow_amount;
             //console.log(borrowingRequest);
-
-            //   console.log(amount);
 
             // Get the current date and time
             const current_time = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -38,7 +38,7 @@ async function collectRequest(req, res) {
             };
 
             // Start a transaction
-            await runTransaction(async (connection) => {
+            runTransaction(async (connection) => {
                 // Insert borrowingRecord into borrowings table N times with amount=1 per record
                 for (let i = 0; i < amount; i++) {
                     const query = 'INSERT INTO borrowings SET ?';
@@ -46,11 +46,11 @@ async function collectRequest(req, res) {
                         if (error) {
                             throw error;
                         }
-                        //console.log(result);
+                        console.log(result);
 
                         // Get the newly created request ID from the result
                         const borrow_id = result.insertId;
-                        //console.log(borrow_id);
+                        console.log(borrow_id);
 
                         // creat a new log for new borrowings
                         const borrowLog = {
@@ -63,21 +63,21 @@ async function collectRequest(req, res) {
                             borrow_id: borrow_id // Use the request_id from the previous query
                         };
                         const logQuery = 'INSERT INTO equipment_Log SET ?';
-                        await connection.query(logQuery, borrowLog);
+                        connection.query(logQuery, borrowLog);
                     });
                 }
 
                 // Update the request status to 1
                 const updateStatusQuery = 'UPDATE requests SET request_status = ? WHERE request_id = ?';
-                await connection.query(updateStatusQuery, [1, request_id]);
+                connection.query(updateStatusQuery, [1, request_id]);
 
                 //reduce the available amount of the equipment type
                 const updateAmountQuery = 'UPDATE equipment_type SET available_amount = available_amount - ? WHERE type_id = ?';
-                await connection.query(updateAmountQuery, [amount, borrowingRequest.type_id]);
+                connection.query(updateAmountQuery, [amount, borrowingRequest.type_id]);
 
                 //update the 'removable' status of the equipment type to be 0
                 const updateRemovableQuery = 'UPDATE equipment_type SET removable = 0 WHERE type_id = ?';
-                await connection.query(updateRemovableQuery, [borrowingRequest.type_id]);
+                connection.query(updateRemovableQuery, [borrowingRequest.type_id]);
             });
 
             // Send response indicating success
@@ -85,27 +85,8 @@ async function collectRequest(req, res) {
         });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Failed to create borrow record' });
+        return res.status(500).json({ error: 'Failed to collect requested equipment and create borrow records' });
     }
 }
-
-async function runTransaction(callback) {
-    pool.getConnection(async (error, connection) => {
-        if (error) {
-            throw error;
-        }
-        try {
-            connection.beginTransaction();
-            callback(connection);
-            connection.commit();
-        } catch (error) {
-            connection.rollback();
-            throw error;
-        } finally {
-            connection.release();
-        }
-    });
-}
-
 
 export { collectRequest };
