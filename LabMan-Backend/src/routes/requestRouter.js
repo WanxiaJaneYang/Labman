@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getRequests } from '../controllers/request/getRequests.js';
-import { newRequest } from '../controllers/request/newRequest.js';
-import { collectRequest } from '../controllers/request/collectRequest.js';
+import { getRequests } from "../controllers/request/getRequests.js";
+import { newRequest } from "../controllers/request/newRequest.js";
+import { collectRequest } from "../controllers/request/collectRequest.js";
 
 const requestRouter = Router();
 
@@ -13,6 +13,5 @@ requestRouter.post("/", newRequest);
 
 // Create a new borrowing record and insert a log into Equipment Log table
 requestRouter.post("/collect", collectRequest);
-
 
 export { requestRouter };
