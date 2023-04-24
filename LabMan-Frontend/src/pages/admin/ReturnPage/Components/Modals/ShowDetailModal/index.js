@@ -1,8 +1,26 @@
-import { Modal } from "antd";
+import { Modal,Badge, Descriptions,Button } from "antd";
 import { useReturnRecordContext } from "../../../ReturnRecordContext";
+import { useEffect, useState } from "react";
+import "./style.css"; 
+
 
 const ShowDetailModal = () => {
-	const { modalVisible, setModalVisible , modalData} = useReturnRecordContext();
+	const { modalVisible, setModalVisible , modalData,} = useReturnRecordContext();
+
+	const [descriptionData, setDescriptionData] = useState({});
+
+	useEffect(() => {
+		if (modalData) {
+			setDescriptionData({
+				"Student ID": modalData.student_id,
+				"Equipment Name": modalData.type_name,
+				"Amount": modalData.borrow_amount,
+				"Borrow Time": formatDate(modalData.borrow_date),
+				"Due Time": formatDate(modalData.return_date),
+				"Actual Return Time": modalData.actual_return_date? formatDate(modalData.actual_return_date):<Badge status="processing" text="Not Returned"/>,
+			});
+		}
+	}, [modalData]);
 
 	const hideModal = () => {
 		setModalVisible(false);
@@ -19,22 +37,39 @@ const ShowDetailModal = () => {
 
 	return (
 		<Modal 
-			title='Borrow Record Details' 
-			width="70vw" 
 			open= {modalVisible}
-			onCancel={hideModal} 
 			onOk={hideModal} 
+			onCancel={hideModal}
+			footer={[
+				<Button key="submit" type="primary" onClick={hideModal}>
+				OK
+				</Button>,
+				<Button key="cancel" className="hide-cancel-button" onClick={hideModal}>
+				Cancel
+				</Button>,
+			]}
 			maskStyle={{backgroundColor: "rgba(0,0,0,0.3)"}}
 		>
-			<p>Borrow Date: {modalData?modalData.borrow_date:""}</p>
-			<p>Due Date: {modalData?formatDate(modalData.return_date):""}</p>
-			<p>Student ID: {modalData?modalData.student_id:""}</p>
-			<p>Equipment Name: {modalData?modalData.type_name:""}</p>
-			<p>Amount: {modalData?modalData.borrow_amount:""}</p>
-			<p>Status: {modalData?(modalData.status==0? "To Return":"Returned"):""}</p>
-			<p style={
-				modalData?(modalData.status==0?{display:"none"}:{display:"block"}):{display:"none"}
-			}>Actual Return Date:{modalData?(formatDate(modalData.actual_return_date)):""}</p>
+			<Descriptions title='Borrow Record Details' >
+				<Descriptions.Item label="Student ID" span={3}>
+					{descriptionData["Student ID"]}
+				</Descriptions.Item>
+				<Descriptions.Item label="Equipment Name" span={3}>
+					{descriptionData["Equipment Name"]}
+				</Descriptions.Item>
+				<Descriptions.Item label="Amount" span={3}>
+					{descriptionData["Amount"]}
+				</Descriptions.Item>
+				<Descriptions.Item label="Borrow Time" span={3}>
+					{descriptionData["Borrow Time"]}
+				</Descriptions.Item>
+				<Descriptions.Item label="Due Time" span={3}>
+					{descriptionData["Due Time"]}
+				</Descriptions.Item>
+				<Descriptions.Item label="Actual Return Time" span={3}>
+					{descriptionData["Actual Return Time"]}
+				</Descriptions.Item>
+			</Descriptions>
 		</Modal>
 	);
 };

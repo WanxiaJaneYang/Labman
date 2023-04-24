@@ -17,16 +17,18 @@ const SearchReturnRecord = () => {
 	};
 
 	const onIDInputChange = (e) => {
+		const trimValue=e.target.value.trim();
 		setSearchParams({
 			...searchParams,
-			student_id:e.target.value,
+			student_id:trimValue,
 		});
 	};
 
 	const onEquipmentInputChange = (e) => {
+		const trimValue=e.target.value.trim();
 		setSearchParams({
 			...searchParams,
-			type_name:e.target.value,
+			type_name:trimValue,
 		});
 	};
 

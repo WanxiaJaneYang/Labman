@@ -65,7 +65,7 @@ const ReturnRecordProvider = ({ children }) => {
 	};
 
 	const returnEquipment = async (row) => {
-		const url= `${apiURL}/${row.request_id}/`;
+		const url= `${apiURL}/${row.borrow_id}/`;
 		
 		try{
 			const response = await fetch(url,{
