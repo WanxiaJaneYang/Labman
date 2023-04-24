@@ -5,7 +5,7 @@ import { useRequestRecordContext } from "../../../Context";
 
 const NewRequestRecordButton = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const { onAdd } = useRequestRecordContext();
+	const { onAdd, equipmentTypeList } = useRequestRecordContext();
 	const showModal = () => {
 		setIsModalOpen(true);
 	};
@@ -19,7 +19,8 @@ const NewRequestRecordButton = () => {
 		try {
 			const values = form.getFieldsValue();
 			values.return_date = values.return_date.format("YYYY-MM-DD HH:mm:ss");
-			console.log("Received values of form: ", values);
+			values.type_name=equipmentTypeList.find((item)=>item.type_id===values.type_id).type_name;
+			console.log(values);
 			await onAdd(values);
 			hideModal();
 			form.resetFields();

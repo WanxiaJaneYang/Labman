@@ -1,48 +1,56 @@
-import {Input, Select, Space } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button} from "antd";
+import { Input, Space } from "antd";
+import { useRequestRecordContext } from "../../../Context";
 import { useState } from "react";
-// import { useRequestRecordContext } from "../../../Context";
 
 const SearchRequestRecordBar = () => {
-	const [optionValue, setOptionValue] = useState("student_id");
+	const [searchParams, setSearchParams] = useState({
+		student_id: "",
+		type_name: "",
+	}); 
+	const {onSearch} =useRequestRecordContext();
 
-	const { Search } = Input;
-
-	const options = [
-		{
-			value: "student_id",
-			label: "Student ID",
-		},
-		{
-			value: "type_name",
-			label: "Equipment Type",
-		},
-	];
-
-	// const {onSearch}=useRequestRecordContext();
-
-	const onClick = (value) => {
-		const searchValue = {
-			[optionValue]: value,
-		};
-
-		console.log(searchValue);
+	const onClick = () => {
+		console.log("onClick, searchParams:", searchParams);
+		onSearch(searchParams);
 	};
 
-	const onSelect = (value) => {
-		setOptionValue(value);
+	const onIDInputChange = (e) => {
+		const trimValue=e.target.value.trim();
+		setSearchParams({
+			...searchParams,
+			student_id:trimValue,
+		});
+	};
+
+	const onEquipmentInputChange = (e) => {
+		const trimValue=e.target.value.trim();
+		setSearchParams({
+			...searchParams,
+			type_name:trimValue,
+		});
 	};
 
 	return (
-		<Space.Compact>
-			<Select defaultValue="studentID" options={options} onSelect={onSelect}/>
-			<Search
-				placeholder="input search text"
+		<Space>
+			<Input 
+				onChange={onIDInputChange}
+				placeholder="Input Student ID" 
+				allowClear />
+			<Input 
+				onChange={onEquipmentInputChange}
+				placeholder="Input Equipment Type" 
 				allowClear
-				onSearch={onClick}
-				style={{ width: 200 }}
-				enterButton
 			/>
-		</Space.Compact>
+			<Button 
+				type="primary" 
+				icon={<SearchOutlined />}
+				onClick={onClick}
+			>
+				Search
+			</Button>
+		</Space>
 	);
 };
 

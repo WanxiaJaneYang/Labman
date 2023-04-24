@@ -22,7 +22,7 @@ const EquipmentTypeSelector = () => {
 			}
 			options={equipmentTypeList.map((type) => {
 				return {
-					value: type.type_name,
+					value: type.type_id,
 					label: type.type_name,
 				};
 			})}

@@ -17,6 +17,5 @@ requestRouter.patch("/collect/:request_id", collectRequest);
 
 //change the status of request to be cancelled
 requestRouter.patch("/cancel/:request_id", cancelRequest);
-requestRouter.post("/collect", collectRequest);
 
 export { requestRouter };

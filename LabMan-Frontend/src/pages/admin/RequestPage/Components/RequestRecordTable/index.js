@@ -77,6 +77,9 @@ const RequestRecordTable = () => {
 		{
 			title:"Due Date",
 			dataIndex:"return_date",
+			render: (text) => {
+				return formatDate(text);
+			},
 			responsive: ["md"],
 		},
 		{

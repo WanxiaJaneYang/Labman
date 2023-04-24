@@ -32,6 +32,7 @@ const RequestRecordProvider = ({ children }) => {
 
 	//fetch data
 	const fetchData = async () => {
+		console.log("fetching data");
 		try{
 			setLoading(true);
 			const data = await getRequest();
@@ -51,7 +52,9 @@ const RequestRecordProvider = ({ children }) => {
 
 	const getRequest= async () => {
 		try {
-			const response = await fetch(apiURL);
+			const urlParams = new URLSearchParams({request_status:0}).toString();
+			const url=apiURL+"?"+urlParams;
+			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
 				return data;
@@ -82,7 +85,7 @@ const RequestRecordProvider = ({ children }) => {
 			const response = await fetch(apiURL, requestParams);
 			if (response.ok) {
 				const data = await response.json();
-				message.success(data.message);
+				message.success(data.success);
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -94,9 +97,11 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onCancelRequest= async () => {
 		try{
-			selectedRows.map(async (row) => {
-				await cancelRequest(row.request_id);
-			});
+			await Promise.all(selectedRows.map(async (row) => {
+				cancelRequest(row.request_id);
+			}));
+			message.success("Request Cancelled Successfully!");
+			setSelectedRows([]);
 			await fetchData();
 		}catch(error){
 			message.error(error.message);
@@ -108,8 +113,7 @@ const RequestRecordProvider = ({ children }) => {
 		try {
 			const response = await fetch(url, {method: "PATCH"});
 			if (response.ok) {
-				const data = await response.json();
-				message.success(data.message);
+				return;
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -121,13 +125,16 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onCollect= async () => {
 		try{
-			selectedRows.map(async (row) => {
-				await collectRequest(row.request_id);
-			});
+			await Promise.all(selectedRows.map(async (row) => {
+				collectRequest(row.request_id);
+			}));
 			await fetchData();
+			message.success("Collection Confirmed Successfully!");
+			setSelectedRows([]);
 		}catch(error){
 			message.error(error.message);
 		}
+
 	};
 
 	const collectRequest = async (request_id) => {
@@ -135,8 +142,7 @@ const RequestRecordProvider = ({ children }) => {
 		try {
 			const response = await fetch(url, {method: "PATCH"});
 			if (response.ok) {
-				const data = await response.json();
-				message.success(data.message);
+				return;
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -175,24 +181,24 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onSearch = async (values) => {
-		await searchRequest(values);
+		setLoading(true);
+		const data =await searchRequest(values);
+		setData(data);
+		setLoading(false);
 		await fetchData();
 	};
 
 	const searchRequest = async (values) => {
-		const urlParams = new URLSearchParams(values).toString();
-		const url = apiURL + "/search?" + urlParams;
-		const requestParams = {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		};
+		const urlParams= new URLSearchParams(values);
+		const url = `${apiURL}/?${urlParams}`;
+		console.log(url);
+		
 		try {
-			const response = await fetch(url, requestParams);
+			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
-				message.success(data.message);
+				message.success(data.success);
+				return data;
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);

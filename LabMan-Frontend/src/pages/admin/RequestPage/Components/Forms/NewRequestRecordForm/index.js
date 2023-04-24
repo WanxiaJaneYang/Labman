@@ -9,13 +9,13 @@ function NewRequestRecordForm({ form }) {
 	//when selected type change, update the type name value
 	useEffect(() => {
 		form.setFieldsValue({
-			type_name: selectedEquipmentType,
+			type_id: selectedEquipmentType,
 		});
 	}, [selectedEquipmentType]);
 
-	const equipmentTypeName=Form.useWatch("type_name",form);
+	const equipmentTypeID=Form.useWatch("type_id",form);
 
-	const localAvailableNumber=equipmentTypeList.find((type)=>type.type_name===equipmentTypeName)?.available_amount;
+	const localAvailableNumber=equipmentTypeList.find((type)=>type.type_id===equipmentTypeID)?.available_amount;
 
 	//render the available number when localAvailableNumber changes
 	useEffect(() => {
@@ -56,7 +56,7 @@ function NewRequestRecordForm({ form }) {
 
 	return (
 		<Form form={form} layout="vertical">
-			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
+			<Form.Item label="Equipment Name" name="type_id" rules={[{ required: true }]}>
 				<EquipmentTypeSelector />
 			</Form.Item>
 			<Form.Item label="Available Number" name="availableNumber" rules={[{ required: true },{type:Number}]}>
