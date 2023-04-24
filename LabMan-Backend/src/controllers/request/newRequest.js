@@ -1,6 +1,8 @@
 import moment from "moment";
 import runTransaction from "./transaction.js";
 import pool from "../../utils/MySQL/db.js";
+import { updateAvailableAmount } from "./asyncFunctions.js";
+import { insertRequestLog } from "./asyncFunctions.js";
 
 function newRequest(req, res) {
     try {
@@ -32,7 +34,9 @@ function newRequest(req, res) {
 
             const amount = results[0].available_amount;
             //console.log(amount);
-            if (amount > borrow_amount) {
+            if (amount < borrow_amount) {      
+                return res.status(500).json({ error: "not available" });
+            }
                 runTransaction(async (connection) => {
                     //Insert requestRecord into requests table
                     connection.query('INSERT INTO requests SET ?', requestRecord, (error, resultId) => {
@@ -43,31 +47,29 @@ function newRequest(req, res) {
                         //console.log(resultId);
                         const insertId = resultId.insertId;
 
-					// Create a new request log for the new request
-					const requestLog = {
-						type_id,
-						type_name,
-						student_id,
-						borrow_amount,
-						log_type: 0, // 0 = new request
-						log_time: current_time,
-						request_id: insertId,
-					};
+                        // Create a new request log for the new request
+                        const requestLog = {
+                            type_id,
+                            type_name,
+                            student_id,
+                            borrow_amount,
+                            log_type: 0, // 0 = new request
+                            log_time: current_time,
+                            request_id: insertId,
+                        };
 
                         // Insert requestLog into request_Log table
-                        connection.query('INSERT INTO request_Log SET ?', requestLog, (error) => {
-                            if (error) {
-                                console.error(error);
-                                return res.status(500).json({ error: 'Failed to find table request_Log' });
-                            }
-                            return res.status(200).json({ success: "Request record and log created successfully" });
+                        insertRequestLog(connection, requestLog).catch((error) => {
+                            console.error(error);
+                            return res.status(500).json({ error: 'Failed to insert request log' });
                         });
                     });
-                });
-            } else {
-                res.status(500).json({ error: "not available" });
-            }
-        })
+
+                })
+
+            res.status(200).json({ success: 'Request created successfully' });
+
+        });
     } catch (error) {
         console.error(error);
 
