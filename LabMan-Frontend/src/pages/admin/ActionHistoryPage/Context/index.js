@@ -25,7 +25,7 @@ const ActionHistoryProvider = ({ children }) => {
 	const fetchData = async () => {
 		try{
 			setLoading(true);
-			const data = await getReturnRecordData();
+			const data = await getLogData();
 			setData(data);
 			setLoading(false);
 			setTableParams({
@@ -41,9 +41,11 @@ const ActionHistoryProvider = ({ children }) => {
 		}
 	};
 
-	const getReturnRecordData = async () => {
+	const getLogData = async () => {
+		const url=apiURL+"/"+tableSelection;
+
 		try {
-			const response = await fetch(apiURL);
+			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
 				return data;
@@ -79,8 +81,9 @@ const ActionHistoryProvider = ({ children }) => {
 
 	const searchLog = async (values) => {
 		try {
+			const url=apiURL+"/"+tableSelection;
 			const urlParams= new URLSearchParams(values);
-			const response = await fetch(`${apiURL}?${urlParams}`);
+			const response = await fetch(`${url}?${urlParams}`);
 			if (response.ok) {
 				const data = await response.json();
 				return data;
