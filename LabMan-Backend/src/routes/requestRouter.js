@@ -2,6 +2,7 @@ import { Router } from "express";
 import { getRequests } from "../controllers/request/getRequests.js";
 import { newRequest } from "../controllers/request/newRequest.js";
 import { collectRequest } from "../controllers/request/collectRequest.js";
+import { cancelRequest } from "../controllers/request/cancelRequest.js";
 
 const requestRouter = Router();
 
