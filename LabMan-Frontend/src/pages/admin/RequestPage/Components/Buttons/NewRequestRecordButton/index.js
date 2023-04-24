@@ -18,6 +18,7 @@ const NewRequestRecordButton = () => {
 	const okHandler = async () => {
 		try {
 			const values = form.getFieldsValue();
+			values.return_date = values.return_date.format("YYYY-MM-DD HH:mm:ss");
 			console.log("Received values of form: ", values);
 			await onAdd(values);
 			hideModal();
@@ -26,7 +27,6 @@ const NewRequestRecordButton = () => {
 			console.log("Validation failed:", error);
 		}
 	};
-
 
 	return (
 		<>

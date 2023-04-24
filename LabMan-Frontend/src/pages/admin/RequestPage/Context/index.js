@@ -65,6 +65,7 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onAdd = async (values) => {
+		console.log(values);
 		await addNewRequest(values);
 		await fetchData();
 	};

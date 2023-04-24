@@ -2,13 +2,11 @@ import { Form, Input, InputNumber, DatePicker } from "antd";
 import { useRequestRecordContext } from "../../../Context";
 import EquipmentTypeSelector from "../../Selector/EquipmentTypeSelector";
 import { useEffect } from "react";
-// import { useState } from "react";
 
 function NewRequestRecordForm({ form }) {
 	const {selectedEquipmentType, equipmentTypeList, searchStudentID} = useRequestRecordContext();
-	// const [studentExists, setStudentExists] = useState(false);
 
-	//when selected tppe change, update the type name value
+	//when selected type change, update the type name value
 	useEffect(() => {
 		form.setFieldsValue({
 			type_name: selectedEquipmentType,
@@ -83,8 +81,8 @@ function NewRequestRecordForm({ form }) {
 				]}>
 				<Input />
 			</Form.Item>
-			<Form.Item label="Due Date" name="dueDate" rules={[{ required: true }]}>
-				<DatePicker />
+			<Form.Item label="Due Date" name="return_date" rules={[{ required: true }]}>
+				<DatePicker allowClear/>
 			</Form.Item>
 			{/* Add more form items as needed */}
 		</Form>
