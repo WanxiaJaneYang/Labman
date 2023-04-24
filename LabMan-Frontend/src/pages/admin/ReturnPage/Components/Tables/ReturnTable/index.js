@@ -18,6 +18,15 @@ const ReturnTable = () => {
 		setModalVisible,
 	} = useReturnRecordContext();
 
+	const formatDate = (dateValue) => {
+		const date= new Date(dateValue);
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
+
+		return `${year}-${month}-${day}`;
+	};
+
 	const columns = [
 		{
 			title: "Equipment Name",
@@ -44,14 +53,20 @@ const ReturnTable = () => {
 		{
 			title: "Borrow Time",
 			dataIndex: "borrow_date",
+			render: (text) => {
+				return formatDate(text);
+			},
 		},
 		{
 			title: "Due Time",
 			dataIndex: "return_date",
+			render: (text) => {
+				return formatDate(text);
+			},
 		},
 		{
 			title: "Student ID",
-			dataIndex: "user_name",
+			dataIndex: "student_id",
 		},
 		{
 			title: "Amount",

@@ -8,8 +8,13 @@ const ShowDetailModal = () => {
 		setModalVisible(false);
 	};
 
-	const formatDate = (date) => {
-		return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+	const formatDate = (dateValue) => {
+		const date= new Date(dateValue);
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
+
+		return `${year}-${month}-${day}`;
 	};
 
 	return (

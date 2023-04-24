@@ -1,40 +1,54 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Button, Tooltip } from "antd";
-import { Input, Select, Space } from "antd";
+import { Button} from "antd";
+import { Input, Space } from "antd";
+import { useReturnRecordContext } from "../../../ReturnRecordContext";
+import { useState } from "react";
 
-const options = [
-	{
-		value: "studentID",
-		label: "Student ID",
-	},
-	{
-		value: "name",
-		label: "Name",
-	},
-	{
-		value: "equipmentType",
-		label: "Equipment Type",
-	},
-	{
-		value: "time",
-		label: "Time",
-	},
-];
+const SearchReturnRecord = () => {
+	const [searchParams, setSearchParams] = useState({
+		student_id: "",
+		type_name: "",
+	}); 
+	const {onSearch} = useReturnRecordContext();
 
-const SearchReturnRecord = ({ onClick }) => {
+	const onClick = () => {
+		console.log("onClick, searchParams:", searchParams);
+		onSearch(searchParams);
+	};
+
+	const onIDInputChange = (e) => {
+		setSearchParams({
+			...searchParams,
+			student_id:e.target.value,
+		});
+	};
+
+	const onEquipmentInputChange = (e) => {
+		setSearchParams({
+			...searchParams,
+			type_name:e.target.value,
+		});
+	};
+
 	return (
-		<Space.Compact>
-			<Select defaultValue="studentID" options={options} />
-			<Input defaultValue="input" />
-			<Tooltip title="Search">
-				<Button
-					type="primary"
-					shape="circle"
-					icon={<SearchOutlined />}
-					onClick={onClick}
-				/>
-			</Tooltip>
-		</Space.Compact>
+		<Space>
+			<Input 
+				onChange={onIDInputChange}
+				placeholder="Input Student ID" 
+				allowClear />
+			<Input 
+				onChange={onEquipmentInputChange}
+				placeholder="Input Equipment Type" 
+				allowClear
+			/>
+			<Button 
+				type="primary" 
+				icon={<SearchOutlined />}
+				onClick={onClick}
+			>
+				Search
+			</Button>
+		</Space>
 	);
 };
 

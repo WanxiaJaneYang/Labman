@@ -96,7 +96,29 @@ const ReturnRecordProvider = ({ children }) => {
 		}
 	};
 
-	
+	const onSearch = async (values) => {
+		setLoading(true);
+		await searchBorrowRecord(values);
+		setLoading(false);
+	};
+
+	const searchBorrowRecord = async (values) => {
+		try{
+			const urlParams= new URLSearchParams(values);
+			const response = await fetch(`${apiURL}/?${urlParams}`);
+			if (response.ok) {
+				const data = await response.json();
+				message.success("Borrow Record Found");
+				setData(data);
+			}else{
+				const err = await response.json();
+				throw new Error(err.error);
+			}
+		}
+		catch(error){
+			message.error(error.message);
+		}
+	};
 	
 	const value = {
 		loading,
@@ -114,6 +136,7 @@ const ReturnRecordProvider = ({ children }) => {
 		setModalData,
 		modalVisible,
 		setModalVisible,
+		onSearch,
 	};
 
 	return (
