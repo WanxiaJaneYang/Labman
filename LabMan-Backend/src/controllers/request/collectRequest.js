@@ -5,23 +5,23 @@ import runTransaction from "./transaction.js";
 
 function collectRequest(req, res) {
     try {
-        // Extract data from request body
-        const { request_id } = req.body;
+        // Extract data from request params
+        const { request_id } = req.params;
 
         // Define the SQL query
         const sql = 'SELECT * FROM requests WHERE request_id = ?';
 
         // Execute the SQL query with the request_id parameter
-        pool.query(sql, [request_id], async (error, results) => {
+        pool.query(sql, [request_id], (error, results) => {
             if (error) {
-                console.error(err);
+                console.error(error);
                 return;
             }
             const borrowingRequest = results;
-            //console.log(results);
+            console.log(results);
 
             const amount = borrowingRequest.borrow_amount;
-            //console.log(borrowingRequest);
+            console.log(borrowingRequest);
 
             // Get the current date and time
             const current_time = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -44,13 +44,14 @@ function collectRequest(req, res) {
                     const query = 'INSERT INTO borrowings SET ?';
                     connection.query(query, borrowRecord, async (error, result) => {
                         if (error) {
-                            throw error;
+							console.error(error);
+							return;
                         }
-                        console.log(result);
+                        //console.log(result);
 
                         // Get the newly created request ID from the result
                         const borrow_id = result.insertId;
-                        console.log(borrow_id);
+                        //console.log(borrow_id);
 
                         // creat a new log for new borrowings
                         const borrowLog = {
