@@ -21,15 +21,15 @@ const ShowDetailModal = () => {
 			onOk={hideModal} 
 			maskStyle={{backgroundColor: "rgba(0,0,0,0.3)"}}
 		>
-			<p>Borrow Date: {modalData.borrow_date}</p>
-			<p>Due Date: {formatDate(modalData.return_date)}</p>
-			<p>Student ID: {modalData.student_id}</p>
-			<p>Equipment Name: {modalData.type_name}</p>
-			<p>Amount: {modalData.borrow_amount}</p>
-			<p>Status: {modalData.status==0? "To Return":"Returned"}</p>
+			<p>Borrow Date: {modalData?modalData.borrow_date:""}</p>
+			<p>Due Date: {modalData?formatDate(modalData.return_date):""}</p>
+			<p>Student ID: {modalData?modalData.student_id:""}</p>
+			<p>Equipment Name: {modalData?modalData.type_name:""}</p>
+			<p>Amount: {modalData?modalData.borrow_amount:""}</p>
+			<p>Status: {modalData?(modalData.status==0? "To Return":"Returned"):""}</p>
 			<p style={
-				modalData.status==0?{display:"none"}:{display:"block"}
-			}>Actual Return Date:{formatDate(modalData.actual_return_date)}</p>
+				modalData?(modalData.status==0?{display:"none"}:{display:"block"}):{display:"none"}
+			}>Actual Return Date:{modalData?(formatDate(modalData.actual_return_date)):""}</p>
 		</Modal>
 	);
 };
