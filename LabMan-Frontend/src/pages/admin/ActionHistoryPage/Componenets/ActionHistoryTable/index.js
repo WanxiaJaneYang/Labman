@@ -81,7 +81,7 @@ const ActionHistoryTable = () => {
 			...tableParams,
 			pagination: {
 				...tableParams.pagination,
-				total: data.length,
+				total: data?data.length:0,
 			},
 		});
 	}, [data]);

@@ -60,10 +60,10 @@ const ActionHistoryProvider = ({ children }) => {
 		}
 	};
 
-	const onSearch = (value) => {
+	const onSearch = async(value) => {
 		try{
 			setLoading(true);
-			const data = searchLog(value);
+			const data = await searchLog(value);
 			setData(data);
 			setLoading(false);
 			setTableParams({
@@ -83,9 +83,11 @@ const ActionHistoryProvider = ({ children }) => {
 		try {
 			const url=apiURL+"/"+tableSelection;
 			const urlParams= new URLSearchParams(values);
+			console.log(`${url}?${urlParams}`);
 			const response = await fetch(`${url}?${urlParams}`);
 			if (response.ok) {
 				const data = await response.json();
+				console.log("successfully retrived data:",data);
 				return data;
 			}
 			else {
