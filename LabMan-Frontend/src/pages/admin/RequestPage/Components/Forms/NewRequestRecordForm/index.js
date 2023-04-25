@@ -31,7 +31,7 @@ function NewRequestRecordForm({ form }) {
 			return Promise.resolve();
 		} else {
 			return Promise.reject(
-				new Error("Borrow amount can not be greater than available amount")
+				new Error("Borrow amount can not be greater than "+availableAmount+"!")
 			);
 		}
 	};
@@ -59,13 +59,11 @@ function NewRequestRecordForm({ form }) {
 			<Form.Item label="Equipment Name" name="type_id" rules={[{ required: true }]}>
 				<EquipmentTypeSelector />
 			</Form.Item>
-			<Form.Item label="Available Number" name="availableNumber" rules={[{ required: true },{type:Number}]}>
-				<p>{localAvailableNumber}</p>
-			</Form.Item>
 			<Form.Item 
 				label="Borrow Amount" 
 				name="borrow_amount" 
 				rules={[
+					{ required: true },
 					{ type: "number", min: 0, message: "Borrow Amount must be greater than 0" },
 					{ validator: validateAmount },
 				]}
@@ -81,7 +79,12 @@ function NewRequestRecordForm({ form }) {
 				]}>
 				<Input />
 			</Form.Item>
-			<Form.Item label="Due Date" name="return_date" rules={[{ required: true }]}>
+			<Form.Item 
+				label="Due Date" 
+				name="return_date" 
+				rules={[
+					{ required: true },
+				]}>
 				<DatePicker allowClear/>
 			</Form.Item>
 			{/* Add more form items as needed */}
