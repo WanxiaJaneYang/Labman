@@ -38,21 +38,21 @@ const ActionHistoryTable = () => {
 	const getStatus = (status) => {
 		if(tableSelection === "request"){
 			if (status === "0") {
-				return "Generated Request";
+				return "Generated";
 			}else if (status === "1") {
 				return "Collected";
 			}else if (status === "2") {
-				return "Edit Request";
+				return "Edit";
 			}else if (status === "3") {
 				return "Cancelled";
 			}
 		}else if(tableSelection === "equipment"){
 			if (status === "0") {
-				return "Borrowed Equipment";
+				return "Borrowed";
 			}else if (status === "1") {		
-				return "Returned Equipment";
+				return "Returned";
 			}else if (status === "2") {
-				return "Cancel Return";
+				return "Cancelled";
 			}
 		}
 	};
