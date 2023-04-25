@@ -3,6 +3,7 @@ import { getRequests } from "../controllers/request/getRequests.js";
 import { newRequest } from "../controllers/request/newRequest.js";
 import { collectRequest } from "../controllers/request/collectRequest.js";
 import { cancelRequest } from "../controllers/request/cancelRequest.js";
+import { editRequest } from "../controllers/request/editRequest.js";
 
 const requestRouter = Router();
 
@@ -17,5 +18,8 @@ requestRouter.patch("/collect/:request_id", collectRequest);
 
 //change the status of request to be cancelled
 requestRouter.patch("/cancel/:request_id", cancelRequest);
+
+//edit request record
+requestRouter.patch("/:request_id", editRequest);
 
 export { requestRouter };
