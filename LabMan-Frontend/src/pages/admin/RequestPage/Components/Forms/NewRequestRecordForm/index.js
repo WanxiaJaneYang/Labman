@@ -9,24 +9,13 @@ function NewRequestRecordForm({ form }) {
 	//when selected type change, update the type name value
 	useEffect(() => {
 		form.setFieldsValue({
-			type_id: selectedEquipmentType,
+			type_name: selectedEquipmentType,
 		});
 	}, [selectedEquipmentType]);
 
-	const equipmentTypeID=Form.useWatch("type_id",form);
-
-	const localAvailableNumber=equipmentTypeList.find((type)=>type.type_id===equipmentTypeID)?.available_amount;
-
-	//render the available number when localAvailableNumber changes
-	useEffect(() => {
-		form.setFieldsValue({
-			availableNumber: localAvailableNumber,
-		});
-	}, [localAvailableNumber]);
-
 	//validate the borrow amount to see if it is greater than available amount
 	const validateAmount = (_, value) => {
-		const availableAmount = form.getFieldValue("availableNumber");
+		const availableAmount = equipmentTypeList.find((type)=>type.type_name===selectedEquipmentType)?.available_amount;
 		if (value <= availableAmount) {
 			return Promise.resolve();
 		} else {
@@ -56,7 +45,7 @@ function NewRequestRecordForm({ form }) {
 
 	return (
 		<Form form={form} layout="vertical">
-			<Form.Item label="Equipment Name" name="type_id" rules={[{ required: true }]}>
+			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
 				<EquipmentTypeSelector />
 			</Form.Item>
 			<Form.Item 

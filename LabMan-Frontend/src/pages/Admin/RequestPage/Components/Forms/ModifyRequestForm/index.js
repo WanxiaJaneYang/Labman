@@ -5,12 +5,12 @@ import moment from "moment";
 import EquipmentTypeSelector from "../../Selector/EquipmentTypeSelector";
 
 function ModifyRequestForm({ form }) {
-	const { modalData,searchStudentID, equipmentTypeList} = useRequestRecordContext();
+	const { modalData,searchStudentID, equipmentTypeList,selectedEquipmentType} = useRequestRecordContext();
 
 	useEffect(() => {
 		if (modalData) {
 			form.setFieldsValue({
-				type_id: modalData.type_id,
+				type_name: modalData.type_name,
 				student_id: modalData.student_id,
 				borrow_amount: modalData.borrow_amount,
 				return_date: moment(modalData.return_date),
@@ -20,7 +20,12 @@ function ModifyRequestForm({ form }) {
 		}
 	}, [modalData, form]);
 
-	const equipmentTypeID=Form.useWatch("type_id",form);
+	//when selected type change, update the type name value
+	useEffect(() => {
+		form.setFieldsValue({
+			type_name: selectedEquipmentType,
+		});
+	}, [selectedEquipmentType]);
 
 	const validateStudentID = async(_, value) => {
 		if (/^a\d{7}$/.test(value) ) {
@@ -41,7 +46,7 @@ function ModifyRequestForm({ form }) {
 	};
 
 	const validateAmount = (_, value) => {
-		const availableAmount = equipmentTypeList.find((type)=>type.type_id===equipmentTypeID)?.available_amount;
+		const availableAmount = equipmentTypeList.find((type)=>type.type_name===selectedEquipmentType)?.available_amount;
 		if (value <= availableAmount) {
 			return Promise.resolve();
 		} else {
@@ -56,8 +61,8 @@ function ModifyRequestForm({ form }) {
 			form={form} 
 			layout="vertical"
 		>
-			<Form.Item label="Equipment Name" name="type_id" rules={[{ required: true }]}>
-				<EquipmentTypeSelector/>
+			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
+				<EquipmentTypeSelector placeholder={modalData?modalData.type_name:null}/>
 			</Form.Item>
 			<Form.Item 
 				label="Student ID" 
@@ -72,6 +77,7 @@ function ModifyRequestForm({ form }) {
 				label="Borrow Amount" 
 				name="borrow_amount" 
 				rules={[
+					{ required: true },
 					{ type: "number", min: 0, message: "Borrow Amount must be greater than 0" },
 					{ validator: validateAmount },
 				]}

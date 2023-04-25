@@ -3,7 +3,7 @@ import { useRequestRecordContext } from "../../../Context";
 import ModifyRequestForm from "../../Forms/ModifyRequestForm";
 
 const EditRequestModal = () => {
-	const {onEdit, editModalVisible, setEditModalVisible} = useRequestRecordContext();
+	const {onEdit, editModalVisible, setEditModalVisible, equipmentTypeList} = useRequestRecordContext();
 	const [form]=Form.useForm();
 
 	return (
@@ -11,9 +11,11 @@ const EditRequestModal = () => {
 			title="Edit Request"
 			open={editModalVisible}
 			onCancel={() => setEditModalVisible(false)}
-			onOk={() => {
+			onOk={async() => {
+				await form.validateFields();
 				const values = form.getFieldsValue();
 				values.return_date = values.return_date.format("YYYY-MM-DD HH:mm:ss");
+				values.type_id = equipmentTypeList.find((type)=>type.type_name===values.type_name).type_id;
 				onEdit(values);
 				setEditModalVisible(false);
 			}}

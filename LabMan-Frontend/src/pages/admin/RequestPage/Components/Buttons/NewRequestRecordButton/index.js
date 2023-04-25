@@ -19,8 +19,8 @@ const NewRequestRecordButton = () => {
 		try {
 			await form.validateFields();
 			const values = form.getFieldsValue();
+			values.type_id = equipmentTypeList.find((type)=>type.type_name===values.type_name).type_id;
 			values.return_date = values.return_date.format("YYYY-MM-DD HH:mm:ss");
-			values.type_name=equipmentTypeList.find((item)=>item.type_id===values.type_id).type_name;
 			await onAdd(values);
 			hideModal();
 			form.resetFields();
