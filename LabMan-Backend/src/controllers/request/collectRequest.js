@@ -77,24 +77,24 @@ function collectRequest(req, res) {
 							console.error(error);
 							return res.status(500).json({ error: "Error inserting borrowing logs" });
 						});
-
-						const requestLog = {
-							type_id: borrowingRequest.type_id,
-							type_name: borrowingRequest.type_name,
-							student_id: borrowingRequest.student_id,
-							borrow_amount: amount,
-							return_date: borrowingRequest.return_date,
-							log_type: 1,  // 1 = collect
-							log_time: current_time,
-							request_id: request_id // Use the request_id from the previous query
-						};
-
-						insertRequestLog(connection, requestLog).catch((error) => {
-							console.error(error);
-							return res.status(500).json({ error: "Error inserting request logs" });
-						});
 					});
 				}
+				
+				const requestLog = {
+					type_id: borrowingRequest.type_id,
+					type_name: borrowingRequest.type_name,
+					student_id: borrowingRequest.student_id,
+					borrow_amount: amount,
+					return_date: borrowingRequest.return_date,
+					log_type: 1,  // 1 = collect
+					log_time: current_time,
+					request_id: request_id // Use the request_id from the previous query
+				};
+
+				insertRequestLog(connection, requestLog).catch((error) => {
+					console.error(error);
+					return res.status(500).json({ error: "Error inserting request logs" });
+				});
 
 				// Update the request status to 1= collected
 				updateRequestStatus(connection, request_id, 1).catch((error) => {

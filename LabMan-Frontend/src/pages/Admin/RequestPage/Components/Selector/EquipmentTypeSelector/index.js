@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import {useRequestRecordContext} from "../../../Context";
 
 const EquipmentTypeSelector = () => {
-	const {equipmentTypeList, getEquipmentTypeList, setSelectedEquipmentType} = useRequestRecordContext();
+	const {equipmentTypeList, getEquipmentTypeList, setSelectedEquipmentType, selectedEquipmentType} = useRequestRecordContext();
 
 	useEffect(() => {
 		getEquipmentTypeList();
@@ -13,8 +13,8 @@ const EquipmentTypeSelector = () => {
 		<Select
 			showSearch
 			style={{ width: 200 }}
+			value={selectedEquipmentType}
 			onChange={(value) => {setSelectedEquipmentType(value);}}
-			placeholder="Search to Select"
 			optionFilterProp="children"
 			filterOption={(input, option) => (option?.label ?? "").includes(input)}
 			filterSort={(optionA, optionB) =>
