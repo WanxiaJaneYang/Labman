@@ -2,6 +2,7 @@ import moment from "moment";
 import runTransaction from "./transaction.js";
 import pool from "../../utils/MySQL/db.js";
 import { insertRequestLog } from "./asyncFunctions.js";
+import { insertRequestRecord } from "./asyncFunctions.js";
 
 function newRequest(req, res) {
 	try {
@@ -38,16 +39,10 @@ function newRequest(req, res) {
 				return res.status(500).json({ error: "not available" });
 			}
 			runTransaction(async (connection) => {
-				//Insert requestRecord into requests table
-				connection.query("INSERT INTO requests SET ?", requestRecord, (error, resultId) => {
-					if (error) {
-						console.error(error);
-						return res.status(500).json({ error: "Failed to insert record into table requests" });
-					}
-					//console.log(resultId);
-					const insertId = resultId.insertId;
+				try {
+					const insertRequestId = await insertRequestRecord(connection, requestRecord);
 
-					// Create a new request log for the new request
+					console.log(insertRequestId);
 					const requestLog = {
 						type_id,
 						type_name,
@@ -56,17 +51,18 @@ function newRequest(req, res) {
 						return_date,
 						log_type: 0, // 0 = new request
 						log_time: current_time,
-						request_id: insertId,
+						request_id: insertRequestId,
 					};
 
-					// Insert requestLog into request_Log table
-					insertRequestLog(connection, requestLog).catch((error) => {
-						console.error(error);
-						return res.status(500).json({ error: "Failed to insert request log" });
-					});
-				});
-				return res.status(200).json({ success: "Request created successfully" });
-			});
+					await Promise.all([
+						insertRequestLog(connection, requestLog),
+					]);
+
+					return res.status(200).json({ success: "Request created successfully" });
+				} catch (error) {
+					console.error(error);
+				}
+			})
 		});
 	} catch (error) {
 		console.error(error);

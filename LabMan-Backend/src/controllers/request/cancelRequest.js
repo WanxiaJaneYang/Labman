@@ -37,23 +37,26 @@ function cancelRequest(req, res) {
 			};
 
 			runTransaction(async (connection) => {
+				try{
 				// Update request_status to 2 (cancelled)
-				updateRequestStatus(connection, request_id, 2).catch((error) => {
-					console.error(error);
-					return res.status(500).json({ error: "Error updating request status" });
-				});
+				const updatePromise = updateRequestStatus(connection, request_id, 2);
 
 				// Insert requestLog into request_Log table
-				insertRequestLog(connection, requestLog).catch((error) => {
+				const insertPromise = insertRequestLog(connection, requestLog);
+
+				// Wait for both promises to complete
+				await Promise.all([updatePromise, insertPromise]).catch((error) => {
 					console.error(error);
-					return res.status(500).json({ error: "Failed to insert request log" });
+					return res.status(500).json({ error: "Error cancelling request" });
 				});
+
 				// Send success response
 				return res.status(200).json({ success: "Request cancelled successfully" });
+			} catch (error) {
+				console.error(error);
+			}
 			});
 		});
-
-
 	} catch (error) {
 		console.error(error);
 		// Send error response

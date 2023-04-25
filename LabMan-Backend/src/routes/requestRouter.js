@@ -20,6 +20,6 @@ requestRouter.patch("/collect/:request_id", collectRequest);
 requestRouter.patch("/cancel/:request_id", cancelRequest);
 
 //edit request record
-requestRouter.patch("/:request_id", editRequest);
+requestRouter.put("/:request_id", editRequest);
 
 export { requestRouter };
