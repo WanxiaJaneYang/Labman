@@ -37,11 +37,14 @@ const SearchLogBar = () => {
 			<Input 
 				onChange={onIDInputChange}
 				placeholder="Input Student ID" 
-				allowClear />
+				allowClear 
+				onPressEnter={onClick}
+			/>
 			<Input 
 				onChange={onEquipmentInputChange}
 				placeholder="Input Equipment Type" 
 				allowClear
+				onPressEnter={onClick}
 			/>
 			<Button 
 				type="primary" 

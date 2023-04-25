@@ -76,6 +76,16 @@ const ActionHistoryTable = () => {
 		fetchData();
 	}, [tableSelection]);
 
+	useEffect(() => {
+		setTableParams({
+			...tableParams,
+			pagination: {
+				...tableParams.pagination,
+				total: data.length,
+			},
+		});
+	}, [data]);
+
 	return (
 		<Table
 			columns={columns}
@@ -83,7 +93,7 @@ const ActionHistoryTable = () => {
 			pagination={tableParams.pagination}
 			onChange={handleTableChange}
 			loading={loading}
-			rowKey={(record) => record.log_id}
+			rowKey={(record) => record?record.log_id:""}
 		/>
 	);
 };
