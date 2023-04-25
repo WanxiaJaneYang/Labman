@@ -73,10 +73,6 @@ const ActionHistoryTable = () => {
 	}, []);
 
 	useEffect(() => {
-		fetchData();
-	}, [tableSelection]);
-
-	useEffect(() => {
 		setTableParams({
 			...tableParams,
 			pagination: {

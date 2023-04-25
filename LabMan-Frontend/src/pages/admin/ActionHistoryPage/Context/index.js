@@ -83,11 +83,9 @@ const ActionHistoryProvider = ({ children }) => {
 		try {
 			const url=apiURL+"/"+tableSelection;
 			const urlParams= new URLSearchParams(values);
-			console.log(`${url}?${urlParams}`);
 			const response = await fetch(`${url}?${urlParams}`);
 			if (response.ok) {
 				const data = await response.json();
-				console.log("successfully retrived data:",data);
 				return data;
 			}
 			else {

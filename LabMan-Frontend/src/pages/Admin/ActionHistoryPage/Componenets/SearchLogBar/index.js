@@ -14,9 +14,8 @@ const SearchLogBar = () => {
 	useEffect(() => {
 		onClick();
 	}, [tableSelection]);
-	
+
 	const onClick = () => {
-		console.log("onClick, searchParams:", searchParams);
 		onSearch(searchParams);
 	};
 
