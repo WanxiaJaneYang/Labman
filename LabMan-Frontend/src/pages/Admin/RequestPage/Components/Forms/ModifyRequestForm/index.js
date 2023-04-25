@@ -1,6 +1,7 @@
 import { DatePicker, Form, Input, InputNumber } from "antd";
 import { useRequestRecordContext } from "../../../Context";
 import { useEffect } from "react";
+import moment from "moment";
 
 function ModifyRequestForm({ form }) {
 	const { modalData } = useRequestRecordContext();
@@ -11,7 +12,7 @@ function ModifyRequestForm({ form }) {
 				type_name: modalData.type_name,
 				student_id: modalData.student_id,
 				borrow_amount: modalData.borrow_amount,
-				return_date: modalData.return_date,
+				return_date: moment(modalData.return_date),
 			});
 		} else {
 			form.resetFields();
@@ -30,7 +31,7 @@ function ModifyRequestForm({ form }) {
 				<InputNumber />
 			</Form.Item>
 			<Form.Item label="Return Date" name="return_date" rules={[{ required: true }]}>
-				<DatePicker/>
+				<DatePicker	allowClear/>
 			</Form.Item>
 		</Form>
 	);

@@ -86,7 +86,7 @@ const RequestRecordTable = () => {
 			render: (_, record) => {
 				return (
 					<>
-						<a onClick={handleEditClick(record)}>edit</a>
+						<a onClick={()=>handleEditClick(record)}>edit</a>
 						<EditRequestModal/>
 					</>
 				);
@@ -94,7 +94,7 @@ const RequestRecordTable = () => {
 		}
 	];
 
-	const handleEditClick = (record) => () => {
+	const handleEditClick = (record) =>{
 		setModalData(record);
 		setEditModalVisible(true);
 	};
