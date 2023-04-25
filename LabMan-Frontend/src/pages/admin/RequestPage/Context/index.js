@@ -32,7 +32,6 @@ const RequestRecordProvider = ({ children }) => {
 
 	//fetch data
 	const fetchData = async () => {
-		console.log("fetching data");
 		try{
 			setLoading(true);
 			const data = await getRequest();
@@ -68,21 +67,21 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onAdd = async (values) => {
-		console.log(values);
 		await addNewRequest(values);
-		await fetchData();
+		setTimeout(() => {
+			fetchData();
+		}, 1000);
 	};
 
 	const addNewRequest = async (values) => {
-		const requestParams = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(values),
-		};
 		try {
-			const response = await fetch(apiURL, requestParams);
+			const response = await fetch(apiURL, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(values),
+			});
 			if (response.ok) {
 				const data = await response.json();
 				message.success(data.success);
@@ -99,10 +98,12 @@ const RequestRecordProvider = ({ children }) => {
 		try{
 			await Promise.all(selectedRows.map(async (row) => {
 				cancelRequest(row.request_id);
+				setTimeout(() => {
+					fetchData();
+				}, 2000);
 			}));
 			message.success("Request Cancelled Successfully!");
 			setSelectedRows([]);
-			await fetchData();
 		}catch(error){
 			message.error(error.message);
 		}
@@ -127,8 +128,10 @@ const RequestRecordProvider = ({ children }) => {
 		try{
 			await Promise.all(selectedRows.map(async (row) => {
 				collectRequest(row.request_id);
+				setTimeout(() => {
+					fetchData();
+				}, 1000);
 			}));
-			await fetchData();
 			message.success("Collection Confirmed Successfully!");
 			setSelectedRows([]);
 		}catch(error){
@@ -154,7 +157,9 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onEdit = async (values) => {
 		await editRequest(values);
-		await fetchData();
+		setTimeout(() => {
+			fetchData();
+		}, 1000);
 	};
 
 	const editRequest = async (values) => {
@@ -185,19 +190,18 @@ const RequestRecordProvider = ({ children }) => {
 		const data =await searchRequest(values);
 		setData(data);
 		setLoading(false);
-		await fetchData();
 	};
 
 	const searchRequest = async (values) => {
+		values.request_status=0;
 		const urlParams= new URLSearchParams(values);
 		const url = `${apiURL}/?${urlParams}`;
-		console.log(url);
 		
 		try {
 			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
-				message.success(data.success);
+				message.success("Data Found");
 				return data;
 			} else {
 				const errorData = await response.json();
@@ -220,7 +224,7 @@ const RequestRecordProvider = ({ children }) => {
 				throw new Error(errorData.error);
 			}
 		} catch (error) {
-			console.error(error.message);
+			message.error(error.message);
 		}
 	};
 
@@ -229,13 +233,10 @@ const RequestRecordProvider = ({ children }) => {
 		const url = "http://localhost:3008/equipment?" + searchParams;
 
 		try {
-			console.log("fetching available number from ", url);
 			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
-				console.log("response ok, data is ", data);
 				setAvailableNumber(data[0].available_number);
-				console.log("setting available number as :",data[0].available_amount);
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);

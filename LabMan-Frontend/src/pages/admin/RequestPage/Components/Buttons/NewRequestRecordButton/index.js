@@ -1,4 +1,4 @@
-import { Button,Modal,Form } from "antd";
+import { Button,Modal,Form, message } from "antd";
 import {useState} from "react";
 import NewRequestRecordForm from "../../Forms/NewRequestRecordForm";
 import { useRequestRecordContext } from "../../../Context";
@@ -20,12 +20,11 @@ const NewRequestRecordButton = () => {
 			const values = form.getFieldsValue();
 			values.return_date = values.return_date.format("YYYY-MM-DD HH:mm:ss");
 			values.type_name=equipmentTypeList.find((item)=>item.type_id===values.type_id).type_name;
-			console.log(values);
 			await onAdd(values);
 			hideModal();
 			form.resetFields();
 		} catch (error) {
-			console.log("Validation failed:", error);
+			message.error(error.message);
 		}
 	};
 

@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Table, message } from "antd";
 import { useRequestRecordContext } from "../../Context";
 import { useEffect } from "react";
 import EditRequestModal from "../Modals/EditRequestModal";
@@ -15,7 +15,6 @@ const RequestRecordTable = () => {
 		equipmentTypeList, 
 		getEquipmentTypeList,
 		setModalData,
-		editModalVisible,
 		setEditModalVisible 
 	} = useRequestRecordContext();
 
@@ -96,10 +95,8 @@ const RequestRecordTable = () => {
 	];
 
 	const handleEditClick = (record) => () => {
-		console.log("Edit record: ", record);
 		setModalData(record);
 		setEditModalVisible(true);
-		console.log("Edit modal visible: ", editModalVisible);
 	};
 
 
@@ -114,7 +111,6 @@ const RequestRecordTable = () => {
 	const rowSelection = {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.request_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
-			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
 			setSelectedRows(selectedRows);
 		},
 	};
@@ -134,7 +130,7 @@ const RequestRecordTable = () => {
 				},
 			});
 		}catch(err){
-			console.log(err);
+			message.error(err.message);
 		}
 	}, [data]);
 	
