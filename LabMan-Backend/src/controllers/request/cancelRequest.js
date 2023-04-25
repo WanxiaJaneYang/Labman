@@ -19,7 +19,7 @@ function cancelRequest(req, res) {
             if (requestRecord === undefined) {
                 return res.status(500).json({ error: 'Error retrieving request record' });
             }
-            const { type_id, type_name, student_id, borrow_amount } = requestRecord;
+            const { type_id, type_name, student_id, borrow_amount, return_date} = requestRecord;
 
             // Get the current date and time
             const current_time = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -30,6 +30,7 @@ function cancelRequest(req, res) {
                 type_name,
                 student_id,
                 borrow_amount,
+                return_date,
                 log_type: 3, // 3 = collected
                 log_time: current_time,
                 request_id,
@@ -47,11 +48,11 @@ function cancelRequest(req, res) {
                     console.error(error);
                     return res.status(500).json({ error: 'Failed to insert request log' });
                 });
-
-                // Send success response
-                res.status(200).json({ message: 'Request cancelled successfully' });
             });
         });
+
+        // Send success response
+        return res.status(200).json({ success: 'Request cancelled successfully' });
     } catch (error) {
         console.error(error);
         // Send error response

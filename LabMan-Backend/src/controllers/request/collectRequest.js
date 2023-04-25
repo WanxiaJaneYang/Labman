@@ -5,6 +5,7 @@ import { updateRequestStatus } from "./asyncFunctions.js";
 import { insertEquipmentLog } from "./asyncFunctions.js";
 import { updateAvailableAmount } from "./asyncFunctions.js";
 import { updateRemovableStatus } from "./asyncFunctions.js";
+import {insertRequestLog}from "./asyncFunctions.js";
 
 function collectRequest(req, res) {
     try {
@@ -65,6 +66,7 @@ function collectRequest(req, res) {
                             type_name: borrowingRequest.type_name,
                             student_id: borrowingRequest.student_id,
                             borrow_amount: 1,
+                            return_date:borrowingRequest.return_date,
                             log_type: 1,  // 1 = borrow
                             log_time: current_time,
                             borrow_id: borrow_id // Use the request_id from the previous query
@@ -74,6 +76,22 @@ function collectRequest(req, res) {
                         insertEquipmentLog(connection, borrowLog).catch((error) => {
                             console.error(error);
                             return res.status(500).json({ error: "Error inserting borrowing logs" });;
+                        })
+
+                        const requestLog = {
+                            type_id: borrowingRequest.type_id,
+                            type_name: borrowingRequest.type_name,
+                            student_id: borrowingRequest.student_id,
+                            borrow_amount: amount,
+                            return_date:borrowingRequest.return_date,
+                            log_type: 1,  // 1 = collect
+                            log_time: current_time,
+                            request_id: request_id // Use the request_id from the previous query
+                        };
+
+                        insertRequestLog(connection, requestLog).catch((error) => {
+                            console.error(error);
+                            return res.status(500).json({ error: "Error inserting request logs" });;
                         })
                     });
                 }
@@ -97,11 +115,11 @@ function collectRequest(req, res) {
                     return res.status(500).json({ error: 'Failed to update removable status' });
                 });
 
-        // Send response indicating success
-        res.status(200).json({ success: 'Borrow record and log created successfully' });
+
             });
         })
-
+        // Send response indicating success
+        return res.status(200).json({ success: 'Borrow record and log created successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to collect requested equipment and create borrow records' });
