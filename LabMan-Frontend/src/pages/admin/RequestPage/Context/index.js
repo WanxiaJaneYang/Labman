@@ -67,10 +67,9 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onAdd = async (values) => {
+		setLoading(true);
 		await addNewRequest(values);
-	
 		fetchData();
-
 	};
 
 	const addNewRequest = async (values) => {
@@ -96,13 +95,12 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onCancelRequest= async () => {
 		try{
+			setLoading(true);
 			await Promise.all(selectedRows.map(async (row) => {
-				cancelRequest(row.request_id);
-				setTimeout(() => {
-					fetchData();
-				}, 2000);
+				await cancelRequest(row.request_id);
 			}));
 			message.success("Request Cancelled Successfully!");
+			fetchData();
 			setSelectedRows([]);
 		}catch(error){
 			message.error(error.message);
@@ -126,12 +124,13 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onCollect= async () => {
 		try{
+			setLoading(true);
 			await Promise.all(selectedRows.map(async (row) => {
 				await collectRequest(row.request_id);
 			}));
 			message.success("Collection Confirmed Successfully!");
 			// setTimeout(() => {
-			await fetchData();
+			fetchData();
 			// }, 1000);
 			setSelectedRows([]);
 		}catch(error){
@@ -156,11 +155,10 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onEdit = async (values) => {
+		setLoading(true);
 		console.log(values);
 		await editRequest(values);
-		setTimeout(() => {
-			fetchData();
-		}, 1000);
+		fetchData();
 	};
 
 	const editRequest = async (values) => {

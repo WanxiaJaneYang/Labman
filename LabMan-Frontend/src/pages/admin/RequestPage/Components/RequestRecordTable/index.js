@@ -94,6 +94,7 @@ const RequestRecordTable = () => {
 							style={{fontSize:"20px"}}
 							onClick={() => {
 								setModalData(record);
+								console.log(record);
 								setModalVisibal(true);
 							}
 							}/>

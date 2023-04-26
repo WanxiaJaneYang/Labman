@@ -47,11 +47,12 @@ function ModifyRequestForm({ form}) {
 
 	const validateAmount = (_, value) => {
 		const availableAmount = equipmentTypeList.find((type)=>type.type_name===selectedEquipmentType)?.available_amount;
+		if(!availableAmount) return Promise.reject(new Error("Please select equipment type"));
 		if (value <= availableAmount) {
 			return Promise.resolve();
 		} else {
 			return Promise.reject(
-				new Error("available amount "+availableAmount)
+				new Error(`Borrow Amount must be less than or equal to available amount ${availableAmount}`)
 			);
 		}
 	};
