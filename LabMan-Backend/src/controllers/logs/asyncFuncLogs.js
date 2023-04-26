@@ -5,7 +5,7 @@ export async function insertRequestLog(connection, requestLog) {
 	const promiseQuery = util.promisify(connection.query).bind(connection);
 	try {
 		const results = await promiseQuery(logQuery, requestLog);
-		console.log(results);
+		//console.log(results);
 		return results;
 	} catch (error) {
 		throw new Error(error);

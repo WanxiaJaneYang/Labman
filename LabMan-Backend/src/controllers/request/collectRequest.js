@@ -6,6 +6,7 @@ import { updateAvailableAmount } from "../equipment/asyncFuncEquip.js";
 import { updateRemovableStatus } from "../equipment/asyncFuncEquip.js";
 import { insertRequestLog } from "../logs/asyncFuncLogs.js";
 import { insertBorrowingRecords } from "./asyncFuncRequest.js";
+import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
 
 function collectRequest(req, res) {
 	try {
@@ -27,43 +28,49 @@ function collectRequest(req, res) {
 				return res.status(500).json({ error: "Error retrieving request record" });
 			}
 			const amount = borrowingRequest.borrow_amount;
+			const type_id = borrowingRequest.type_id;
 			//console.log(borrowingRequest);
+			compareAvailableAmount(pool, type_id, amount).then((result) => {
+				if (result === false) {
+					return res.status(500).json({ error: "Not enough equipment available" });
+				} 
 
-			// Get the current date and time
-			const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
+					// Get the current date and time
+					const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
-			// Start a transaction
-			runTransaction(async (connection) => {
-				try {
-					// Insert borrowingRecord into borrowings table N times with amount=1 per record
-					const p1 = insertBorrowingRecords(connection, borrowingRequest, amount, current_time);
+					// Start a transaction
+					runTransaction(async (connection) => {
+						try {
+							// Insert borrowingRecord into borrowings table N times with amount=1 per record
+							const p1 = insertBorrowingRecords(connection, borrowingRequest, amount, current_time);
 
-					const requestLog = {
-						type_id: borrowingRequest.type_id,
-						type_name: borrowingRequest.type_name,
-						student_id: borrowingRequest.student_id,
-						borrow_amount: amount,
-						return_date: borrowingRequest.return_date,
-						log_type: 1,  // 1 = collect
-						log_time: current_time,
-						request_id: request_id // Use the request_id from the previous query
-					};
+							const requestLog = {
+								type_id: borrowingRequest.type_id,
+								type_name: borrowingRequest.type_name,
+								student_id: borrowingRequest.student_id,
+								borrow_amount: amount,
+								return_date: borrowingRequest.return_date,
+								log_type: 1,  // 1 = collect
+								log_time: current_time,
+								request_id: request_id // Use the request_id from the previous query
+							};
 
-					const p2 = insertRequestLog(connection, requestLog);
-					const p3 = updateRequestStatus(connection, request_id, 1);
-					const p4 = updateAvailableAmount(connection, borrowingRequest.type_id, amount);
-					const p5 = updateRemovableStatus(connection, borrowingRequest.type_id, 0);
+							const p2 = insertRequestLog(connection, requestLog);
+							const p3 = updateRequestStatus(connection, request_id, 1);
+							const p4 = updateAvailableAmount(connection, borrowingRequest.type_id, amount);
+							const p5 = updateRemovableStatus(connection, borrowingRequest.type_id, 0);
 
-					await Promise.all([p1, p2, p3, p4, p5]).catch((error) => {
-						console.error(error);
-						return res.status(500).json({ error: "Error processing request(collect)" });
+							await Promise.all([p1, p2, p3, p4, p5]).catch((error) => {
+								console.error(error);
+								return res.status(500).json({ error: "Error processing request(collect)" });
+							});
+
+							// Send response indicating success
+							return res.status(200).json({ success: "Borrow record and log created successfully" });
+						} catch (error) {
+							console.error(error);
+						}
 					});
-
-					// Send response indicating success
-					return res.status(200).json({ success: "Borrow record and log created successfully" });
-				} catch (error) {
-					console.error(error);
-				}
 			});
 		});
 	} catch (error) {

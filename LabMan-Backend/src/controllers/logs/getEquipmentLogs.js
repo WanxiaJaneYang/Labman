@@ -53,6 +53,14 @@ function getfilteredEquipmentLogs(req, res) {
 	// Add ORDER BY clause to sort by request_time
 	sql += " ORDER BY request_time ASC";
 
+	// // Add LIMIT and OFFSET clauses for paging
+	// if (page && per_page) {
+	// 	const offset = (page - 1) * per_page;
+	// 	sql += " LIMIT ? OFFSET ?";
+	// 	params.push(parseInt(per_page, 10));
+	// 	params.push(parseInt(offset, 10));
+	// }
+
 	pool.query(sql, params, (error, results) => {
 		if (error) {
 			return res.status(500).json({ error: "Error retrieving Equipment logs" });
