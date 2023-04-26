@@ -1,12 +1,11 @@
 import pool from "../../utils/MySQL/db.js";
 import moment from "moment";
 import runTransaction from "./transaction.js";
-import { updateRequestStatus } from "./asyncFunctions.js";
-import { insertEquipmentLog } from "./asyncFunctions.js";
-import { updateAvailableAmount } from "./asyncFunctions.js";
-import { updateRemovableStatus } from "./asyncFunctions.js";
-import { insertRequestLog } from "./asyncFunctions.js";
-import { insertBorrowingRecords } from "./asyncFunctions.js";
+import { updateRequestStatus } from "./asyncFuncRequest.js";
+import { updateAvailableAmount } from "../equipment/asyncFuncEquip.js";
+import { updateRemovableStatus } from "../equipment/asyncFuncEquip.js";
+import { insertRequestLog } from "../logs/asyncFuncLogs.js";
+import { insertBorrowingRecords } from "./asyncFuncRequest.js";
 
 function collectRequest(req, res) {
 	try {

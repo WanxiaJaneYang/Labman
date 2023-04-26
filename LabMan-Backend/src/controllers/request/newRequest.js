@@ -1,8 +1,8 @@
 import moment from "moment";
 import runTransaction from "./transaction.js";
 import pool from "../../utils/MySQL/db.js";
-import { insertRequestLog } from "./asyncFunctions.js";
-import { insertRequestRecord } from "./asyncFunctions.js";
+import { insertRequestLog } from "../logs/asyncFuncLogs.js";
+import { insertRequestRecord } from "./asyncFuncRequest.js";
 
 function newRequest(req, res) {
 	try {
