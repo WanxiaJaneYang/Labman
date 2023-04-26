@@ -5,6 +5,8 @@ import { getEquipmentLogs} from "../controllers/logs/getEquipmentLogs.js";
 const logRouter = Router();
 
 //query all users
-logRouter.get("/", getAllLogs);
+logRouter.get("/request", getRequestLogs);
+logRouter.get("/equipment", getEquipmentLogs);
+
 
 export { logRouter };
