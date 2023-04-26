@@ -68,9 +68,9 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onAdd = async (values) => {
 		await addNewRequest(values);
-		setTimeout(() => {
-			fetchData();
-		}, 1000);
+	
+		fetchData();
+
 	};
 
 	const addNewRequest = async (values) => {
@@ -127,12 +127,12 @@ const RequestRecordProvider = ({ children }) => {
 	const onCollect= async () => {
 		try{
 			await Promise.all(selectedRows.map(async (row) => {
-				collectRequest(row.request_id);
-				setTimeout(() => {
-					fetchData();
-				}, 1000);
+				await collectRequest(row.request_id);
 			}));
 			message.success("Collection Confirmed Successfully!");
+			// setTimeout(() => {
+			await fetchData();
+			// }, 1000);
 			setSelectedRows([]);
 		}catch(error){
 			message.error(error.message);

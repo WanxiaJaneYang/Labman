@@ -21,8 +21,8 @@ const NewRequestRecordButton = () => {
 			const values = form.getFieldsValue();
 			values.type_id = equipmentTypeList.find((type)=>type.type_name===values.type_name).type_id;
 			values.return_date = values.return_date.format("YYYY-MM-DD HH:mm:ss");
-			await onAdd(values);
 			hideModal();
+			await onAdd(values);
 			form.resetFields();
 		} catch (error) {
 			message.error(error.message);

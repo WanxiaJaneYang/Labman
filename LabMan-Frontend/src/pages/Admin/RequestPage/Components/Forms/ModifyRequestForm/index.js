@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import moment from "moment";
 import EquipmentTypeSelector from "../../Selector/EquipmentTypeSelector";
 
-function ModifyRequestForm({ form,disabled }) {
+function ModifyRequestForm({ form}) {
 	const { modalData,searchStudentID, equipmentTypeList,selectedEquipmentType} = useRequestRecordContext();
 
 	useEffect(() => {
@@ -60,7 +60,6 @@ function ModifyRequestForm({ form,disabled }) {
 		<Form 
 			form={form} 
 			layout="vertical"
-			disabled={disabled}
 		>
 			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
 				<EquipmentTypeSelector placeholder={modalData?modalData.type_name:null}/>

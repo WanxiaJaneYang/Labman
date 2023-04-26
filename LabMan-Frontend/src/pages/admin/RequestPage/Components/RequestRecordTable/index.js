@@ -1,7 +1,8 @@
-import { Table, message } from "antd";
+import { Table, message} from "antd";
 import { useRequestRecordContext } from "../../Context";
 import { useEffect, useState } from "react";
 import EditRequestModal from "../Modals/EditRequestModal";
+import {EditOutlined} from "@ant-design/icons";
 import "./style.css";
 
 const RequestRecordTable = () => {
@@ -83,6 +84,23 @@ const RequestRecordTable = () => {
 			},
 			responsive: ["md"],
 		},
+		{
+			title:"Action",
+			key:"action",
+			render: (_, record) => {
+				return(
+					<>
+						<EditOutlined 
+							style={{fontSize:"20px"}}
+							onClick={() => {
+								setModalData(record);
+								setModalVisibal(true);
+							}
+							}/>
+					</>
+				);
+			},
+		}
 	];
 
 	const formatDate = (dateString) => {
@@ -127,15 +145,6 @@ const RequestRecordTable = () => {
 		});
 	};
 
-	const onRow = (record) => {
-		return {
-			onClick: () => {
-				setModalData(record);
-				setModalVisibal(true);
-			},
-		};
-	};
-	
 	const hideModal = () => {
 		setModalVisibal(false);
 	};
@@ -151,7 +160,6 @@ const RequestRecordTable = () => {
 				pagination={tableParams.pagination}
 				onChange={handleTableChange}
 				scroll={{ x: "max-content" }}
-				onRow={onRow}
 				rowClassName={() => "hover-row"}
 			/>
 			<EditRequestModal open={modalVisibal} hideModal={hideModal}/>
