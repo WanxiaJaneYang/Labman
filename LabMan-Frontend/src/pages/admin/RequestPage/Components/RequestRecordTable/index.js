@@ -5,32 +5,32 @@ import EditRequestModal from "../Modals/EditRequestModal";
 
 const RequestRecordTable = () => {
 	const {
-		selectedRows, 
-		setSelectedRows, 
-		data, 
+		selectedRows,
+		setSelectedRows,
+		data,
 		fetchData,
-		loading, 
-		tableParams, 
-		setTableParams, 
-		equipmentTypeList, 
+		loading,
+		tableParams,
+		setTableParams,
+		equipmentTypeList,
 		getEquipmentTypeList,
 		setModalData,
 		editModalVisible,
-		setEditModalVisible 
+		setEditModalVisible
 	} = useRequestRecordContext();
 
 	const columns = [
 		{
-			title:"Request Time",
-			dataIndex:"request_time",
+			title: "Request Time",
+			dataIndex: "request_time",
 			render: (text, record) => {
 				return formatDate(record.request_time);
 			},
 			responive: ["md"],
 		},
 		{
-			title:"Equipment Name",
-			dataIndex:"type_name",
+			title: "Equipment Name",
+			dataIndex: "type_name",
 			filters: equipmentTypeList.map((type) => {
 				return {
 					text: type.type_name,
@@ -39,12 +39,12 @@ const RequestRecordTable = () => {
 			}),
 		},
 		{
-			title:"Student ID",
-			dataIndex:"student_id",
+			title: "Student ID",
+			dataIndex: "student_id",
 		},
 		{
-			title:"Amount",
-			dataIndex:"borrow_amount",
+			title: "Amount",
+			dataIndex: "borrow_amount",
 		},
 		// {
 		// 	title:"Status",
@@ -75,17 +75,17 @@ const RequestRecordTable = () => {
 		// 	responive: ["md"],				
 		// },
 		{
-			title:"Due Date",
-			dataIndex:"return_date",
+			title: "Due Date",
+			dataIndex: "return_date",
 			responsive: ["md"],
 		},
 		{
-			title:"Action",
+			title: "Action",
 			render: (_, record) => {
 				return (
 					<>
 						<a onClick={handleEditClick(record)}>edit</a>
-						<EditRequestModal/>
+						<EditRequestModal />
 					</>
 				);
 			}
@@ -122,7 +122,7 @@ const RequestRecordTable = () => {
 	}, []);
 
 	useEffect(() => {
-		try{
+		try {
 			setTableParams({
 				...tableParams,
 				pagination: {
@@ -130,11 +130,11 @@ const RequestRecordTable = () => {
 					total: data.length,
 				},
 			});
-		}catch(err){
+		} catch (err) {
 			console.log(err);
 		}
 	}, [data]);
-	
+
 	const handleTableChange = (pagination, filters) => {
 		setTableParams({
 			...tableParams,
@@ -147,7 +147,7 @@ const RequestRecordTable = () => {
 		<Table
 			columns={columns}
 			rowSelection={rowSelection}
-			rowKey={(record) => record.request_id} 
+			rowKey={(record) => record.request_id}
 			dataSource={data}
 			loading={loading}
 			pagination={tableParams.pagination}
