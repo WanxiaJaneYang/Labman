@@ -130,4 +130,5 @@ const ActionHistoryTable = () => {
 	);
 };
 
+
 export default ActionHistoryTable;
