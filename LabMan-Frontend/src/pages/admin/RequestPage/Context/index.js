@@ -13,11 +13,11 @@ const RequestRecordProvider = ({ children }) => {
 	const [loading,setLoading] = useState(false);
 	const [selectedRows, setSelectedRows] = useState(null);
 	const [data, setData] = useState([]);
-	const [equipmentTypeList, setEquipmentTypeList] = useState([]);
-	const [editModalVisible, setEditModalVisible] = useState(false);
 	const [modalData, setModalData] = useState(null);
+	const [equipmentTypeList, setEquipmentTypeList] = useState([]);
 	const [selectedEquipmentType, setSelectedEquipmentType] = useState(null);
 	const [availableNumber, setAvailableNumber] = useState(null);
+
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
@@ -156,6 +156,7 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onEdit = async (values) => {
+		console.log(values);
 		await editRequest(values);
 		setTimeout(() => {
 			fetchData();
@@ -175,7 +176,7 @@ const RequestRecordProvider = ({ children }) => {
 			const response = await fetch(url, requestParams);
 			if (response.ok) {
 				const data = await response.json();
-				message.success(data.message);
+				message.success(data.success);
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -271,6 +272,8 @@ const RequestRecordProvider = ({ children }) => {
 		tableParams,
 		setTableParams,
 		fetchData,
+		modalData,
+		setModalData,
 		onAdd,
 		onCancelRequest,
 		onCollect,
@@ -278,10 +281,6 @@ const RequestRecordProvider = ({ children }) => {
 		onSearch,
 		equipmentTypeList,
 		getEquipmentTypeList,
-		editModalVisible,
-		setEditModalVisible,
-		modalData,
-		setModalData,
 		selectedEquipmentType,
 		setSelectedEquipmentType,
 		availableNumber,

@@ -1,7 +1,8 @@
 import { Table, message } from "antd";
 import { useRequestRecordContext } from "../../Context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EditRequestModal from "../Modals/EditRequestModal";
+import "./style.css";
 
 const RequestRecordTable = () => {
 	const {
@@ -15,8 +16,9 @@ const RequestRecordTable = () => {
 		equipmentTypeList, 
 		getEquipmentTypeList,
 		setModalData,
-		setEditModalVisible 
 	} = useRequestRecordContext();
+
+	const [modalVisibal, setModalVisibal] = useState(false);
 
 	const columns = [
 		{
@@ -81,24 +83,7 @@ const RequestRecordTable = () => {
 			},
 			responsive: ["md"],
 		},
-		{
-			title:"Action",
-			render: (_, record) => {
-				return (
-					<>
-						<a onClick={()=>handleEditClick(record)}>edit</a>
-						<EditRequestModal/>
-					</>
-				);
-			}
-		}
 	];
-
-	const handleEditClick = (record) =>{
-		setModalData(record);
-		setEditModalVisible(true);
-	};
-
 
 	const formatDate = (dateString) => {
 		const date = new Date(dateString);
@@ -133,7 +118,7 @@ const RequestRecordTable = () => {
 			message.error(err.message);
 		}
 	}, [data]);
-	
+
 	const handleTableChange = (pagination, filters) => {
 		setTableParams({
 			...tableParams,
@@ -142,17 +127,35 @@ const RequestRecordTable = () => {
 		});
 	};
 
+	const onRow = (record) => {
+		return {
+			onClick: () => {
+				setModalData(record);
+				setModalVisibal(true);
+			},
+		};
+	};
+	
+	const hideModal = () => {
+		setModalVisibal(false);
+	};
+
 	return (
-		<Table
-			columns={columns}
-			rowSelection={rowSelection}
-			rowKey={(record) => record.request_id} 
-			dataSource={data}
-			loading={loading}
-			pagination={tableParams.pagination}
-			onChange={handleTableChange}
-			scroll={{ x: "max-content" }}
-		/>
+		<>
+			<Table
+				columns={columns}
+				rowSelection={rowSelection}
+				rowKey={(record) => record.request_id} 
+				dataSource={data}
+				loading={loading}
+				pagination={tableParams.pagination}
+				onChange={handleTableChange}
+				scroll={{ x: "max-content" }}
+				onRow={onRow}
+				rowClassName={() => "hover-row"}
+			/>
+			<EditRequestModal open={modalVisibal} hideModal={hideModal}/>
+		</>
 	);
 };
 
