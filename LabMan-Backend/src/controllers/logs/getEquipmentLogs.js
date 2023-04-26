@@ -1,13 +1,13 @@
 import pool from "../../utils/MySQL/db.js";
 
-function getRequestLogs(req, res) {
+function getEquipmentLogs(req, res) {
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date) {
-		return getfilteredRequestLogs(req, res);
+		return getfilteredEquipmentLogs(req, res);
 	} else {
-		pool.query("SELECT * FROM request_log", (error, results) => {
+		pool.query("SELECT * FROM equipment_log", (error, results) => {
 			if (error) {
 				console.error(error);
-				return res.status(500).json({ error: "Error retrieving request logs" });
+				return res.status(500).json({ error: "Error retrieving Equipment logs" });
 			}
 			return res.status(200).json(results);
 		});
@@ -16,11 +16,11 @@ function getRequestLogs(req, res) {
 }
 
 
-function getfilteredRequestLogs(req, res) {
+function getfilteredEquipmentLogs(req, res) {
 
 	const { student_id, type_name, start_date, end_date } = req.query;
 
-	let sql = "SELECT * FROM request_log";
+	let sql = "SELECT * FROM equipment_log";
 
 	// Add WHERE clauses based on the query parameters
 	const whereClauses = [];
@@ -55,11 +55,11 @@ function getfilteredRequestLogs(req, res) {
 
 	pool.query(sql, params, (error, results) => {
 		if (error) {
-			return res.status(500).json({ error: "Error retrieving request records" });
+			return res.status(500).json({ error: "Error retrieving Equipment logs" });
 		}
 
 		return res.status(200).json(results);
 	});
 }
 
-export { getRequestLogs };
+export { getEquipmentLogs };
