@@ -1,9 +1,15 @@
 import { Table } from "antd";
 import { useActionHistoryContext } from "../../Context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import EquipmentModal from "../Modals/EquipmentModal";
+import RequestModal from "../Modals/RequestModal";
 
 const ActionHistoryTable = () => {
 	const {data, fetchData, loading, tableParams, setTableParams, tableSelection} = useActionHistoryContext();
+
+	const [equipmentVisible, setEquipmentVisible] = useState(false);
+	const [requestVisible, setRequestVisible] = useState(false);
+	const [modalData, setModalData] = useState([]);
 
 	const columns = [
 		{
@@ -82,15 +88,45 @@ const ActionHistoryTable = () => {
 		});
 	}, [data]);
 
+	useEffect(() => {
+	},[equipmentVisible, requestVisible]);
+
+	const onRow = (record) => {
+		return {
+			onClick: () => {
+				if(tableSelection === "request"){
+					setModalData(record);
+					setRequestVisible(true);
+				}else if(tableSelection === "equipment"){
+					setModalData(record);
+					setEquipmentVisible(true);
+				}
+			},
+		};
+	};
+
 	return (
-		<Table
-			columns={columns}
-			dataSource={data}
-			pagination={tableParams.pagination}
-			onChange={handleTableChange}
-			loading={loading}
-			rowKey={(record) => record?record.log_id:""}
-		/>
+		<>
+			<Table
+				columns={columns}
+				dataSource={data}
+				pagination={tableParams.pagination}
+				onChange={handleTableChange}
+				loading={loading}
+				rowKey={(record) => record?record.log_id:""}
+				onRow={onRow}
+			/>
+			{tableSelection=="equipment" && equipmentVisible && <EquipmentModal
+				visible={equipmentVisible}
+				setVisible={setEquipmentVisible}
+				data={modalData}
+			/>}
+			{tableSelection=="request" && requestVisible &&<RequestModal
+				visible={requestVisible}
+				setVisible={setRequestVisible}
+				data={modalData}
+			/>}
+		</>
 	);
 };
 
