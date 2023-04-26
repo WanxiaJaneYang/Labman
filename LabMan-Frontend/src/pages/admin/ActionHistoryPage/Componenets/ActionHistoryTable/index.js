@@ -3,6 +3,7 @@ import { useActionHistoryContext } from "../../Context";
 import { useEffect, useState } from "react";
 import EquipmentModal from "../Modals/EquipmentModal";
 import RequestModal from "../Modals/RequestModal";
+import "./style.css";
 
 const ActionHistoryTable = () => {
 	const {data, fetchData, loading, tableParams, setTableParams, tableSelection} = useActionHistoryContext();
@@ -115,6 +116,7 @@ const ActionHistoryTable = () => {
 				loading={loading}
 				rowKey={(record) => record?record.log_id:""}
 				onRow={onRow}
+				rowClassName={"row-hover-cursor"}
 			/>
 			{tableSelection=="equipment" && equipmentVisible && <EquipmentModal
 				visible={equipmentVisible}
