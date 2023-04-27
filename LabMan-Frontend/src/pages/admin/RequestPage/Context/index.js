@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
+import { message } from "antd";
 
 const RequestRecordContext = createContext();
 
@@ -7,44 +8,16 @@ export const useRequestRecordContext = () => {
 };
 
 const RequestRecordProvider = ({ children }) => {
+	// declare variables
+	const apiURL = "http://localhost:3008/request";
 	const [loading,setLoading] = useState(false);
 	const [selectedRows, setSelectedRows] = useState(null);
-	const [data, setData] = useState([
-		{
-			request_id: 1,
-			user_id: 1,
-			user_name:"a1888888",
-			type_id: 1,
-			type_name:"Macbook Pro",
-			borrow_amount: 1,
-			request_time: "2021-04-30",
-			return_date: "2021-05-01",
-			status: 0,
-		},
-		{
-			request_id: 2,
-			user_id: 2,
-			user_name:"a1888899",
-			type_id: 2,
-			type_name:"Macbook Air",
-			borrow_amount: 2,
-			request_time: "2021-04-30",
-			return_date: "2021-05-02",
-			status: 1,
-		},
-		{
-			request_id: 3,
-			user_id: 3,
-			user_name:"a1888800",
-			type_id: 3,
-			type_name:"Microsoft",
-			borrow_amount: 3,
-			request_time: "2021-04-30",
-			return_date: "2021-05-03",
-			status: 0,
-		},
-	]);
-
+	const [data, setData] = useState([]);
+	const [equipmentTypeList, setEquipmentTypeList] = useState([]);
+	const [editModalVisible, setEditModalVisible] = useState(false);
+	const [modalData, setModalData] = useState(null);
+	const [selectedEquipmentType, setSelectedEquipmentType] = useState(null);
+	const [availableNumber, setAvailableNumber] = useState(null);
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
@@ -52,45 +25,236 @@ const RequestRecordProvider = ({ children }) => {
 			showSizeChanger: true, 
 			pageSizeOptions: ["5", "10", "20", "50"],
 		},
+		filters: {
+			request_status: [0],
+		},
 	});
 
-	const handleTableChange = (pagination, filters, sorter) => {
-		setTableParams({
-			pagination,
-			filters,
-			...sorter,
-		});
-	};
-
+	//fetch data
 	const fetchData = async () => {
-		// Set the 'loading' state to true to show the loading indicator
-		setLoading(true);
-		// Call the API function to fetch the data and update the 'data' state
-		// const fetchedData = await fetchRecords(/* ...params */);
-		setData(data);
-		// Set the 'loading' state to false to hide the loading indicator
-		setLoading(false);
+		try{
+			setLoading(true);
+			const data = await getRequest();
+			setData(data);
+			setTableParams({
+				...tableParams,
+				pagination: {
+					...tableParams.pagination,
+					total: data.length,
+				},
+			});		
+			setLoading(false);
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
 
-	const handleFormSubmit = async (values) => {
-		// Call the mock function to create a new record and pass the form values
-		const newRecord = await mockCreateRecord(values);
-		// Add the new record to the 'data' state to update the table
-		setData((prevData) => [...prevData, newRecord]);
+	const getRequest= async () => {
+		try {
+			const response = await fetch(apiURL);
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
 	};
 
-	useEffect(() => {
-		fetchData();
-	}, [JSON.stringify(tableParams)]);
-
-	const mockCreateRecord = (values) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				resolve({ id: Date.now(), ...values });
-			}, 1000);
-		});
+	const onAdd = async (values) => {
+		console.log(values);
+		await addNewRequest(values);
+		await fetchData();
 	};
-	
+
+	const addNewRequest = async (values) => {
+		const requestParams = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(values),
+		};
+		try {
+			const response = await fetch(apiURL, requestParams);
+			if (response.ok) {
+				const data = await response.json();
+				message.success(data.message);
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const onCancelRequest= async () => {
+		try{
+			selectedRows.map(async (row) => {
+				await cancelRequest(row.request_id);
+			});
+			await fetchData();
+		}catch(error){
+			message.error(error.message);
+		}
+	};
+
+	const cancelRequest = async (request_id) => {
+		const url=apiURL+"/cancel/"+request_id;
+		try {
+			const response = await fetch(url, {method: "PATCH"});
+			if (response.ok) {
+				const data = await response.json();
+				message.success(data.message);
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		}catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const onCollect= async () => {
+		try{
+			selectedRows.map(async (row) => {
+				await collectRequest(row.request_id);
+			});
+			await fetchData();
+		}catch(error){
+			message.error(error.message);
+		}
+	};
+
+	const collectRequest = async (request_id) => {
+		const url=apiURL+"/collect/"+request_id;
+		try {
+			const response = await fetch(url, {method: "PATCH"});
+			if (response.ok) {
+				const data = await response.json();
+				message.success(data.message);
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		}catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const onEdit = async (values) => {
+		await editRequest(values);
+		await fetchData();
+	};
+
+	const editRequest = async (values) => {
+		const url=apiURL+"/"+values.request_id;
+		const requestParams = {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(values),
+		};
+		try {
+			const response = await fetch(url, requestParams);
+			if (response.ok) {
+				const data = await response.json();
+				message.success(data.message);
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const onSearch = async (values) => {
+		await searchRequest(values);
+		await fetchData();
+	};
+
+	const searchRequest = async (values) => {
+		const urlParams = new URLSearchParams(values).toString();
+		const url = apiURL + "/search?" + urlParams;
+		const requestParams = {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+		try {
+			const response = await fetch(url, requestParams);
+			if (response.ok) {
+				const data = await response.json();
+				message.success(data.message);
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const getEquipmentTypeList = async () => {
+		const url = "http://localhost:3008/equipment";
+		try {
+			const response = await fetch(url);
+			if (response.ok) {
+				const data = await response.json();
+				setEquipmentTypeList(data);
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		} catch (error) {
+			console.error(error.message);
+		}
+	};
+
+	const getAvailableNumber = async () => {
+		const searchParams = new URLSearchParams({type_name: selectedEquipmentType}).toString();
+		const url = "http://localhost:3008/equipment?" + searchParams;
+
+		try {
+			console.log("fetching available number from ", url);
+			const response = await fetch(url);
+			if (response.ok) {
+				const data = await response.json();
+				console.log("response ok, data is ", data);
+				setAvailableNumber(data[0].available_number);
+				console.log("setting available number as :",data[0].available_amount);
+			} else {
+				const errorData = await response.json();
+				throw new Error(errorData.error);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	const searchStudentID = async (student_id) => {
+		const url = "http://localhost:3008/users/" + student_id;
+		try {
+			const response = await fetch(url);
+			if (response.ok) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (error) {
+			message.error(error.message);
+			return false;
+		}
+	};
+
+
 	const value = {
 		loading,
 		selectedRows,
@@ -100,8 +264,22 @@ const RequestRecordProvider = ({ children }) => {
 		tableParams,
 		setTableParams,
 		fetchData,
-		handleFormSubmit,
-		handleTableChange,
+		onAdd,
+		onCancelRequest,
+		onCollect,
+		onEdit,
+		onSearch,
+		equipmentTypeList,
+		getEquipmentTypeList,
+		editModalVisible,
+		setEditModalVisible,
+		modalData,
+		setModalData,
+		selectedEquipmentType,
+		setSelectedEquipmentType,
+		availableNumber,
+		getAvailableNumber,
+		searchStudentID,
 	};
 
 	return (
