@@ -81,7 +81,13 @@ const ReturnRecordProvider = ({ children }) => {
 	const onReturnAllEquipment = async () => {
 		try{
 			console.log("on return selectedRows",selectedRows);
-			await Prosime.all(selectedRows.map((row) => returnEquipment(row.borrow_id, row.borrow_amount)));
+			await Prosime.all(selectedRows.map((row) =>{
+				if(row.returned_amount==0){
+					return returnEquipment(row.borrow_id, row.borrow_amount);
+				}else{
+					return returnEquipment(row.borrow_id, row.borrow_amount-row.returned_amount);
+				}
+			}));
 			message.success("Return equipment successfully");
 			fetchData();
 		}

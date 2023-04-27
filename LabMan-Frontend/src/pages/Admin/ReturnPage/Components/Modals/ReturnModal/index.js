@@ -29,7 +29,9 @@ const ReturnModal =({open, hideModal, record})=>{
 			onOk={onOk}
 			confirmLoading={confirmLoading}
 		>
-			<Form>
+			<Form 
+				form={form}
+			>
 				<Form.Item 
 					label={"Returned Amount"} 
 					name={"returned_amount"}
