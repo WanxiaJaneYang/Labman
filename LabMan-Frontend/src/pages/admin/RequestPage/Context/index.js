@@ -40,12 +40,13 @@ const RequestRecordProvider = ({ children }) => {
 				...tableParams,
 				pagination: {
 					...tableParams.pagination,
-					total: data.length,
+					total: data?data.length:0,
 				},
 			});		
 			setLoading(false);
 		} catch (error) {
 			message.error(error.message);
+			setLoading(false);
 		}
 	};
 
