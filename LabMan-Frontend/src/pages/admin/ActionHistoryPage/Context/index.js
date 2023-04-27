@@ -60,10 +60,10 @@ const ActionHistoryProvider = ({ children }) => {
 		}
 	};
 
-	const onSearch = (value) => {
+	const onSearch = async(value) => {
 		try{
 			setLoading(true);
-			const data = searchLog(value);
+			const data = await searchLog(value);
 			setData(data);
 			setLoading(false);
 			setTableParams({

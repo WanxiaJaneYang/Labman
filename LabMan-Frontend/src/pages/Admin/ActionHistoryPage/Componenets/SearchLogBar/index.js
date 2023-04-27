@@ -2,17 +2,20 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button} from "antd";
 import { Input, Space } from "antd";
 import { useActionHistoryContext } from "../../Context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SearchLogBar = () => {
 	const [searchParams, setSearchParams] = useState({
 		student_id: "",
 		type_name: "",
 	}); 
-	const {onSearch} = useActionHistoryContext();
+	const {onSearch, tableSelection} = useActionHistoryContext();
+
+	useEffect(() => {
+		onClick();
+	}, [tableSelection]);
 
 	const onClick = () => {
-		console.log("onClick, searchParams:", searchParams);
 		onSearch(searchParams);
 	};
 
@@ -37,11 +40,14 @@ const SearchLogBar = () => {
 			<Input 
 				onChange={onIDInputChange}
 				placeholder="Input Student ID" 
-				allowClear />
+				allowClear 
+				onPressEnter={onClick}
+			/>
 			<Input 
 				onChange={onEquipmentInputChange}
 				placeholder="Input Equipment Type" 
 				allowClear
+				onPressEnter={onClick}
 			/>
 			<Button 
 				type="primary" 
