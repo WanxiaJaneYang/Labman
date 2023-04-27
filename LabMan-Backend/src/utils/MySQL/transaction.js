@@ -1,9 +1,9 @@
-import pool from "../../utils/MySQL/db.js";
+import pool from "./db.js";
 
 function runTransaction(callback) {
 	pool.getConnection((error, connection) => {
 		if (error) {
-			console.log( error);
+			console.log(error);
 		}
 		try {
 			connection.beginTransaction();
@@ -11,7 +11,7 @@ function runTransaction(callback) {
 			connection.commit();
 		} catch (error) {
 			connection.rollback();
-			console.log( error);
+			console.log(error);
 		} finally {
 			connection.release();
 		}
