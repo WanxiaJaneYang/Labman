@@ -64,8 +64,8 @@ const ReturnRecordProvider = ({ children }) => {
 		}
 	};
 
-	const returnEquipment = async (borrow_id, returned_amount) => {
-		const url = apiURL + "/" + borrow_id+ "? returned_amount=" + returned_amount;
+	const returnEquipment = async (borrow_id, return_amount) => {
+		const url = apiURL + "/" + borrow_id+ "? return_amount=" + return_amount;
 		
 		try{
 			const response = await fetch(url, {method:"PATCH"});
