@@ -34,7 +34,6 @@ const NewRequestRecordButton = () => {
 			<Button type='primary' onClick={showModal}>New </Button>
 			<Modal
 				title='Add New Request Record'
-				width="80vw"
 				open={isModalOpen}
 				onCancel={hideModal}
 				onOk={okHandler}

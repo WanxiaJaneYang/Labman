@@ -3,7 +3,6 @@ import { useRequestRecordContext } from "../../Context";
 import { useEffect, useState } from "react";
 import EditRequestModal from "../Modals/EditRequestModal";
 import {EditOutlined} from "@ant-design/icons";
-import "./style.css";
 
 const RequestRecordTable = () => {
 	const {
@@ -130,7 +129,7 @@ const RequestRecordTable = () => {
 				...tableParams,
 				pagination: {
 					...tableParams.pagination,
-					total: data.length,
+					total: data?data.length:0,
 				},
 			});
 		}catch(err){
@@ -161,7 +160,6 @@ const RequestRecordTable = () => {
 				pagination={tableParams.pagination}
 				onChange={handleTableChange}
 				scroll={{ x: "max-content" }}
-				rowClassName={() => "hover-row"}
 			/>
 			<EditRequestModal open={modalVisibal} hideModal={hideModal}/>
 		</>

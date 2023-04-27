@@ -60,9 +60,11 @@ function getfilteredRequests(req, res) {
 	pool.query(sql, params, (error, results) => {
 		if (error) {
 			return res.status(500).json({ error: "Error retrieving request records" });
+		}else if (results.length === 0) {
+			return res.status(404).json({ error: "No request records found" });
+		}else{
+			return res.status(200).json(results);
 		}
-
-		return res.status(200).json(results);
 	});
 }
 
