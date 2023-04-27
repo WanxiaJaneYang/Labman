@@ -65,8 +65,7 @@ const ReturnRecordProvider = ({ children }) => {
 	};
 
 	const returnEquipment = async (borrow_id, return_amount) => {
-		const url = apiURL + "/" + borrow_id+ "? return_amount=" + return_amount;
-		
+		const url = apiURL + "/" + borrow_id+ "?return_amount=" + return_amount;
 		try{
 			const response = await fetch(url, {method:"PATCH"});
 			if(!response.ok){
@@ -81,7 +80,8 @@ const ReturnRecordProvider = ({ children }) => {
 
 	const onReturnAllEquipment = async () => {
 		try{
-			await Prosime.all(data.map((row) => returnEquipment(row.borrow_id, row.borrow_amount)));
+			console.log("on return selectedRows",selectedRows);
+			await Prosime.all(selectedRows.map((row) => returnEquipment(row.borrow_id, row.borrow_amount)));
 			message.success("Return equipment successfully");
 			fetchData();
 		}
