@@ -63,7 +63,6 @@ function newRequest(req, res) {
 					console.error(error);
 				}
 			});
-			});
 		});
 	} catch (error) {
 		console.error(error);

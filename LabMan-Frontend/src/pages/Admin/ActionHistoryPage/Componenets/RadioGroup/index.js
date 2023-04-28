@@ -8,8 +8,8 @@ const TableDataSelector = () => {
 			onChange={e => setTableSelection(e.target.value)} 
 			defaultValue="request" 
 			buttonStyle="solid">
-			<Radio.Button value="request">Request Log</Radio.Button>
-			<Radio.Button value="equipment">Borrow Log</Radio.Button>
+			<Radio.Button value="request">Request History</Radio.Button>
+			<Radio.Button value="equipment">Borrow History</Radio.Button>
 		</Radio.Group>
 	);
 };

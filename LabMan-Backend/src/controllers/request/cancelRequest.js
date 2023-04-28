@@ -43,8 +43,6 @@ function cancelRequest(req, res) {
 
 					// Insert requestLog into request_Log table
 					const insertPromise = insertRequestLog(connection, requestLog);
-					// Insert requestLog into request_Log table
-					const insertPromise = insertRequestLog(connection, requestLog);
 
 					// Wait for both promises to complete
 					await Promise.all([updatePromise, insertPromise]).catch((error) => {
@@ -57,11 +55,6 @@ function cancelRequest(req, res) {
 						return res.status(500).json({ error: "Error cancelling request" });
 					});
 
-					// Send success response
-					return res.status(200).json({ success: "Request cancelled successfully" });
-				} catch (error) {
-					console.error(error);
-				}
 					// Send success response
 					return res.status(200).json({ success: "Request cancelled successfully" });
 				} catch (error) {
