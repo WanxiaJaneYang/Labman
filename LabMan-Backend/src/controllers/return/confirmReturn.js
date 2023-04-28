@@ -33,7 +33,7 @@ const confirmReturn = (req, res) => {
 					type_name: borrowingRecord.type_name,
 					student_id: borrowingRecord.student_id,
 					borrow_amount: borrowingRecord.borrow_amount,
-					log_type: borrow_status,
+					log_type: 1,
 					log_time: new Date(),
 					return_date: borrowingRecord.return_date,
 					returned_amount
