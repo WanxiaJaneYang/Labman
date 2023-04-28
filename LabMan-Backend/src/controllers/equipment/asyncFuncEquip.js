@@ -20,6 +20,6 @@ export async function updateRemovableStatus(connection, type_id, removableStatus
 		const results = await promiseQuery(updateRemovableQuery, [removableStatus, type_id]);
 		return results;
 	} catch (error) {
-		throw error;
+		console.log(error);
 	}
 }

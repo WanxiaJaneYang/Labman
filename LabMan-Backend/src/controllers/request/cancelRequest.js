@@ -1,6 +1,6 @@
 import moment from "moment";
 import pool from "../../utils/MySQL/db.js";
-import runTransaction from "./transaction.js";
+import runTransaction from "../../utils/MySQL/transaction.js";
 import { updateRequestStatus } from "./asyncFuncRequest.js";
 import { insertRequestLog } from "../logs/asyncFuncLogs.js";
 
@@ -43,13 +43,25 @@ function cancelRequest(req, res) {
 
 					// Insert requestLog into request_Log table
 					const insertPromise = insertRequestLog(connection, requestLog);
+					// Insert requestLog into request_Log table
+					const insertPromise = insertRequestLog(connection, requestLog);
 
 					// Wait for both promises to complete
 					await Promise.all([updatePromise, insertPromise]).catch((error) => {
 						console.error(error);
 						return res.status(500).json({ error: "Error cancelling request" });
 					});
+					// Wait for both promises to complete
+					await Promise.all([updatePromise, insertPromise]).catch((error) => {
+						console.error(error);
+						return res.status(500).json({ error: "Error cancelling request" });
+					});
 
+					// Send success response
+					return res.status(200).json({ success: "Request cancelled successfully" });
+				} catch (error) {
+					console.error(error);
+				}
 					// Send success response
 					return res.status(200).json({ success: "Request cancelled successfully" });
 				} catch (error) {

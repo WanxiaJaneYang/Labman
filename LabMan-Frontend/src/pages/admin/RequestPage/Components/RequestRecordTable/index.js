@@ -6,14 +6,14 @@ import {EditOutlined} from "@ant-design/icons";
 
 const RequestRecordTable = () => {
 	const {
-		selectedRows, 
-		setSelectedRows, 
-		data, 
+		selectedRows,
+		setSelectedRows,
+		data,
 		fetchData,
-		loading, 
-		tableParams, 
-		setTableParams, 
-		equipmentTypeList, 
+		loading,
+		tableParams,
+		setTableParams,
+		equipmentTypeList,
 		getEquipmentTypeList,
 		setModalData,
 	} = useRequestRecordContext();
@@ -22,16 +22,16 @@ const RequestRecordTable = () => {
 
 	const columns = [
 		{
-			title:"Request Time",
-			dataIndex:"request_time",
+			title: "Request Time",
+			dataIndex: "request_time",
 			render: (text, record) => {
 				return formatDate(record.request_time);
 			},
 			responive: ["md"],
 		},
 		{
-			title:"Equipment Name",
-			dataIndex:"type_name",
+			title: "Equipment Name",
+			dataIndex: "type_name",
 			filters: equipmentTypeList.map((type) => {
 				return {
 					text: type.type_name,
@@ -40,12 +40,12 @@ const RequestRecordTable = () => {
 			}),
 		},
 		{
-			title:"Student ID",
-			dataIndex:"student_id",
+			title: "Student ID",
+			dataIndex: "student_id",
 		},
 		{
-			title:"Amount",
-			dataIndex:"borrow_amount",
+			title: "Amount",
+			dataIndex: "borrow_amount",
 		},
 		// {
 		// 	title:"Status",
@@ -124,7 +124,7 @@ const RequestRecordTable = () => {
 	}, []);
 
 	useEffect(() => {
-		try{
+		try {
 			setTableParams({
 				...tableParams,
 				pagination: {
@@ -136,6 +136,7 @@ const RequestRecordTable = () => {
 			message.error(err.message);
 		}
 	}, [data]);
+
 
 	const handleTableChange = (pagination, filters) => {
 		setTableParams({

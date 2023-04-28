@@ -1,5 +1,5 @@
 import moment from "moment";
-import runTransaction from "./transaction.js";
+import runTransaction from "../../utils/MySQL/transaction.js";
 import { insertRequestLog } from "../logs/asyncFuncLogs.js";
 import { updateRequest } from "./asyncFuncRequest.js";
 
@@ -25,23 +25,23 @@ function editRequest(req, res) {
 		};
 
 		runTransaction(async (connection) => {
-			try{
-			// Update the request record
-			const updateRequestPromise = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
+			try {
+				// Update the request record
+				const updateRequestPromise = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
 
-			// Insert requestLog into request_Log table
-			const insertRequestLogPromise = insertRequestLog(connection, requestLog);
+				// Insert requestLog into request_Log table
+				const insertRequestLogPromise = insertRequestLog(connection, requestLog);
 
-			// Wait for all promises to resolve
-			await Promise.all([updateRequestPromise, insertRequestLogPromise])
-				.then(() => {
-					// Send success response
-					return res.status(200).json({ success: "Request updated and log inserted successfully" });
-				})
-				.catch((error) => {
-					console.error(error);
-					return res.status(500).json({ error: "Failed to update request and insert request log" });
-				});
+				// Wait for all promises to resolve
+				await Promise.all([updateRequestPromise, insertRequestLogPromise])
+					.then(() => {
+						// Send success response
+						return res.status(200).json({ success: "Request updated and log inserted successfully" });
+					})
+					.catch((error) => {
+						console.error(error);
+						return res.status(500).json({ error: "Failed to update request and insert request log" });
+					});
 			} catch (error) {
 				console.error(error);
 			}

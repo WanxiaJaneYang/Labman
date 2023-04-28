@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import { useReturnRecordContext } from "../../../ReturnRecordContext";
-import ShowDetailModal from "../../Modals/ShowDetailModal";
 import { useEffect } from "react";
+import ReturnEquipmentButton from "../../Buttons/ReturnEquipmentButton";
 
 const ReturnTable = () => {
 	const { 
@@ -14,8 +14,6 @@ const ReturnTable = () => {
 		setTableParams,
 		equipmentTypeList, 
 		getEquipmentTypeList,
-		setModalData,
-		setModalVisible,
 	} = useReturnRecordContext();
 
 	const formatDate = (dateValue) => {
@@ -38,17 +36,6 @@ const ReturnTable = () => {
 						value: item.type_name,
 					};
 				}):[],
-			render: (text, record) => {
-				return (
-					<>
-						<a onClick={()=>{
-							setModalData(record);
-							setModalVisible(true);
-						}}>{text}</a>
-						<ShowDetailModal/>
-					</>
-				);
-			}
 		},
 		{
 			title: "Borrow Time",
@@ -69,9 +56,21 @@ const ReturnTable = () => {
 			dataIndex: "student_id",
 		},
 		{
-			title: "Amount",
+			title: "Borrowed Amount",
 			dataIndex: "borrow_amount",
 		},
+		{
+			title: "Returned Amount",
+			dataIndex: "returned_amount",
+		},{
+			title: "Action",
+			key: "action",
+			render: (_, record) => (
+				<>
+					<ReturnEquipmentButton record={record}/>
+				</>
+			),
+		}
 
 	];
 
