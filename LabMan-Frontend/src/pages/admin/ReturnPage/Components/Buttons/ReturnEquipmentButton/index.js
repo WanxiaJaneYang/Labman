@@ -1,4 +1,4 @@
-import { Button, Tooltip} from "antd";
+import {Tooltip} from "antd";
 import ReturnModal from "../../Modals/ReturnModal";
 import { useState } from "react";
 import { CheckOutlined } from "@ant-design/icons";
@@ -14,10 +14,9 @@ const ReturnEquipment = ({record}) => {
 	return (
 		<>
 			<Tooltip title={"Return Equipment"}>
-				<Button
-					size="large"
+				<CheckOutlined 
+					fontSize={20}
 					onClick={onClick}
-					icon={<CheckOutlined />}
 				/>
 				{record && <ReturnModal 
 					open={open} 
