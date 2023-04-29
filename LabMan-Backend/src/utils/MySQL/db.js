@@ -7,7 +7,7 @@ dotenv.config();
 const __dirname = fileURLToPath(new URL(import.meta.url)).replace(/\\/g, "/").split("/").slice(0, -1).join("/");
 
 const pool = mysql.createPool({
-	host: "labman3.mysql.database.azure.com",
+	host: "labman5.mysql.database.azure.com",
 	user: "a1866621",
 	password: "Adelaide123N",
 	database: "labman",
