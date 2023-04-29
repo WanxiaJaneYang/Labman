@@ -46,19 +46,19 @@ const ActionHistoryTable = () => {
 		if(tableSelection === "request"){
 			if (status === "0") {
 				return "Generated";
-			}else if (status === "1") {
+			}else if (status === 1) {
 				return "Collected";
-			}else if (status === "2") {
+			}else if (status === 2) {
 				return "Edit";
-			}else if (status === "3") {
+			}else if (status === 3) {
 				return "Cancelled";
 			}
 		}else if(tableSelection === "equipment"){
-			if (status === "0") {
+			if (status === 0) {
 				return "Borrowed";
-			}else if (status === "1") {		
+			}else if (status === 1) {		
 				return "Returned";
-			}else if (status === "2") {
+			}else if (status === 2) {
 				return "Cancelled";
 			}
 		}
