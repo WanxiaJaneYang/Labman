@@ -22,3 +22,5 @@ Backend:
 3. Enter command: npm run dev
 
 Check the browser. Enter anything in login page to log in.
+
+## MileStone 1 Point is under the tag Milestone1
