@@ -1,7 +1,6 @@
 import MyLayout from "../MyLayout";
 import {
 	DatabaseOutlined,
-	ExportOutlined,
 	ImportOutlined,
 	TeamOutlined,
 	FileOutlined,
@@ -14,11 +13,6 @@ const adminMenuItems = [
 		key: "/admin/request",
 		icon: <FormOutlined />,
 		label: "Request",
-	},
-	{
-		key: "/admin/borrow",
-		icon: <ExportOutlined />,
-		label: "Borrow",
 	},
 	{
 		key: "/admin/return",

@@ -1,105 +1,75 @@
 import pool from "../../utils/MySQL/db.js";
 import moment from "moment";
+import runTransaction from "../../utils/MySQL/transaction.js";
+import { updateRequestStatus } from "./asyncFuncRequest.js";
+import { updateAvailableAmount } from "../equipment/asyncFuncEquip.js";
+import { updateRemovableStatus } from "../equipment/asyncFuncEquip.js";
+import { insertRequestLog } from "../logs/asyncFuncLogs.js";
+import { insertBorrowingRecords } from "./asyncFuncRequest.js";
 
-async function collectRequest(req, res) {
+function collectRequest(req, res) {
 	try {
-		// Extract data from request body
+		// Extract data from request params
 		const { request_id } = req.params;
 
 		// Define the SQL query
 		const sql = "SELECT * FROM requests WHERE request_id = ?";
 
 		// Execute the SQL query with the request_id parameter
-		pool.query(sql, [request_id], async (error, results) => {
+		pool.query(sql, [request_id], (error, results) => {
 			if (error) {
 				console.error(error);
+				return;
 			}
-			const borrowingRequest = Array.isArray(results) ? results[0] : results;
+			const borrowingRequest = results[0];
 			//console.log(results);
-
+			if (borrowingRequest === undefined) {
+				return res.status(500).json({ error: "Error retrieving request record" });
+			}
 			const amount = borrowingRequest.borrow_amount;
 			//console.log(borrowingRequest);
-
-			//   console.log(amount);
 
 			// Get the current date and time
 			const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
-			const borrowRecord = {
-				student_id: borrowingRequest.student_id,
-				type_id: borrowingRequest.type_id,
-				type_name: borrowingRequest.type_name,
-				borrow_amount: 1,
-				borrow_date: current_time,
-				return_date: borrowingRequest.return_date,
-				borrow_status: 0,//  0 = borrowed/unreturned
-				request_id: request_id
-			};
-
 			// Start a transaction
-			await runTransaction(async (connection) => {
-				// Insert borrowingRecord into borrowings table N times with amount=1 per record
-				for (let i = 0; i < amount; i++) {
-					const query = "INSERT INTO borrowings SET ?";
-					connection.query(query, borrowRecord, async (error, result) => {
-						if (error) {
-							throw error;
-						}
-						//console.log(result);
+			runTransaction(async (connection) => {
+				try {
+					// Insert borrowingRecord into borrowings table N times with amount=1 per record
+					const p1 = insertBorrowingRecords(connection, borrowingRequest, amount, current_time);
 
-						// Get the newly created request ID from the result
-						const borrow_id = result.insertId;
-						//console.log(borrow_id);
+					const requestLog = {
+						type_id: borrowingRequest.type_id,
+						type_name: borrowingRequest.type_name,
+						student_id: borrowingRequest.student_id,
+						borrow_amount: amount,
+						return_date: borrowingRequest.return_date,
+						log_type: 1,  // 1 = collect
+						log_time: current_time,
+						request_id: request_id // Use the request_id from the previous query
+					};
 
-						// creat a new log for new borrowings
-						const borrowLog = {
-							type_id: borrowingRequest.type_id,
-							type_name: borrowingRequest.type_name,
-							student_id: borrowingRequest.student_id,
-							borrow_amount: 1,
-							log_type: 1,  // 1 = borrow
-							log_time: current_time,
-							borrow_id: borrow_id // Use the request_id from the previous query
-						};
-						const logQuery = "INSERT INTO equipment_Log SET ?";
-						await connection.query(logQuery, borrowLog);
+					const p2 = insertRequestLog(connection, requestLog);
+					const p3 = updateRequestStatus(connection, request_id, 1);
+					const p4 = updateAvailableAmount(connection, borrowingRequest.type_id, amount);
+					const p5 = updateRemovableStatus(connection, borrowingRequest.type_id, 0);
+
+					await Promise.all([p1, p2, p3, p4, p5]).catch((error) => {
+						console.error(error);
+						return res.status(500).json({ error: "Error processing request(collect)" });
 					});
+
+					// Send response indicating success
+					return res.status(200).json({ success: "Borrow record and log created successfully" });
+				} catch (error) {
+					console.error(error);
 				}
-
-				// Update the request status to 1
-				const updateStatusQuery = "UPDATE requests SET request_status = ? WHERE request_id = ?";
-				await connection.query(updateStatusQuery, [1, request_id]);
-
-				//reduce the available amount of the equipment type
-				const updateAmountQuery = "UPDATE equipment_type SET available_amount = available_amount - ? WHERE type_id = ?";
-				await connection.query(updateAmountQuery, [amount, borrowingRequest.type_id]);
 			});
-
-			// Send response indicating success
-			return res.status(200).json({ success: "Borrow record and log created successfully" });
 		});
 	} catch (error) {
 		console.error(error);
-		return res.status(500).json({ error: "Failed to create borrow record" });
+		res.status(500).json({ error: "Failed to collect requested equipment and create borrow records" });
 	}
-}
-
-async function runTransaction(callback) {
-	pool.getConnection(async (error, connection) => {
-		if (error) {
-			throw error;
-		}
-		try {
-			connection.beginTransaction();
-			callback(connection);
-			connection.commit();
-		} catch (error) {
-			connection.rollback();
-			throw error;
-		} finally {
-			connection.release();
-		}
-	});
 }
 
 export { collectRequest };

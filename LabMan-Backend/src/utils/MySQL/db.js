@@ -24,7 +24,7 @@ pool.getConnection((err, connection) => {
 	if (err) {
 		console.error("database is not connectable: ", err);
 	} else {
-		console.log("database is connected ");
+		console.log("database is connectable ");
 		connection.release();
 	}
 });

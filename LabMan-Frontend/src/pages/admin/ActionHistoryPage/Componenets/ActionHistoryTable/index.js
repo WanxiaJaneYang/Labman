@@ -44,7 +44,7 @@ const ActionHistoryTable = () => {
 
 	const getStatus = (status) => {
 		if(tableSelection === "request"){
-			if (status === "0") {
+			if (status === 0) {
 				return "Generated";
 			}else if (status === 1) {
 				return "Collected";
