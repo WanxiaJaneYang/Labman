@@ -1,21 +1,21 @@
 import pool from "../../utils/MySQL/db.js";
 
-function getRequests(req, res) {
+async function getRequests(req) {
 
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date || req.query.request_status) {
-		return getfilteredRequests(req, res);
+		return getfilteredRequests(req);
 	} else {
-		pool.query("SELECT * FROM requests", (error, results) => {
-			if (error) {
-				console.error(error);
-				return res.status(500).json({ error: "Error retrieving request records" });
-			}
-			return res.status(200).json(results);
-		});
+		try {
+			const [rows] = await pool.query("SELECT * FROM requests");
+			return rows;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
 	}
 }
 
-function getfilteredRequests(req, res) {
+async function getfilteredRequests(req) {
 
 	const { student_id, type_name, start_date, end_date, request_status } = req.query;
 
@@ -57,13 +57,14 @@ function getfilteredRequests(req, res) {
 	// Add ORDER BY clause to sort by request_time
 	sql += " ORDER BY request_time ASC";
 
-	pool.query(sql, params, (error, results) => {
-		if (error) {
-			return res.status(500).json({ error: "Error retrieving request records" });
-		}
-
-		return res.status(200).json(results);
-	});
+	try {
+		const [rows] = await pool.query(sql, params);
+		return rows;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }
 
 export { getRequests };
+

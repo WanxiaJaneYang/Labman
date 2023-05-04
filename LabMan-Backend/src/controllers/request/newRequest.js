@@ -3,8 +3,10 @@ import runTransaction from "./transaction.js";
 import pool from "../../utils/MySQL/db.js";
 import { insertRequestLog } from "../logs/asyncFuncLogs.js";
 import { insertRequestRecord } from "./asyncFuncRequest.js";
+import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
 
-function newRequest(req, res) {
+
+async function newRequest(req) {
 	try {
 		const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
 		// Get the current date and time
@@ -22,53 +24,36 @@ function newRequest(req, res) {
 			request_status: 0, // 0 = pending/new request
 		};
 
-		//check if the available amount of type_id more than 0
-		const sql = "SELECT available_amount FROM equipment_type WHERE type_id = ?";
-
 		// Execute the SQL query with the request_id parameter
-		pool.query(sql, [type_id], (error, results) => {
-			if (error) {
-				console.error(error);
-				return;
-			}
-			//console.log(results);
+		await compareAvailableAmount(pool, type_id, borrow_amount);
 
-			const amount = results[0].available_amount;
-			//console.log(amount);
-			if (amount < borrow_amount) {
-				return res.status(500).json({ error: "not available" });
-			}
-			runTransaction(async (connection) => {
-				try {
-					const insertRequestId = await insertRequestRecord(connection, requestRecord);
+		await runTransaction(async (connection) => {
 
-					console.log(insertRequestId);
-					const requestLog = {
-						type_id,
-						type_name,
-						student_id,
-						borrow_amount,
-						return_date,
-						log_type: 0, // 0 = new request
-						log_time: current_time,
-						request_id: insertRequestId,
-					};
+			const insertRequestId = await insertRequestRecord(connection, requestRecord);
 
-					await Promise.all([
-						insertRequestLog(connection, requestLog),
-					]);
+			//console.log(insertRequestId);
+			const requestLog = {
+				type_id,
+				type_name,
+				student_id,
+				borrow_amount,
+				return_date,
+				log_type: 0, // 0 = new request
+				log_time: current_time,
+				request_id: insertRequestId,
+			};
 
-					return res.status(200).json({ success: "Request created successfully" });
-				} catch (error) {
-					console.error(error);
-				}
-			})
+			await insertRequestLog(connection, requestLog);
+
+		}).catch((error) => {
+			console.log(error);
+			throw error;
 		});
+
 	} catch (error) {
 		console.error(error);
-
 		// Send error response
-		res.status(500).json({ error: "Failed to create new request" });
+		throw error;
 	}
 }
 

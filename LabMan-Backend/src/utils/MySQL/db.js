@@ -1,13 +1,13 @@
 import dotenv from "dotenv";
 import fs from "fs";
-import mysql from "mysql";
+import mysql from 'mysql2/promise';
 import { fileURLToPath } from "url";
 
 dotenv.config();
 const __dirname = fileURLToPath(new URL(import.meta.url)).replace(/\\/g, "/").split("/").slice(0, -1).join("/");
 
 const pool = mysql.createPool({
-	host: "labman3.mysql.database.azure.com",
+	host: "labman5.mysql.database.azure.com",
 	user: "a1866621",
 	password: "Adelaide123N",
 	database: "labman",
@@ -20,18 +20,20 @@ const pool = mysql.createPool({
 });
 console.log("Connection pool object created successfully");
 
-pool.getConnection((err, connection) => {
-	if (err) {
-		console.error("database is not connectable: ", err);
-	} else {
-		console.log("database is connected ");
-		connection.release();
+async function connectToDatabase() {
+	let connection;
+	try {
+		connection = await pool.getConnection();
+		console.log("database is connectable");
+	} catch (error) {
+		console.error("database is not connectable: ", error);
+	} finally {
+		if (connection) {
+			connection.release();
+		}
 	}
-});
-
-function connectToDatabase() {
 	return pool;
 }
 
-export { connectToDatabase };
+export {connectToDatabase};
 export default pool;
