@@ -1,5 +1,5 @@
 import moment from "moment";
-import runTransaction from "./transaction.js";
+import runTransaction from "../../utils/MySQL/transaction.js";
 import { insertRequestLog } from "../logs/asyncFuncLogs.js";
 import { updateRequest } from "./asyncFuncRequest.js";
 import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
@@ -32,8 +32,8 @@ async function editRequest(req,res) {
 
 			const updateRequestPromise = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
 
-			// Insert requestLog into request_Log table
-			const insertRequestLogPromise = insertRequestLog(connection, requestLog);
+				// Insert requestLog into request_Log table
+				const insertRequestLogPromise = insertRequestLog(connection, requestLog);
 
 			// Wait for all promises to resolve
 			await Promise.all([updateRequestPromise, insertRequestLogPromise]);

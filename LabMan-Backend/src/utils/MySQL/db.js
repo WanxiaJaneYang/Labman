@@ -8,6 +8,7 @@ const __dirname = fileURLToPath(new URL(import.meta.url)).replace(/\\/g, "/").sp
 
 const pool = mysql.createPool({
 	host: "labman5.mysql.database.azure.com",
+	host: "labman5.mysql.database.azure.com",
 	user: "a1866621",
 	password: "Adelaide123N",
 	database: "labman",

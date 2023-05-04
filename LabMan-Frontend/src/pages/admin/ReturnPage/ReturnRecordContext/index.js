@@ -14,9 +14,6 @@ const ReturnRecordProvider = ({ children }) => {
 	const [selectedRows, setSelectedRows] = useState(null);
 	const [data, setData] = useState([]);
 	const [EquipmentTypeList, setEquipmentTypeList] = useState([]);
-	const [modalData, setModalData] = useState(null);
-	const [modalVisible, setModalVisible] = useState(false);
-
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
@@ -43,6 +40,7 @@ const ReturnRecordProvider = ({ children }) => {
 			if (response.ok) {
 				const data = await response.json();
 				setData(data);
+				console.log(data);
 			}else{
 				const err = await response.json();
 				throw new Error(err.error);
@@ -52,9 +50,11 @@ const ReturnRecordProvider = ({ children }) => {
 		}
 	};
 
-	const onReturnEquipment = async () => {
+	const onReturnEquipment = async (values) => {
 		try{
-			await Prosime.all(selectedRows.map((row) => returnEquipment(row)));
+			const borrow_id = values.borrow_id;
+			const returned_amount = values.returned_amount;
+			await returnEquipment(borrow_id, returned_amount);
 			message.success("Return equipment successfully");
 			setSelectedRows(null);
 			fetchData();
@@ -64,17 +64,32 @@ const ReturnRecordProvider = ({ children }) => {
 		}
 	};
 
-	const returnEquipment = async (row) => {
-		const url= `${apiURL}/${row.borrow_id}/`;
-		
+	const returnEquipment = async (borrow_id, return_amount) => {
+		const url = apiURL + "/" + borrow_id+ "?return_amount=" + return_amount;
 		try{
-			const response = await fetch(url,{
-				method: "PATCH",
-			});
+			const response = await fetch(url, {method:"PATCH"});
 			if(!response.ok){
 				const err = await response.json();
 				throw new Error(err.error);
 			}
+		}
+		catch(error){
+			message.error(error.message);
+		}
+	};
+
+	const onReturnAllEquipment = async () => {
+		try{
+			console.log("on return selectedRows",selectedRows);
+			await Prosime.all(selectedRows.map((row) =>{
+				if(row.returned_amount==0){
+					return returnEquipment(row.borrow_id, row.borrow_amount);
+				}else{
+					return returnEquipment(row.borrow_id, row.borrow_amount-row.returned_amount);
+				}
+			}));
+			message.success("Return equipment successfully");
+			fetchData();
 		}
 		catch(error){
 			message.error(error.message);
@@ -130,12 +145,9 @@ const ReturnRecordProvider = ({ children }) => {
 		setTableParams,
 		fetchData,
 		onReturnEquipment,
+		onReturnAllEquipment,
 		EquipmentTypeList,
 		getEquipmentTypeList,
-		modalData,
-		setModalData,
-		modalVisible,
-		setModalVisible,
 		onSearch,
 	};
 

@@ -1,6 +1,6 @@
 import pool from "../../utils/MySQL/db.js";
 import moment from "moment";
-import runTransaction from "./transaction.js";
+import runTransaction from "../../utils/MySQL/transaction.js";
 import { updateRequestStatus } from "./asyncFuncRequest.js";
 import { updateAvailableAmount } from "../equipment/asyncFuncEquip.js";
 import { updateRemovableStatus } from "../equipment/asyncFuncEquip.js";

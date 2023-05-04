@@ -13,25 +13,14 @@ function NewRequestRecordForm({ form }) {
 		});
 	}, [selectedEquipmentType]);
 
-	const equipmentTypeName=Form.useWatch("type_name",form);
-
-	const localAvailableNumber=equipmentTypeList.find((type)=>type.type_name===equipmentTypeName)?.available_amount;
-
-	//render the available number when localAvailableNumber changes
-	useEffect(() => {
-		form.setFieldsValue({
-			availableNumber: localAvailableNumber,
-		});
-	}, [localAvailableNumber]);
-
 	//validate the borrow amount to see if it is greater than available amount
 	const validateAmount = (_, value) => {
-		const availableAmount = form.getFieldValue("availableNumber");
+		const availableAmount = equipmentTypeList.find((type)=>type.type_name===selectedEquipmentType)?.available_amount;
 		if (value <= availableAmount) {
 			return Promise.resolve();
 		} else {
 			return Promise.reject(
-				new Error("Borrow amount can not be greater than available amount")
+				new Error("Borrow amount can not be greater than "+availableAmount+"!")
 			);
 		}
 	};
@@ -59,13 +48,11 @@ function NewRequestRecordForm({ form }) {
 			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
 				<EquipmentTypeSelector />
 			</Form.Item>
-			<Form.Item label="Available Number" name="availableNumber" rules={[{ required: true },{type:Number}]}>
-				<p>{localAvailableNumber}</p>
-			</Form.Item>
 			<Form.Item 
 				label="Borrow Amount" 
 				name="borrow_amount" 
 				rules={[
+					{ required: true },
 					{ type: "number", min: 0, message: "Borrow Amount must be greater than 0" },
 					{ validator: validateAmount },
 				]}
@@ -81,7 +68,12 @@ function NewRequestRecordForm({ form }) {
 				]}>
 				<Input />
 			</Form.Item>
-			<Form.Item label="Due Date" name="return_date" rules={[{ required: true }]}>
+			<Form.Item 
+				label="Due Date" 
+				name="return_date" 
+				rules={[
+					{ required: true },
+				]}>
 				<DatePicker allowClear/>
 			</Form.Item>
 			{/* Add more form items as needed */}

@@ -10,8 +10,8 @@ function ShowStudentDetailModal() {
 	return (
 		<Modal 
 			title="Student Detail" 
-			width="70vw" 
 			open={detailModalVisible} 
+			onCancel={hideDetailModal}
 			closable={false}
 			footer={[
 				<Button key="ok" type="primary" onClick={hideDetailModal}>OK</Button>,

@@ -13,11 +13,11 @@ const RequestRecordProvider = ({ children }) => {
 	const [loading,setLoading] = useState(false);
 	const [selectedRows, setSelectedRows] = useState(null);
 	const [data, setData] = useState([]);
-	const [equipmentTypeList, setEquipmentTypeList] = useState([]);
-	const [editModalVisible, setEditModalVisible] = useState(false);
 	const [modalData, setModalData] = useState(null);
+	const [equipmentTypeList, setEquipmentTypeList] = useState([]);
 	const [selectedEquipmentType, setSelectedEquipmentType] = useState(null);
 	const [availableNumber, setAvailableNumber] = useState(null);
+
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
@@ -35,23 +35,19 @@ const RequestRecordProvider = ({ children }) => {
 		try{
 			setLoading(true);
 			const data = await getRequest();
-			setData(data);
-			setTableParams({
-				...tableParams,
-				pagination: {
-					...tableParams.pagination,
-					total: data.length,
-				},
-			});		
+			setData(data);	
 			setLoading(false);
 		} catch (error) {
 			message.error(error.message);
+			setLoading(false);
 		}
 	};
 
 	const getRequest= async () => {
 		try {
-			const response = await fetch(apiURL);
+			const urlParams = new URLSearchParams({request_status:0}).toString();
+			const url=apiURL+"?"+urlParams;
+			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
 				return data;
@@ -65,24 +61,23 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onAdd = async (values) => {
-		console.log(values);
+		setLoading(true);
 		await addNewRequest(values);
-		await fetchData();
+		fetchData();
 	};
 
 	const addNewRequest = async (values) => {
-		const requestParams = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(values),
-		};
 		try {
-			const response = await fetch(apiURL, requestParams);
+			const response = await fetch(apiURL, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(values),
+			});
 			if (response.ok) {
 				const data = await response.json();
-				message.success(data.message);
+				message.success(data.success);
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -94,10 +89,13 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onCancelRequest= async () => {
 		try{
-			selectedRows.map(async (row) => {
+			setLoading(true);
+			await Promise.all(selectedRows.map(async (row) => {
 				await cancelRequest(row.request_id);
-			});
-			await fetchData();
+			}));
+			message.success("Request Cancelled Successfully!");
+			fetchData();
+			setSelectedRows([]);
 		}catch(error){
 			message.error(error.message);
 		}
@@ -108,8 +106,7 @@ const RequestRecordProvider = ({ children }) => {
 		try {
 			const response = await fetch(url, {method: "PATCH"});
 			if (response.ok) {
-				const data = await response.json();
-				message.success(data.message);
+				return;
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -121,13 +118,19 @@ const RequestRecordProvider = ({ children }) => {
 
 	const onCollect= async () => {
 		try{
-			selectedRows.map(async (row) => {
+			setLoading(true);
+			await Promise.all(selectedRows.map(async (row) => {
 				await collectRequest(row.request_id);
-			});
-			await fetchData();
+			}));
+			message.success("Collection Confirmed Successfully!");
+			// setTimeout(() => {
+			fetchData();
+			// }, 1000);
+			setSelectedRows([]);
 		}catch(error){
 			message.error(error.message);
 		}
+
 	};
 
 	const collectRequest = async (request_id) => {
@@ -135,8 +138,7 @@ const RequestRecordProvider = ({ children }) => {
 		try {
 			const response = await fetch(url, {method: "PATCH"});
 			if (response.ok) {
-				const data = await response.json();
-				message.success(data.message);
+				return;
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -147,8 +149,10 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onEdit = async (values) => {
+		setLoading(true);
+		console.log(values);
 		await editRequest(values);
-		await fetchData();
+		fetchData();
 	};
 
 	const editRequest = async (values) => {
@@ -164,7 +168,7 @@ const RequestRecordProvider = ({ children }) => {
 			const response = await fetch(url, requestParams);
 			if (response.ok) {
 				const data = await response.json();
-				message.success(data.message);
+				message.success(data.success);
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -175,24 +179,23 @@ const RequestRecordProvider = ({ children }) => {
 	};
 
 	const onSearch = async (values) => {
-		await searchRequest(values);
-		await fetchData();
+		setLoading(true);
+		const data =await searchRequest(values);
+		setData(data);
+		setLoading(false);
 	};
 
 	const searchRequest = async (values) => {
-		const urlParams = new URLSearchParams(values).toString();
-		const url = apiURL + "/search?" + urlParams;
-		const requestParams = {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		};
+		values.request_status=0;
+		const urlParams= new URLSearchParams(values);
+		const url = `${apiURL}/?${urlParams}`;
+		
 		try {
-			const response = await fetch(url, requestParams);
+			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
-				message.success(data.message);
+				message.success("Data Found");
+				return data;
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -214,7 +217,7 @@ const RequestRecordProvider = ({ children }) => {
 				throw new Error(errorData.error);
 			}
 		} catch (error) {
-			console.error(error.message);
+			message.error(error.message);
 		}
 	};
 
@@ -223,13 +226,10 @@ const RequestRecordProvider = ({ children }) => {
 		const url = "http://localhost:3008/equipment?" + searchParams;
 
 		try {
-			console.log("fetching available number from ", url);
 			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
-				console.log("response ok, data is ", data);
 				setAvailableNumber(data[0].available_number);
-				console.log("setting available number as :",data[0].available_amount);
 			} else {
 				const errorData = await response.json();
 				throw new Error(errorData.error);
@@ -264,6 +264,8 @@ const RequestRecordProvider = ({ children }) => {
 		tableParams,
 		setTableParams,
 		fetchData,
+		modalData,
+		setModalData,
 		onAdd,
 		onCancelRequest,
 		onCollect,
@@ -271,10 +273,6 @@ const RequestRecordProvider = ({ children }) => {
 		onSearch,
 		equipmentTypeList,
 		getEquipmentTypeList,
-		editModalVisible,
-		setEditModalVisible,
-		modalData,
-		setModalData,
 		selectedEquipmentType,
 		setSelectedEquipmentType,
 		availableNumber,

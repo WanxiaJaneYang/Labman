@@ -15,7 +15,6 @@ function getRequestLogs(req, res) {
 
 }
 
-
 function getfilteredRequestLogs(req, res) {
 
 	const { student_id, type_name, start_date, end_date } = req.query;
@@ -51,7 +50,7 @@ function getfilteredRequestLogs(req, res) {
 	}
 
 	// Add ORDER BY clause to sort by request_time
-	sql += " ORDER BY request_time ASC";
+	sql += " ORDER BY log_time ASC";
 
 	pool.query(sql, params, (error, results) => {
 		if (error) {

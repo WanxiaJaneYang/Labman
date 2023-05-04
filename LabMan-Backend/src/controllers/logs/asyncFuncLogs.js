@@ -22,6 +22,3 @@ export async function insertEquipmentLog(connection, equipmentLog) {
 		throw new Error("Error inserting equipment log");
 	}
 }
-
-
-

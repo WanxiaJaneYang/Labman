@@ -2,7 +2,7 @@ import { Select } from "antd";
 import { useEffect } from "react";
 import {useRequestRecordContext} from "../../../Context";
 
-const EquipmentTypeSelector = () => {
+const EquipmentTypeSelector = ({placeholder}) => {
 	const {equipmentTypeList, getEquipmentTypeList, setSelectedEquipmentType} = useRequestRecordContext();
 
 	useEffect(() => {
@@ -13,8 +13,8 @@ const EquipmentTypeSelector = () => {
 		<Select
 			showSearch
 			style={{ width: 200 }}
+			defaultValue={placeholder}
 			onChange={(value) => {setSelectedEquipmentType(value);}}
-			placeholder="Search to Select"
 			optionFilterProp="children"
 			filterOption={(input, option) => (option?.label ?? "").includes(input)}
 			filterSort={(optionA, optionB) =>

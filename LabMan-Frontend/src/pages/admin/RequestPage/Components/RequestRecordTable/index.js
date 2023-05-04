@@ -1,36 +1,37 @@
-import { Table } from "antd";
+import { Table, message} from "antd";
 import { useRequestRecordContext } from "../../Context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EditRequestModal from "../Modals/EditRequestModal";
+import {EditOutlined} from "@ant-design/icons";
 
 const RequestRecordTable = () => {
 	const {
-		selectedRows, 
-		setSelectedRows, 
-		data, 
+		selectedRows,
+		setSelectedRows,
+		data,
 		fetchData,
-		loading, 
-		tableParams, 
-		setTableParams, 
-		equipmentTypeList, 
+		loading,
+		tableParams,
+		setTableParams,
+		equipmentTypeList,
 		getEquipmentTypeList,
 		setModalData,
-		editModalVisible,
-		setEditModalVisible 
 	} = useRequestRecordContext();
+
+	const [modalVisibal, setModalVisibal] = useState(false);
 
 	const columns = [
 		{
-			title:"Request Time",
-			dataIndex:"request_time",
+			title: "Request Time",
+			dataIndex: "request_time",
 			render: (text, record) => {
 				return formatDate(record.request_time);
 			},
 			responive: ["md"],
 		},
 		{
-			title:"Equipment Name",
-			dataIndex:"type_name",
+			title: "Equipment Name",
+			dataIndex: "type_name",
 			filters: equipmentTypeList.map((type) => {
 				return {
 					text: type.type_name,
@@ -39,12 +40,12 @@ const RequestRecordTable = () => {
 			}),
 		},
 		{
-			title:"Student ID",
-			dataIndex:"student_id",
+			title: "Student ID",
+			dataIndex: "student_id",
 		},
 		{
-			title:"Amount",
-			dataIndex:"borrow_amount",
+			title: "Amount",
+			dataIndex: "borrow_amount",
 		},
 		// {
 		// 	title:"Status",
@@ -77,28 +78,30 @@ const RequestRecordTable = () => {
 		{
 			title:"Due Date",
 			dataIndex:"return_date",
+			render: (text) => {
+				return formatDate(text);
+			},
 			responsive: ["md"],
 		},
 		{
 			title:"Action",
+			key:"action",
 			render: (_, record) => {
-				return (
+				return(
 					<>
-						<a onClick={handleEditClick(record)}>edit</a>
-						<EditRequestModal/>
+						<EditOutlined 
+							style={{fontSize:"20px"}}
+							onClick={() => {
+								setModalData(record);
+								console.log(record);
+								setModalVisibal(true);
+							}
+							}/>
 					</>
 				);
-			}
+			},
 		}
 	];
-
-	const handleEditClick = (record) => () => {
-		console.log("Edit record: ", record);
-		setModalData(record);
-		setEditModalVisible(true);
-		console.log("Edit modal visible: ", editModalVisible);
-	};
-
 
 	const formatDate = (dateString) => {
 		const date = new Date(dateString);
@@ -111,7 +114,6 @@ const RequestRecordTable = () => {
 	const rowSelection = {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.request_id) : [],
 		onChange: (selectedRowKeys, selectedRows) => {
-			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
 			setSelectedRows(selectedRows);
 		},
 	};
@@ -122,19 +124,20 @@ const RequestRecordTable = () => {
 	}, []);
 
 	useEffect(() => {
-		try{
+		try {
 			setTableParams({
 				...tableParams,
 				pagination: {
 					...tableParams.pagination,
-					total: data.length,
+					total: data?data.length:0,
 				},
 			});
 		}catch(err){
-			console.log(err);
+			message.error(err.message);
 		}
 	}, [data]);
-	
+
+
 	const handleTableChange = (pagination, filters) => {
 		setTableParams({
 			...tableParams,
@@ -143,17 +146,24 @@ const RequestRecordTable = () => {
 		});
 	};
 
+	const hideModal = () => {
+		setModalVisibal(false);
+	};
+
 	return (
-		<Table
-			columns={columns}
-			rowSelection={rowSelection}
-			rowKey={(record) => record.request_id} 
-			dataSource={data}
-			loading={loading}
-			pagination={tableParams.pagination}
-			onChange={handleTableChange}
-			scroll={{ x: "max-content" }}
-		/>
+		<>
+			<Table
+				columns={columns}
+				rowSelection={rowSelection}
+				rowKey={(record) => record.request_id} 
+				dataSource={data}
+				loading={loading}
+				pagination={tableParams.pagination}
+				onChange={handleTableChange}
+				scroll={{ x: "max-content" }}
+			/>
+			<EditRequestModal open={modalVisibal} hideModal={hideModal}/>
+		</>
 	);
 };
 

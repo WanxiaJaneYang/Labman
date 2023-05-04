@@ -1,48 +1,58 @@
-import {Input, Select, Space } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button} from "antd";
+import { Input, Space } from "antd";
+import { useRequestRecordContext } from "../../../Context";
 import { useState } from "react";
-// import { useRequestRecordContext } from "../../../Context";
 
 const SearchRequestRecordBar = () => {
-	const [optionValue, setOptionValue] = useState("student_id");
+	const [searchParams, setSearchParams] = useState({
+		student_id: "",
+		type_name: "",
+	}); 
+	const {onSearch} =useRequestRecordContext();
 
-	const { Search } = Input;
-
-	const options = [
-		{
-			value: "student_id",
-			label: "Student ID",
-		},
-		{
-			value: "type_name",
-			label: "Equipment Type",
-		},
-	];
-
-	// const {onSearch}=useRequestRecordContext();
-
-	const onClick = (value) => {
-		const searchValue = {
-			[optionValue]: value,
-		};
-
-		console.log(searchValue);
+	const onClick = () => {
+		onSearch(searchParams);
 	};
 
-	const onSelect = (value) => {
-		setOptionValue(value);
+	const onIDInputChange = (e) => {
+		const trimValue=e.target.value.trim();
+		setSearchParams({
+			...searchParams,
+			student_id:trimValue,
+		});
+	};
+
+	const onEquipmentInputChange = (e) => {
+		const trimValue=e.target.value.trim();
+		setSearchParams({
+			...searchParams,
+			type_name:trimValue,
+		});
 	};
 
 	return (
-		<Space.Compact>
-			<Select defaultValue="studentID" options={options} onSelect={onSelect}/>
-			<Search
-				placeholder="input search text"
+		<Space>
+			<Input 
+				onChange={onIDInputChange}
+				placeholder="Input Student ID" 
 				allowClear
-				onSearch={onClick}
-				style={{ width: 200 }}
-				enterButton
+				onPressEnter={onClick}
 			/>
-		</Space.Compact>
+			<Input 
+				onChange={onEquipmentInputChange}
+				placeholder="Input Equipment Type" 
+				allowClear
+				onPressEnter={onClick}
+			/>
+			<Button 
+				type="primary" 
+				icon={<SearchOutlined />}
+				onClick={onClick}
+			>
+				Search
+			</Button>
+		</Space>
 	);
 };
 

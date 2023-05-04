@@ -30,7 +30,7 @@ const CollectButton = () => {
 	return (
 		<>
 			{contextHolder}
-			<Button danger onClick={handleConfirm}>Collect</Button>
+			<Button onClick={handleConfirm}>Collect</Button>
 		</>
 	);
 };

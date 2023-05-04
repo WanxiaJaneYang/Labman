@@ -1,4 +1,4 @@
-import pool from "../../utils/MySQL/db.js";
+import pool from "./db.js";
 
 async function runTransaction(callback) {
 	const connection = await pool.getConnection();
