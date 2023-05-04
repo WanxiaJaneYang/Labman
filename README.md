@@ -23,4 +23,5 @@ Backend:
 
 Check the browser. Enter anything in login page to log in.
 
-## MileStone 1 Point is under the tag Milestone1
+## MileStone 1 Point 
+Check the tag "Milestone1" in main branch
