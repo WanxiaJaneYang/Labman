@@ -1,4 +1,4 @@
-import { insertEquipmentLog } from "../../logs/helperFunctions/asyncFuncLogs.js";
+import { insertEquipmentLog } from "../../logs/helperFunctions/insertEquipmentLog.js";
 
 export async function insertBorrowingRecords(connection, borrowingRequest, current_time) {
   try {

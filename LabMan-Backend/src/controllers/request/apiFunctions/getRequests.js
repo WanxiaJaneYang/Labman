@@ -3,7 +3,7 @@ import pool from "../../../utils/MySQL/db.js";
 async function getRequests(req,res) {
 
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date || req.query.request_status) {
-		return getfilteredRequests(req);
+		return getfilteredRequests(req,res);
 	} else {
 		try {
 			const [results] = await pool.query("SELECT * FROM requests");

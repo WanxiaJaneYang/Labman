@@ -6,7 +6,7 @@ import { updateAvailableAmount } from "../../equipment/asyncFuncEquip.js";
 import { updateRemovableStatus } from "../../equipment/asyncFuncEquip.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { insertBorrowingRecords } from "../helperFunctions/insertBorrowingRecords.js";
-import { compareAvailableAmount } from "../../equipment/compareAvailableAmount.js";
+import { compareAvailableAmount } from "../../equipment/asyncFuncEquip.js";
 import { getRequestById } from "../helperFunctions/getRequestById.js";
 
 async function collectRequest(req,res) {
