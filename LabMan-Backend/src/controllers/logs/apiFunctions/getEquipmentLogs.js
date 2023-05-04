@@ -1,4 +1,4 @@
-import pool from "../../utils/MySQL/db.js";
+import pool from "../../../utils/MySQL/db.js";
 
 function getEquipmentLogs(req, res) {
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date) {
@@ -12,9 +12,7 @@ function getEquipmentLogs(req, res) {
 			return res.status(200).json(results);
 		});
 	}
-
 }
-
 
 function getfilteredEquipmentLogs(req, res) {
 
@@ -51,7 +49,7 @@ function getfilteredEquipmentLogs(req, res) {
 	}
 
 	// Add ORDER BY clause to sort by request_time
-	sql += " ORDER BY request_time ASC";
+	sql += " ORDER BY log_time ASC";
 
 	// // Add LIMIT and OFFSET clauses for paging
 	// if (page && per_page) {

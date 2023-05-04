@@ -1,26 +1,20 @@
-import pool from "../../utils/MySQL/db.js";
+import pool from "../../../utils/MySQL/db.js";
 import moment from "moment";
-import runTransaction from "../../utils/MySQL/transaction.js";
-import { updateRequestStatus } from "./asyncFuncRequest.js";
-import { updateAvailableAmount } from "../equipment/asyncFuncEquip.js";
-import { updateRemovableStatus } from "../equipment/asyncFuncEquip.js";
-import { insertRequestLog } from "../logs/asyncFuncLogs.js";
-import { insertBorrowingRecords } from "./asyncFuncRequest.js";
-import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
+import runTransaction from "../../../utils/MySQL/transaction.js";
+import { updateRequestStatus } from "../helperFunctions/updateRequestStatus.js";
+import { updateAvailableAmount } from "../../equipment/asyncFuncEquip.js";
+import { updateRemovableStatus } from "../../equipment/asyncFuncEquip.js";
+import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
+import { insertBorrowingRecords } from "../helperFunctions/insertBorrowingRecords.js";
+import { compareAvailableAmount } from "../../equipment/compareAvailableAmount.js";
+import { getRequestById } from "../helperFunctions/getRequestById.js";
 
 async function collectRequest(req,res) {
 	try {
-		// Extract data from request params
+		// Extract request records with request params
 		const { request_id } = req.params;
+		const borrowingRequest = await getRequestById(pool,request_id);
 
-		// Execute the SQL query with the request_id parameter
-		const sql = "SELECT * FROM requests WHERE request_id = ?";
-		const [results] = await pool.query(sql, [request_id]);
-
-		const borrowingRequest = results[0];
-		if (!borrowingRequest) {
-			throw new Error("Error retrieving request record" );
-		}
 		await compareAvailableAmount(pool, borrowingRequest.type_id, borrowingRequest.borrow_amount);
 
 		// Get the current date and time
@@ -49,6 +43,7 @@ async function collectRequest(req,res) {
 
 		});
 	} catch (error) {
+		console.log(error);
 		return res.status(500).json({ error: error.message });
 	}
 }

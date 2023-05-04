@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getRequests } from "../controllers/request/getRequests.js";
-import { newRequest } from "../controllers/request/newRequest.js";
-import { collectRequest } from "../controllers/request/collectRequest.js";
-import { cancelRequest } from "../controllers/request/cancelRequest.js";
-import { editRequest } from "../controllers/request/editRequest.js";
+import { getRequests } from "../controllers/request/apiFunctions/getRequests.js";
+import { newRequest } from "../controllers/request/apiFunctions/newRequest.js";
+import { collectRequest } from "../controllers/request/apiFunctions/collectRequest.js";
+import { cancelRequest } from "../controllers/request/apiFunctions/cancelRequest.js";
+import { editRequest } from "../controllers/request/apiFunctions/editRequest.js";
 
 const requestRouter = Router();
 

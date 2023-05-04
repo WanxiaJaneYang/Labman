@@ -3,11 +3,9 @@ export async function updateAvailableAmount(connection, type_id, available_amoun
 	const updateAmountQuery = "UPDATE equipment_type SET available_amount = available_amount - ? WHERE type_id = ?";
 
 	try {
-		const results = await connection.query(updateAmountQuery, [available_amount, type_id]);
-		return results;
+		return await connection.query(updateAmountQuery, [available_amount, type_id]);
 	} catch (error) {
-		console.error(error);
-		throw new Error("failed to update Available Amount");
+		throw error;
 	}
 }
 
@@ -15,12 +13,9 @@ export async function updateRemovableStatus(connection, type_id, removableStatus
 	const updateRemovableQuery = "UPDATE equipment_type SET removable = ? WHERE type_id = ?";
 
 	try {
-		const result = await connection.query(updateRemovableQuery, [removableStatus, type_id]);
-		console.log(result);
-		return;
+		return await connection.query(updateRemovableQuery, [removableStatus, type_id]);
 	} catch (error) {
-		console.error(error);
-		throw new Error("failed to update Removable Status");
+		throw error;
 	}
 }
 
@@ -37,8 +32,21 @@ export async function compareAvailableAmount(connection, type_id,amount) {
 		if (!isAvailable) {
 			throw new Error("Not enough equipment available" );
 		}
+		return isAvailable;
 	} catch (error) {
-		console.error(error);
+		throw error;
+	}
+}
+
+export async function checkTypeExists(connection, type_id) {
+	const getTypeQuery = "SELECT * FROM equipment_type WHERE type_id = ?";
+
+	try {
+		const [result] = await connection.query(getTypeQuery, [type_id]);
+		if (result.length === 0) {
+			throw new Error("Equipment type does not exist");
+		}
+	} catch (error) {
 		throw error;
 	}
 }

@@ -1,17 +1,16 @@
 import moment from "moment";
-import runTransaction from "../../utils/MySQL/transaction.js";
-import pool from "../../utils/MySQL/db.js";
-import { insertRequestLog } from "../logs/asyncFuncLogs.js";
-import { insertRequestRecord } from "./asyncFuncRequest.js";
-import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
-
+import runTransaction from "../../../utils/MySQL/transaction.js";
+import pool from "../../../utils/MySQL/db.js";
+import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
+import { insertRequestRecord } from "../helperFunctions/insertRequestRecord.js";
+import { checkTypeExists, compareAvailableAmount } from "../../equipment/asyncFuncEquip.js";
 
 async function newRequest(req,res) {
 	try {
 		const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
+		await checkTypeExists(pool, type_id);
 		// Get the current date and time
 		const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
-		//return_date = moment(return_date).format("YYYY-MM-DD HH:mm:ss");
 
 		// Create new request record
 		const requestRecord = {
@@ -44,16 +43,16 @@ async function newRequest(req,res) {
 			};
 
 			await insertRequestLog(connection, requestLog);
+			return res.status(200).json({ message: "New request created successfully" });
 
 		}).catch((error) => {
-			console.log(error);
 			throw error;
 		});
 
 	} catch (error) {
 		console.error(error);
 		// Send error response
-		res.status(500).json({ error: error.message });
+		return res.status(500).json({ error: error.message });
 	}
 }
 

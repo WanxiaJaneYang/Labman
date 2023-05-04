@@ -1,4 +1,4 @@
-import pool from "../../utils/MySQL/db.js";
+import pool from "../../../utils/MySQL/db.js";
 
 async function getRequests(req,res) {
 
@@ -6,7 +6,7 @@ async function getRequests(req,res) {
 		return getfilteredRequests(req);
 	} else {
 		try {
-			const [rows] = await pool.query("SELECT * FROM requests");
+			const [results] = await pool.query("SELECT * FROM requests");
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
@@ -58,7 +58,7 @@ async function getfilteredRequests(req,res) {
 	sql += " ORDER BY request_time ASC";
 
 	try {
-		const [rows] = await pool.query(sql, params);
+		const [results] = await pool.query(sql, params);
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);
@@ -67,4 +67,3 @@ async function getfilteredRequests(req,res) {
 }
 
 export { getRequests };
-

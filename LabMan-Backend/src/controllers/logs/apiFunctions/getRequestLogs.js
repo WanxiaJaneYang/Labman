@@ -1,4 +1,4 @@
-import pool from "../../utils/MySQL/db.js";
+import pool from "../../../utils/MySQL/db.js";
 
 function getRequestLogs(req, res) {
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date) {

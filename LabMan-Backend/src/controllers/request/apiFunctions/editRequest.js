@@ -1,11 +1,10 @@
 import moment from "moment";
-import runTransaction from "../../utils/MySQL/transaction.js";
-import { insertRequestLog } from "../logs/asyncFuncLogs.js";
-import { updateRequest } from "./asyncFuncRequest.js";
-import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
+import runTransaction from "../../../utils/MySQL/transaction.js";
+import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
+import { updateRequest } from "../helperFunctions/updateRequest.js";
+import { compareAvailableAmount } from "../../equipment/asyncFuncEquip.js";
 
-
-async function editRequest(req,res) {
+async function editRequest(req, res) {
 	try {
 		const { request_id } = req.params; // Get the request ID from the URL parameter
 		const { student_id, type_id, type_name, borrow_amount, return_date } = req.body;
@@ -32,12 +31,12 @@ async function editRequest(req,res) {
 
 			const updateRequestPromise = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
 
-				// Insert requestLog into request_Log table
-				const insertRequestLogPromise = insertRequestLog(connection, requestLog);
+			// Insert requestLog into request_Log table
+			const insertRequestLogPromise = insertRequestLog(connection, requestLog);
 
 			// Wait for all promises to resolve
 			await Promise.all([updateRequestPromise, insertRequestLogPromise]);
-		})
+		});
 		return res.status(200).json({ success: "Request updated and log inserted successfully" });
 	} catch (error) {
 		console.log(error);

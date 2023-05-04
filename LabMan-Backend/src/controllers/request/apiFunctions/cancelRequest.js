@@ -1,28 +1,23 @@
 import moment from "moment";
-import pool from "../../utils/MySQL/db.js";
-import runTransaction from "../../utils/MySQL/transaction.js";
-import { updateRequestStatus } from "./asyncFuncRequest.js";
-import { insertRequestLog } from "../logs/asyncFuncLogs.js";
+import pool from "../../../utils/MySQL/db.js";
+import runTransaction from "../../../utils/MySQL/transaction.js";
+import { getRequestById } from "../helperFunctions/getRequestById.js";
+import { updateRequestStatus} from "../helperFunctions/updateRequestStatus.js";
+import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 
 async function cancelRequest(req,res) {
 	try {
-		const { request_id } = req.params; // Get the request ID from the URL parameter
-		let requestLog = {};
-		// get the request record with the request_id
-		const [results] = await pool.promise().query("SELECT * FROM requests WHERE request_id = ?", [request_id]);
+		const { request_id } = req.params; 
 
-		const requestRecord = results[0];
-		//console.log(requestRecord);
-		if (requestRecord === undefined) {
-			throw new Error("Error retrieving request record");
-		}
+		const requestRecord = await getRequestById(pool, request_id);
+
 		const { type_id, type_name, student_id, borrow_amount, return_date } = requestRecord;
 
 		// Get the current date and time
 		const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
 		// Create a collecting log of the request
-		requestLog = {
+		const requestLog = {
 			type_id,
 			type_name,
 			student_id,
@@ -32,7 +27,7 @@ async function cancelRequest(req,res) {
 			log_time: current_time,
 			request_id,
 		};
-		console.log(requestLog);
+		// console.log(requestLog);
 
 		await runTransaction(async (connection) => {
 			// Update request_status to 2 (cancelled)
@@ -42,10 +37,7 @@ async function cancelRequest(req,res) {
 			const insertPromise = insertRequestLog(connection, requestLog);
 
 			// Wait for both promises to complete
-			await Promise.all([updatePromise, insertPromise]).catch((error) => {
-				console.error(error);
-				throw new Error("Error cancelling request");
-			});
+			await Promise.all([updatePromise, insertPromise])
 		});
 		return res.status(200).json({ success: "Request cancelled successfully" });
 	} catch (error) {
