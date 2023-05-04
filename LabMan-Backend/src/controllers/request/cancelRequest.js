@@ -4,7 +4,7 @@ import runTransaction from "./transaction.js";
 import { updateRequestStatus } from "./asyncFuncRequest.js";
 import { insertRequestLog } from "../logs/asyncFuncLogs.js";
 
-async function cancelRequest(req) {
+async function cancelRequest(req,res) {
 	try {
 		const { request_id } = req.params; // Get the request ID from the URL parameter
 		let requestLog = {};
@@ -47,9 +47,10 @@ async function cancelRequest(req) {
 				throw new Error("Error cancelling request");
 			});
 		});
+		return res.status(200).json({ success: "Request cancelled successfully" });
 	} catch (error) {
 		console.error(error);
-		throw new Error("Failed to cancel request");
+		return res.status(500).json({ error: error.message });
 	}
 }
 

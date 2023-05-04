@@ -6,7 +6,7 @@ import { insertRequestRecord } from "./asyncFuncRequest.js";
 import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
 
 
-async function newRequest(req) {
+async function newRequest(req,res) {
 	try {
 		const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
 		// Get the current date and time
@@ -53,7 +53,7 @@ async function newRequest(req) {
 	} catch (error) {
 		console.error(error);
 		// Send error response
-		throw error;
+		res.status(500).json({ error: error.message });
 	}
 }
 

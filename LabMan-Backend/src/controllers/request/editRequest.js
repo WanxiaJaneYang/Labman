@@ -5,7 +5,7 @@ import { updateRequest } from "./asyncFuncRequest.js";
 import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
 
 
-async function editRequest(req) {
+async function editRequest(req,res) {
 	try {
 		const { request_id } = req.params; // Get the request ID from the URL parameter
 		const { student_id, type_id, type_name, borrow_amount, return_date } = req.body;
@@ -38,8 +38,10 @@ async function editRequest(req) {
 			// Wait for all promises to resolve
 			await Promise.all([updateRequestPromise, insertRequestLogPromise]);
 		})
+		return res.status(200).json({ success: "Request updated and log inserted successfully" });
 	} catch (error) {
-		throw error;
+		console.log(error);
+		return res.status(500).json({ error: error.message });
 	}
 }
 

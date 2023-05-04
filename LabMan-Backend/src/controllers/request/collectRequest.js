@@ -8,7 +8,7 @@ import { insertRequestLog } from "../logs/asyncFuncLogs.js";
 import { insertBorrowingRecords } from "./asyncFuncRequest.js";
 import { compareAvailableAmount } from "../equipment/asyncFuncEquip.js";
 
-async function collectRequest(req) {
+async function collectRequest(req,res) {
 	try {
 		// Extract data from request params
 		const { request_id } = req.params;
@@ -45,9 +45,11 @@ async function collectRequest(req) {
 			const p5 = updateRemovableStatus(connection, borrowingRequest.type_id, 0);
 
 			await Promise.all([p1, p2, p3, p4, p5]);
+			return res.status(200).json({ success: "Request collected and log inserted successfully" });
+
 		});
 	} catch (error) {
-		throw error;
+		return res.status(500).json({ error: error.message });
 	}
 }
 

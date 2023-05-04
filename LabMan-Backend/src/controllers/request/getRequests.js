@@ -1,21 +1,21 @@
 import pool from "../../utils/MySQL/db.js";
 
-async function getRequests(req) {
+async function getRequests(req,res) {
 
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date || req.query.request_status) {
 		return getfilteredRequests(req);
 	} else {
 		try {
 			const [rows] = await pool.query("SELECT * FROM requests");
-			return rows;
+			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
-			throw error;
+			return res.status(500).json({ error: error.message });
 		}
 	}
 }
 
-async function getfilteredRequests(req) {
+async function getfilteredRequests(req,res) {
 
 	const { student_id, type_name, start_date, end_date, request_status } = req.query;
 
@@ -59,10 +59,10 @@ async function getfilteredRequests(req) {
 
 	try {
 		const [rows] = await pool.query(sql, params);
-		return rows;
+		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);
-		throw error;
+		return res.status(500).json({ error: error.message });
 	}
 }
 
