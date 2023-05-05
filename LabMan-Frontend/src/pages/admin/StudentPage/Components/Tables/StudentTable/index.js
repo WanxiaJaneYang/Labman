@@ -1,15 +1,20 @@
 import { Table } from "antd";
 import { useStudentContext } from "../../../Context/StudentContext";
 import ShowStudentDetailModal from "../../Modals/ShowStudentDetailModal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 
 const StudentTable = () => {
-	const { data, fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows,setModalData, setDetailModalVisible } = useStudentContext();
-	
+	const { data, fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows } = useStudentContext();
+	const [detailModalVisible, setDetailModalVisible] = useState(false);
+	const [modalData, setModalData] = useState(null);
+
 	const handleClick = (record) => {
 		setModalData(record);
 		setDetailModalVisible(true);
+	};
+	const hideDetailModal = () => {
+		setDetailModalVisible(false);
 	};
 
 	useEffect(() => {
@@ -63,7 +68,11 @@ const StudentTable = () => {
 				scroll={{ x: "max-content" }}
 				rowClassName={"row-hover-cursor"}
 			/>
-			<ShowStudentDetailModal/>
+			<ShowStudentDetailModal
+				open={detailModalVisible}
+				modalData={modalData}
+				hideDetailModal={hideDetailModal}
+			/>
 		</>
 	);
 };

@@ -12,8 +12,6 @@ const StudentProvider = ({ children }) => {
 	const [selectedRows, setSelectedRows] = useState(null);
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [detailModalVisible, setDetailModalVisible] = useState(false);
-	const [modalData, setModalData] = useState(null);
 	const [tableParams, setTableParams] = useState({
 		pagination: {
 			current: 1,
@@ -74,7 +72,7 @@ const StudentProvider = ({ children }) => {
 		setLoading(false);
 	};
 
-	//expose the variables
+	//define the variables to expose
 	const value = {
 		selectedRows,
 		setSelectedRows,
@@ -86,10 +84,6 @@ const StudentProvider = ({ children }) => {
 		onAdd,
 		onDelete,
 		onStudentSearch,
-		modalData,
-		setModalData,
-		detailModalVisible,
-		setDetailModalVisible,
 	};
 
 	return (
