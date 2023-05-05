@@ -2,6 +2,7 @@ import { Table } from "antd";
 import { useStudentContext } from "../../../Context/StudentContext";
 import ShowStudentDetailModal from "../../Modals/ShowStudentDetailModal";
 import { useEffect } from "react";
+import "./style.css";
 
 const StudentTable = () => {
 	const { data, fetchData, loading, tableParams, setTableParams, selectedRows, setSelectedRows,setModalData, setDetailModalVisible } = useStudentContext();
@@ -27,14 +28,6 @@ const StudentTable = () => {
 		{
 			title: "Student ID",
 			dataIndex: "student_id",
-			render: (text, record) => {
-				return (
-					<>
-						<a onClick={() => handleClick(record)}>{text}</a>
-						<ShowStudentDetailModal/>
-					</>
-				);
-			},
 		}
 	];
 
@@ -45,17 +38,33 @@ const StudentTable = () => {
 		},
 	};
 
+	const onRow = (record) => {
+		return {
+			onClick: () => {
+				handleClick(record);
+			},
+		};
+	};
+
 	return (
-		<Table
-			columns={columns}
-			rowKey={(record) => record.student_id}
-			rowSelection={rowSelection}
-			dataSource={data}
-			pagination={tableParams.pagination}
-			loading={loading}
-			onChange={handleTableChange}
-			scroll={{ x: "max-content" }}
-		/>
+		<>
+			<Table
+				columns={columns}
+				onRow={onRow}
+				rowKey={(record) => record.student_id}
+				rowSelection={rowSelection}
+				dataSource={data}
+				pagination={{
+					...tableParams.pagination,
+					total: data?.length,
+				}}
+				loading={loading}
+				onChange={handleTableChange}
+				scroll={{ x: "max-content" }}
+				rowClassName={"row-hover-cursor"}
+			/>
+			<ShowStudentDetailModal/>
+		</>
 	);
 };
 
