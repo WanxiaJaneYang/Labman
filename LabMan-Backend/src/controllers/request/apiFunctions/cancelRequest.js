@@ -37,7 +37,7 @@ async function cancelRequest(req,res) {
 			const insertPromise = insertRequestLog(connection, requestLog);
 
 			// Wait for both promises to complete
-			await Promise.all([updatePromise, insertPromise])
+			await Promise.all([updatePromise, insertPromise]);
 		});
 		return res.status(200).json({ success: "Request cancelled successfully" });
 	} catch (error) {
