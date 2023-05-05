@@ -8,6 +8,7 @@ import EquipmentPage from "../pages/Admin/EquipmentPage";
 import StudentPage from "../pages/Admin/StudentPage";
 import ActionHistoryPage from "../pages/Admin/ActionHistoryPage";
 import BorrowPage from "../pages/Admin/BorrowPage";
+import CoursePage from "../pages/Admin/CoursePage";
 
 const routes = [
 	{
@@ -50,6 +51,10 @@ const routes = [
 				path: "actionHistory",
 				element:<ActionHistoryPage />,
 			},
+			{
+				path: "course",
+				element:<CoursePage />,
+			}
 		]
 	}
 ];
