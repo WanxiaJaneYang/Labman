@@ -1,12 +1,12 @@
 import { Table } from "antd";
 import { useActionHistoryContext } from "../../Context";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import EquipmentModal from "../Modals/EquipmentModal";
 import RequestModal from "../Modals/RequestModal";
 import "./style.css";
 
 const ActionHistoryTable = () => {
-	const {data, fetchData, loading, tableParams, setTableParams, tableSelection} = useActionHistoryContext();
+	const {data, loading, tableParams, setTableParams, tableSelection} = useActionHistoryContext();
 
 	const [equipmentVisible, setEquipmentVisible] = useState(false);
 	const [requestVisible, setRequestVisible] = useState(false);
@@ -75,23 +75,6 @@ const ActionHistoryTable = () => {
 		});
 	};
 
-	useEffect(() => {
-		fetchData();
-	}, []);
-
-	useEffect(() => {
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...tableParams.pagination,
-				total: data?data.length:0,
-			},
-		});
-	}, [data]);
-
-	useEffect(() => {
-	},[equipmentVisible, requestVisible]);
-
 	const onRow = (record) => {
 		return {
 			onClick: () => {
@@ -111,7 +94,10 @@ const ActionHistoryTable = () => {
 			<Table
 				columns={columns}
 				dataSource={data}
-				pagination={tableParams.pagination}
+				pagination={{
+					...tableParams.pagination,
+					total: data?.length,
+				}}
 				onChange={handleTableChange}
 				loading={loading}
 				rowKey={(record) => record?record.log_id:""}
