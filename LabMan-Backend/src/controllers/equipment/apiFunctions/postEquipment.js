@@ -11,7 +11,7 @@ async function newEquipmentType(req, res) {
 			[type_name, total_amount, available_amount, removable]
 		);
 
-		return res.status(20).json({ message: "Equipment type created successfully" });
+		return res.status(201).json({ message: "Equipment type created successfully" });
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ error: error.message });
