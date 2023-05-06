@@ -11,7 +11,7 @@ async function cancelRequest(req,res) {
 		const { request_id } = req.params; 
 
 		// Create a collecting log of the request
-		const [requestRecord] = await getRequestById(pool, request_id);
+		const requestRecord = await getRequestById(pool, request_id);
 		// console.log(requestRecord);
 		const { type_id, type_name, student_id, borrow_amount, return_date } = requestRecord;
 		const requestLog = {

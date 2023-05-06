@@ -1,7 +1,8 @@
 import errorMessages from "../../../utils/constants/errorMessages.js";
 import { insertEquipmentLog } from "../../logs/helperFunctions/insertEquipmentLog.js";
+import moment from "moment";
 
-export async function insertBorrowingRecords(connection, borrowingRequest, current_time) {
+export async function insertBorrowingRecords(connection, borrowingRequest) {
 	try {
 		const borrowRecord = {
 			student_id: borrowingRequest.student_id,
@@ -9,14 +10,14 @@ export async function insertBorrowingRecords(connection, borrowingRequest, curre
 			type_name: borrowingRequest.type_name,
 			borrow_amount: borrowingRequest.borrow_amount,
 			returned_amount: 0,
-			borrow_date: current_time,
+			borrow_date: moment().format("YYYY-MM-DD HH:mm:ss"),
 			return_date: borrowingRequest.return_date,
 			borrow_status: 0, //  0 = borrowed/unreturned
 			request_id: borrowingRequest.request_id,
 		};
-		const result = await connection.query("INSERT INTO borrowings SET ?", borrowRecord);
-		//console.log(result[0])
-		const borrow_id = result[0].insertId;
+		const [result] = await connection.query("INSERT INTO borrowings SET ?", borrowRecord);
+		//console.log(result)
+		const borrow_id = result.insertId;
 		// create a new log for new borrowings
 		const borrowLog = {
 			type_id: borrowingRequest.type_id,
@@ -26,7 +27,7 @@ export async function insertBorrowingRecords(connection, borrowingRequest, curre
 			returned_amount: 0,
 			return_date: borrowingRequest.return_date,
 			log_type: 1, // 1 = borrow
-			log_time: current_time,
+			log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			borrow_id: borrow_id, // Use the request_id from the previous query
 		};
 

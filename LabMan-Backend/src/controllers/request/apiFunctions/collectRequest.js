@@ -14,13 +14,13 @@ async function collectRequest(req,res) {
 	try {
 		// Extract request records with request params
 		const { request_id } = req.params;
-		const [request] = await getRequestById(pool,request_id);
-		// console.log(request.type_id);
+		const request = await getRequestById(pool,request_id);
+		//console.log(request.type_id);
 		await compareAvailableAmount(pool, request.type_id, request.borrow_amount);
 
 		await runTransaction(async (connection) => {
 			// Insert borrowingRecord into borrowings table N times with amount=1 per record
-			const p1 = insertBorrowingRecords(connection, request,current_time);
+			const p1 = insertBorrowingRecords(connection, request);
 			const requestLog = {
 				type_id: request.type_id,
 				type_name: request.type_name,
