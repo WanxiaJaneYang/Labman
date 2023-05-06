@@ -1,3 +1,4 @@
+import errorMessages from "../../../utils/constants/errorMessages.js";
 import { insertEquipmentLog } from "../../logs/helperFunctions/insertEquipmentLog.js";
 
 export async function insertBorrowingRecords(connection, borrowingRequest, current_time) {
@@ -13,9 +14,9 @@ export async function insertBorrowingRecords(connection, borrowingRequest, curre
 			borrow_status: 0, //  0 = borrowed/unreturned
 			request_id: borrowingRequest.request_id,
 		};
-		const [result] = await connection.query("INSERT INTO borrowings SET ?", borrowRecord);
-		const borrow_id = result.insertId;
-
+		const result = await connection.query("INSERT INTO borrowings SET ?", borrowRecord);
+		//console.log(result[0])
+		const borrow_id = result[0].insertId;
 		// create a new log for new borrowings
 		const borrowLog = {
 			type_id: borrowingRequest.type_id,
@@ -30,7 +31,11 @@ export async function insertBorrowingRecords(connection, borrowingRequest, curre
 		};
 
 		await insertEquipmentLog(connection, borrowLog);
+
 	} catch (error) {
-		throw new Error("Error inserting borrowing records");
+		if (Object.values(errorMessages).includes(error.message)) {
+			throw new Error(error.message);
+		}
+		throw new Error("Interval error when inserting borrowing record: " + error.message);
 	}
 }

@@ -2,18 +2,15 @@ import moment from "moment";
 import runTransaction from "../../../utils/MySQL/transaction.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { updateRequest } from "../helperFunctions/updateRequest.js";
-import { compareAvailableAmount } from "../../equipment/asyncFuncEquip.js";
+import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function editRequest(req, res) {
 	try {
-		const { request_id } = req.params; // Get the request ID from the URL parameter
-		const { student_id, type_id, type_name, borrow_amount, return_date } = req.body;
-		// return_date = moment(return_date).format("YYYY-MM-DD HH:mm:ss");
-
-		// Get the current date and time
-		const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
+		const { request_id } = req.params; 
 
 		// Create a collecting log of the request
+		const { student_id, type_id, type_name, borrow_amount, return_date } = req.body;
 		const requestLog = {
 			type_id,
 			type_name,
@@ -21,7 +18,7 @@ async function editRequest(req, res) {
 			borrow_amount,
 			return_date,
 			log_type: 2, // 2 = edit
-			log_time: current_time,
+			log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			request_id,
 		};
 
@@ -40,6 +37,9 @@ async function editRequest(req, res) {
 		return res.status(200).json({ success: "Request updated and log inserted successfully" });
 	} catch (error) {
 		console.log(error);
+		if (Object.values(errorMessages).includes(error.message)) {
+			throw new Error(error.message);
+		}
 		return res.status(500).json({ error: error.message });
 	}
 }

@@ -1,20 +1,24 @@
 import pool from "../../../utils/MySQL/db.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
 
-function getEquipmentLogs(req, res) {
+async function getEquipmentLogs(req, res) {
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date) {
 		return getfilteredEquipmentLogs(req, res);
 	} else {
-		pool.query("SELECT * FROM equipment_log", (error, results) => {
-			if (error) {
-				console.error(error);
-				return res.status(500).json({ error: "Error retrieving Equipment logs" });
-			}
+		try {
+			const [results] = await pool.query("SELECT * FROM equipment_log");
 			return res.status(200).json(results);
-		});
+		} catch (error) {
+			console.error(error);
+			if (Object.values(errorMessages).includes(error.message)) {
+				throw new Error(error.message);
+			}
+			return res.status(500).json({ error: error.message });
+		}
 	}
 }
 
-function getfilteredEquipmentLogs(req, res) {
+async function getfilteredEquipmentLogs(req, res) {
 
 	const { student_id, type_name, start_date, end_date } = req.query;
 
@@ -59,13 +63,13 @@ function getfilteredEquipmentLogs(req, res) {
 	// 	params.push(parseInt(offset, 10));
 	// }
 
-	pool.query(sql, params, (error, results) => {
-		if (error) {
-			return res.status(500).json({ error: "Error retrieving Equipment logs" });
-		}
-
+	try {
+		const [results] = await pool.query(sql, params);
 		return res.status(200).json(results);
-	});
+	  } catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: error.message });
+	  }
 }
 
 export { getEquipmentLogs };

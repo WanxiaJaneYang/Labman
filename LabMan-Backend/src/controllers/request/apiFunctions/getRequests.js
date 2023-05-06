@@ -1,4 +1,5 @@
 import pool from "../../../utils/MySQL/db.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function getRequests(req,res) {
 
@@ -10,6 +11,9 @@ async function getRequests(req,res) {
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
+			if (Object.values(errorMessages).includes(error.message)) {
+				throw new Error(error.message);
+			}
 			return res.status(500).json({ error: error.message });
 		}
 	}

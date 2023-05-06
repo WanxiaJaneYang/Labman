@@ -3,14 +3,13 @@ import runTransaction from "../../../utils/MySQL/transaction.js";
 import pool from "../../../utils/MySQL/db.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { insertRequestRecord } from "../helperFunctions/insertRequestRecord.js";
-import { checkTypeExists, compareAvailableAmount } from "../../equipment/asyncFuncEquip.js";
+import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
+
 
 async function newRequest(req,res) {
 	try {
 		const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
-		await checkTypeExists(pool, type_id);
-		// Get the current date and time
-		const current_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
 		// Create new request record
 		const requestRecord = {
@@ -18,7 +17,7 @@ async function newRequest(req,res) {
 			type_id,
 			type_name,
 			borrow_amount,
-			request_time: current_time,
+			request_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			return_date,
 			request_status: 0, // 0 = pending/new request
 		};
@@ -38,19 +37,18 @@ async function newRequest(req,res) {
 				borrow_amount,
 				return_date,
 				log_type: 0, // 0 = new request
-				log_time: current_time,
+				log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 				request_id: insertRequestId,
 			};
 
 			await insertRequestLog(connection, requestLog);
 			return res.status(200).json({ message: "New request created successfully" });
-
-		}).catch((error) => {
-			throw error;
 		});
-
 	} catch (error) {
 		console.error(error);
+		if (Object.values(errorMessages).includes(error.message)) {
+			throw new Error(error.message);
+		}
 		// Send error response
 		return res.status(500).json({ error: error.message });
 	}

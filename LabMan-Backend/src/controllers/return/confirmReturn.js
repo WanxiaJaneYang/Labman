@@ -1,5 +1,5 @@
 import runTransaction from "../../utils/MySQL/transaction.js";
-import { updateRemovableStatus } from "../equipment/asyncFuncEquip.js";
+import { updateRemovableStatus } from "../equipment/helperFunctions/updateRemovableStatus.js";
 import { insertEquipmentLog } from "../logs/helperFunctions/insertEquipmentLog.js";
 import { fetchBorrowingRecord } from "./confirmReturnHelpers/fetchBorrowingRecord.js";
 import { fetchEquipmentTypeRecord } from "./confirmReturnHelpers/fetchEquipmentType.js";
