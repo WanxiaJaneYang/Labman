@@ -37,9 +37,6 @@ async function editRequest(req, res) {
 		return res.status(200).json({ success: "Request updated and log inserted successfully" });
 	} catch (error) {
 		console.log(error);
-		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error(error.message);
-		}
 		return res.status(500).json({ error: error.message });
 	}
 }

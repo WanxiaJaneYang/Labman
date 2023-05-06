@@ -46,9 +46,6 @@ async function newRequest(req,res) {
 		});
 	} catch (error) {
 		console.error(error);
-		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error(error.message);
-		}
 		// Send error response
 		return res.status(500).json({ error: error.message });
 	}

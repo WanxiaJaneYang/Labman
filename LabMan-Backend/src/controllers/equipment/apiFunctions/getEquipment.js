@@ -34,9 +34,6 @@ async function getEquipmentTypeByName(req, res) {
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);
-		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error(error.message);
-		}
 		return res.status(500).json({ error: "Error retrieving equipment types" });
 	}
 }
