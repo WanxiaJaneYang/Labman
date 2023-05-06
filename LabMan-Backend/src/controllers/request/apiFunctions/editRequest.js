@@ -3,7 +3,7 @@ import runTransaction from "../../../utils/MySQL/transaction.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { updateRequest } from "../helperFunctions/updateRequest.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
-import errorMessages from "../../../utils/constants/errorMessages.js";
+import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 
 async function editRequest(req, res) {
 	try {
@@ -21,7 +21,7 @@ async function editRequest(req, res) {
 			log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			request_id,
 		};
-
+		await statusIsNew(pool,request_id);
 		await runTransaction(async (connection) => {
 			// Update the request record
 			await compareAvailableAmount(connection, type_id, borrow_amount);

@@ -4,14 +4,16 @@ import runTransaction from "../../../utils/MySQL/transaction.js";
 import { getRequestById } from "../helperFunctions/getRequestById.js";
 import { updateRequestStatus} from "../helperFunctions/updateRequestStatus.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
-import errorMessages from "../../../utils/constants/errorMessages.js";
+import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 
 async function cancelRequest(req,res) {
 	try {
 		const { request_id } = req.params; 
 
-		// Create a collecting log of the request
 		const requestRecord = await getRequestById(pool, request_id);
+		await statusIsNew(pool,request_id);
+
+		// Create a collecting log of the request
 		// console.log(requestRecord);
 		const { type_id, type_name, student_id, borrow_amount, return_date } = requestRecord;
 		const requestLog = {

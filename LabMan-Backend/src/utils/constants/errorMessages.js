@@ -6,6 +6,8 @@ NOT_ENOUGH_EQUIPMENT: "Not enough equipment available",
 BORROW_REQUIRED_FIELD_INVALID: "Required information for collecting is invalid",
 EQUIPMENT_LOG_REQUIRED_FIELD_INVALID: "Required information for equipment borrowing is invalid",
 REQUEST_REQUIRED_FIELD_INVALID: "Required information for request",
+REQUEST_STATUS_IS_NOT_NEW: "The request status is not new",
+REQUEST_STATUS_IS_NOT_COLLECTED: "The request status is not collected",
 };
 
 export default errorMessages;

@@ -8,7 +8,7 @@ import { getRequestById } from "../helperFunctions/getRequestById.js";
 import { updateAvailableAmount } from "../../equipment/helperFunctions/updateAvailableAmount.js";
 import { updateRemovableStatus } from "../../equipment/helperFunctions/updateRemovableStatus.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
-import errorMessages from "../../../utils/constants/errorMessages.js";
+import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 
 async function collectRequest(req,res) {
 	try {
@@ -16,6 +16,8 @@ async function collectRequest(req,res) {
 		const { request_id } = req.params;
 		const request = await getRequestById(pool,request_id);
 		//console.log(request.type_id);
+		await statusIsNew(pool,request_id);
+
 		await compareAvailableAmount(pool, request.type_id, request.borrow_amount);
 
 		await runTransaction(async (connection) => {
