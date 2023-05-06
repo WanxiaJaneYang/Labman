@@ -1,10 +1,7 @@
 import { Form, Input, InputNumber } from "antd";
-import { useEquipmentContext } from "../../../Context";
 import { useEffect } from "react";
 
-const ModifyEquipmentForm = ({ form }) => {
-	const { modalData } = useEquipmentContext();
-
+const ModifyEquipmentForm = ({ form, modalData }) => {
 	useEffect(() => {
 		if (modalData) {
 			form.setFieldsValue({
@@ -49,9 +46,10 @@ const ModifyEquipmentForm = ({ form }) => {
 			<Form.Item
 				label="Available Count"
 				name="available_amount"
+				dependencies={["total_amount"]}
 				rules={[
 					{ type: "number", min: 0, message: "Available Amount must be greater than 0" },
-					{ validator: validateAvailableAmount },
+					{ validator: validateAvailableAmount},
 				]}
 			>
 				<InputNumber />
@@ -59,6 +57,7 @@ const ModifyEquipmentForm = ({ form }) => {
 			<Form.Item 
 				label="Total Count" 
 				name="total_amount"
+				dependencies={["available_amount"]}
 				rules={[
 					{ type: "number", min: 0, message: "Total Amount must be greater than 0" },
 					{ validator: validateTotalAmount },
