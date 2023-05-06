@@ -4,6 +4,7 @@ import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js
 import { updateRequest } from "../helperFunctions/updateRequest.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
+import pool from "../../../utils/MySQL/db.js";
 
 async function editRequest(req, res) {
 	try {
