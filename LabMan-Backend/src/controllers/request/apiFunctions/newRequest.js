@@ -4,7 +4,6 @@ import pool from "../../../utils/MySQL/db.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { insertRequestRecord } from "../helperFunctions/insertRequestRecord.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
-import errorMessages from "../../../utils/constants/errorMessages.js";
 
 
 async function newRequest(req,res) {

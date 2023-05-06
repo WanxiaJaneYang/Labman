@@ -1,5 +1,4 @@
 import pool from "../../../utils/MySQL/db.js";
-import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function getRequests(req,res) {
 
