@@ -1,21 +1,18 @@
 import { Table } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useEquipmentContext } from "../../Context";
 import ModifyStudentModal from "../Modals/ModifyEquipmentModal";
+import "./style.css";
 
 const EquipmentTable = () => {
-	const { data, loading, fetchData, tableParams, setTableParams, setSelectedRows, selectedRows, setModalData,setModifyModalVisible } = useEquipmentContext();
-	
+	const { data, loading, fetchData, tableParams, setTableParams, setSelectedRows, selectedRows } = useEquipmentContext();
+	const [visible, setVisible] = useState(false);
+	const [modalData, setModalData] = useState(null);
+
 	const columns = [
 		{
 			title: "Equipment Type",
 			dataIndex: "type_name",
-			render: (text,record ) => (
-				<>
-					<a onClick={()=>HandleEditClick(record)}>{text}</a>
-					<ModifyStudentModal/>
-				</>
-			),
 		},
 		{
 			title: "Available Amount",
@@ -27,22 +24,14 @@ const EquipmentTable = () => {
 		},
 	];
 
-	const HandleEditClick = (record) => {
-		setModalData(record);
-		setModifyModalVisible(true);
-		console.log("open modify modal");
-	};
-
-
 	useEffect(() => {
 		fetchData();
 	}, []);
 
 	const rowSelection = {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.type_id) : [],
-		onChange: (selectedRowKeys, selectedRows) => {
-			console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-			setSelectedRows(selectedRows);//modify this line so we could set row as some identifier
+		onChange: (selectedRows) => {
+			setSelectedRows(selectedRows);
 		},
 	};
 
@@ -54,17 +43,39 @@ const EquipmentTable = () => {
 		});
 	};
 
+	const onRow = (record) => {
+		return {
+			onClick: () => {
+				setModalData(record);
+				setVisible(true);
+			},
+		};
+	};
+
+	const hideModal = () => {
+		setVisible(false);
+	};
+
 	return (
-		<Table
-			columns={columns}
-			rowKey={(record) => record.type_id}
-			rowSelection={rowSelection}
-			dataSource={data}
-			pagination={tableParams.pagination}
-			loading={loading}
-			onChange={onTableChange}
-			scroll={{ x: "max-content" }}
-		/>
+		<>
+			<Table
+				columns={columns}
+				rowKey={(record) => record.type_id}
+				rowSelection={rowSelection}
+				dataSource={data}
+				pagination={{
+					...tableParams.pagination,
+					total: data ? data.length : 0,
+				}}
+				loading={loading}
+				onChange={onTableChange}
+				scroll={{ x: "max-content" }}
+				onRow={onRow}
+				rowClassName={"row-hover-cursor"}
+			/>
+			<ModifyStudentModal open={visible} modalData={modalData} hideModal={hideModal}/>
+		</>
+		
 	);
 };
 

@@ -3,14 +3,10 @@ import { useEquipmentContext } from "../../../Context";
 
 const {Search} = Input;
 const SearchEquipmentBar = () => {
-	const {onEquipmentSearch} = useEquipmentContext();
-	const onSearch = (value) => {
-		console.log("onSearch, value:", value);
-		onEquipmentSearch(value);
-	};
+	const {onSearch} = useEquipmentContext();
 
 	return (
-		<Search placeholder="Input Equipment Type" onSearch={onSearch} enterButton />
+		<Search placeholder="Input Equipment Type" onSearch={onSearch} enterButton allowClear/>
 	);
 };
 
