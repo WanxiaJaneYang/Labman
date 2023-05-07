@@ -47,34 +47,6 @@ const RequestRecordTable = () => {
 			title: "Amount",
 			dataIndex: "borrow_amount",
 		},
-		// {
-		// 	title:"Status",
-		// 	dataIndex:"request_status",
-		// 	render: (text, record) => {
-		// 		if (record.request_status === 0) {
-		// 			return <span>Pending</span>;
-		// 		} else if (record.request_status === 1) {
-		// 			return <span>Collected</span>;
-		// 		}else if (record.request_status === 2) {
-		// 			return <span>Cancelled</span>;
-		// 		}
-		// 	},
-		// 	filters: [
-		// 		{
-		// 			text: "Pending",
-		// 			value: 0,
-		// 		},
-		// 		{
-		// 			text: "Collected",
-		// 			value: 1,
-		// 		},
-		// 		{
-		// 			text: "Cancelled",
-		// 			value: 2,
-		// 		},
-		// 	],
-		// 	responive: ["md"],				
-		// },
 		{
 			title:"Due Date",
 			dataIndex:"return_date",

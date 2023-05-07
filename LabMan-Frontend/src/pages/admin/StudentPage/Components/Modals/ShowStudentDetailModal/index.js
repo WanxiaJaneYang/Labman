@@ -1,16 +1,10 @@
 import { Button, Modal } from "antd";
-import { useStudentContext } from "../../../Context/StudentContext";
-function ShowStudentDetailModal() {
-	const {modalData, detailModalVisible, setDetailModalVisible} = useStudentContext();
 
-	const hideDetailModal = () => {
-		setDetailModalVisible(false);
-	};
-
+function ShowStudentDetailModal({ open, hideDetailModal, modalData}) {
 	return (
 		<Modal 
 			title="Student Detail" 
-			open={detailModalVisible} 
+			open={open} 
 			onCancel={hideDetailModal}
 			closable={false}
 			footer={[

@@ -9,12 +9,12 @@ const ReturnModal =({open, hideModal, record})=>{
 
 	const onOk = async() => {
 		setConfirmLoading(true);
-		await form.validateFields();
-		const values = await form.getFieldsValue();
+		const values = await form.validateFields();
 		values.borrow_id=record.borrow_id;
 		await onReturnEquipment(values);
 		setConfirmLoading(false);
 		hideModal();
+		form.resetFields();
 	};
 
 	const getUnreturnedAmount = () => {
@@ -28,13 +28,14 @@ const ReturnModal =({open, hideModal, record})=>{
 			onCancel={hideModal}
 			onOk={onOk}
 			confirmLoading={confirmLoading}
+			destroyOnClose={true}
 		>
 			<Form 
 				form={form}
 			>
 				<Form.Item 
-					label={"Returned Amount"} 
-					name={"returned_amount"}
+					label={"Return Amount"} 
+					name={"return_amount"}
 					rules={[
 						{
 							required:true,
