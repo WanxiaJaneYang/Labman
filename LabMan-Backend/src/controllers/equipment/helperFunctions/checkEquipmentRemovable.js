@@ -12,7 +12,7 @@ async function checkEquipmentRemovable(pool,type_id) {
       const removable = results[0].removable;
       return removable;
     } catch (error) {
-      throw new Error("Internal error checking equipment removable: " + error.message);
+      throw new Error("Failed checking equipment removable: " + error.message);
     }
   };
 

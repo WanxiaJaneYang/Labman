@@ -14,7 +14,10 @@ async function newEquipmentType(req, res) {
 		return res.status(201).json({ message: "Equipment type created successfully" });
 	} catch (error) {
 		console.error(error);
-		return res.status(500).json({ error: error.message });
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: "+error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " +error.message });
 	}
 }
 

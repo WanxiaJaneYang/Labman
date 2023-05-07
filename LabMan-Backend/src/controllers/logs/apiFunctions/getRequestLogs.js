@@ -10,7 +10,10 @@ async function getRequestLogs(req, res) {
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
-			return res.status(500).json({ error: error.message });
+			if (Object.values(errorMessages).includes(error.message)) {
+				return res.status(404).json({ error: "Bad request: "+error.message });
+			}
+			return res.status(500).json({ error: "Internal error: " +error.message });
 		}
 	}
 }
@@ -57,7 +60,10 @@ async function getfilteredRequestLogs(req, res) {
 		return res.status(200).json(results);
 	  } catch (error) {
 		console.error(error);
-		return res.status(500).json({ error: error.message });
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: "+error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " +error.message });
 	  }
 }
 
