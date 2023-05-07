@@ -32,9 +32,9 @@ async function statusIsCollected(connection, request_id) {
 		}
 	} catch (error) {
 		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error("Bad request "+error.message);
+			throw new Error(error.message);
 		}
-		throw new Error("Internal error when checking if request exists: "+error.message);
+		throw new Error("Failed checking request's status: "+error.message);
 	}	
 }
 

@@ -1,7 +1,7 @@
 import pool from "../../../utils/MySQL/db.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function getRequests(req,res) {
-
 	if (req.query.student_id || req.query.type_name || req.query.start_date || req.query.end_date || req.query.request_status) {
 		return getfilteredRequests(req,res);
 	} else {
@@ -10,13 +10,15 @@ async function getRequests(req,res) {
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
+			if (Object.values(errorMessages).includes(error.message)) {
+				return res.status(404).json({ error: error.message });
+			}
 			return res.status(500).json({ error: error.message });
 		}
 	}
 }
 
 async function getfilteredRequests(req,res) {
-
 	const { student_id, type_name, start_date, end_date, request_status } = req.query;
 
 	let sql = "SELECT * FROM requests";
@@ -62,7 +64,10 @@ async function getfilteredRequests(req,res) {
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);
-		return res.status(500).json({ error: error.message });
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: "+error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " +error.message });
 	}
 }
 

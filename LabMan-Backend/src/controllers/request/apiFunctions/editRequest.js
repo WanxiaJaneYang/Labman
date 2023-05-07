@@ -5,6 +5,7 @@ import { updateRequest } from "../helperFunctions/updateRequest.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 import pool from "../../../utils/MySQL/db.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function editRequest(req, res) {
 	try {
@@ -38,7 +39,10 @@ async function editRequest(req, res) {
 		return res.status(200).json({ success: "Request updated and log inserted successfully" });
 	} catch (error) {
 		console.log(error);
-		return res.status(500).json({ error: error.message });
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: "+error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " +error.message });
 	}
 }
 

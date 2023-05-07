@@ -9,6 +9,7 @@ import { updateAvailableAmount } from "../../equipment/helperFunctions/updateAva
 import { updateRemovableStatus } from "../../equipment/helperFunctions/updateRemovableStatus.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
+import { errorMessages } from "../../../utils/errorMessages.js";
 
 async function collectRequest(req,res) {
 	try {
@@ -44,7 +45,10 @@ async function collectRequest(req,res) {
 		});
 	} catch (error) {
 		console.log(error);
-		return res.status(500).json({ error: error.message });
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: "+error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " +error.message });
 	}
 }
 

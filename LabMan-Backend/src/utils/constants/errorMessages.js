@@ -10,6 +10,7 @@ REQUEST_STATUS_IS_NOT_NEW: "The request status is not new",
 REQUEST_STATUS_IS_NOT_COLLECTED: "The request status is not collected",
 USER_NOT_FOUND: "User not found",
 DUPLICATE_USER: "Duplicate user",
+EQUIPMENT_TYPE_NOT_REMOVABLE: "Equipment type is not removable",
 };
 
 export default errorMessages;

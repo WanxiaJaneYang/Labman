@@ -3,6 +3,6 @@ export async function updateRequestStatus(connection, request_id, request_status
 		const updateStatusQuery = "UPDATE requests SET request_status = ? WHERE request_id = ?";
 		return await connection.query(updateStatusQuery, [request_status, request_id]);
 	} catch (error) {
-		throw new Error("Internal error when updating request status: " + error.message);
+		throw new Error("Failed updating request status: " + error.message);
 	}
 }

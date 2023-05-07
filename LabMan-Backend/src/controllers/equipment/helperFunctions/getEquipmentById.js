@@ -11,8 +11,8 @@ export async function getEquipmentById(connection, type_id) {
 		return result[0];
 	} catch (error) {
 		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error("Bad request "+error.message);
+			throw new Error(error.message);
 		}
-		throw new Error("Internal error when get equipment type by id: "+error.message);
+		throw new Error("Failed getting equipment type by id: "+error.message);
 	}	
 }

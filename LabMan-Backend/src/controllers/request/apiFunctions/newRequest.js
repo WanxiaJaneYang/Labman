@@ -4,9 +4,9 @@ import pool from "../../../utils/MySQL/db.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { insertRequestRecord } from "../helperFunctions/insertRequestRecord.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
 
-
-async function newRequest(req,res) {
+async function newRequest(req, res) {
 	try {
 		const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
 
@@ -45,8 +45,12 @@ async function newRequest(req,res) {
 		});
 	} catch (error) {
 		console.error(error);
+
 		// Send error response
-		return res.status(500).json({ error: error.message });
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: "+error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " +error.message });
 	}
 }
 
