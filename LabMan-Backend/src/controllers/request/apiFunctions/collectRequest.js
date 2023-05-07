@@ -5,8 +5,7 @@ import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js
 import { insertBorrowingRecords } from "../helperFunctions/insertBorrowingRecords.js";
 import { updateRequestStatus } from "../helperFunctions/updateRequestStatus.js";
 import { getRequestById } from "../helperFunctions/getRequestById.js";
-import { updateAvailableAmount } from "../../equipment/helperFunctions/updateAvailableAmount.js";
-import { updateRemovableStatus } from "../../equipment/helperFunctions/updateRemovableStatus.js";
+import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctions/updateAvailableAmountAndRemovable.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 import { errorMessages } from "../../../utils/errorMessages.js";
@@ -36,8 +35,7 @@ async function collectRequest(req,res) {
 			};
 			const p2 = insertRequestLog(connection, requestLog);
 			const p3 = updateRequestStatus(connection, request_id, 1);
-			const p4 = updateAvailableAmount(connection, request.type_id, request.borrow_amount);
-			const p5 = updateRemovableStatus(connection, request.type_id, 0);
+			const p4 = updateAvailableAmountAndRemovable(connection, request.type_id, request.borrow_amount);
 
 			await Promise.all([p1, p2, p3, p4, p5]);
 			return res.status(200).json({ success: "Request collected and log inserted successfully" });

@@ -1,7 +1,7 @@
 import runTransaction from "../../../utils/MySQL/transaction.js";
 import { insertEquipmentLog } from "../../logs/helperFunctions/insertEquipmentLog.js";
 import { fetchBorrowingRecord } from "../helperFunctions/fetchBorrowingRecord.js";
-import { updateAvailableAmount } from "../../equipment/helperFunctions/updateAvailableAmount.js";
+import { updateAvailableAmountAndRemoveable } from "../../equipment/helperFunctions/updateAvailableAmountAndRemoveable.js";
 import {updateReturnedAmount} from "../helperFunctions/updateReturnedAmount.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
 
