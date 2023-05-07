@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getReturns } from "../controllers/return/getReturns.js";
-import { confirmReturn } from "../controllers/return/confirmReturn.js";
+import { getReturns } from "../controllers/return_borrowing/apiFunctions/getReturns.js";
+import { confirmReturn } from "../controllers/return_borrowing/apiFunctions/confirmReturn.js";
 
 const returnRouter = Router();
 

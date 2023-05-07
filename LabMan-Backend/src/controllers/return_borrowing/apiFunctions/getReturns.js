@@ -1,6 +1,6 @@
 import pool from "../../utils/MySQL/db.js";
 
-const getReturns = (req, res) => {
+async function getReturns(req, res) {
 	let query = "SELECT * FROM borrowings WHERE borrow_status = 0";
 	const conditions = [];
 
@@ -16,13 +16,16 @@ const getReturns = (req, res) => {
 		query += " AND " + conditions.join(" AND ");
 	}
 
-	pool.query(query, (err, results) => {
-		if (err) {
-			console.error(err);
-			return res.status(500).json({ error: "Error retrieving request records" });
-		}
+	try {
+		const [results] = await pool.query(sql, params);
 		return res.status(200).json(results);
-	});
+	} catch (error) {
+		console.error(error);
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: " + error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " + error.message });
+	}
 };
 
 export { getReturns };

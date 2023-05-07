@@ -10,6 +10,10 @@ REQUEST_STATUS_IS_NOT_NEW: "The request status is not new",
 REQUEST_STATUS_IS_NOT_COLLECTED: "The request status is not collected",
 DUPLICATE_USER: "Duplicate user",
 EQUIPMENT_TYPE_NOT_REMOVABLE: "Equipment type is not removable",
+BORROWING_DOESNOT_EXIST: "The borrowing does not exist",
+BORROWING_STATUS_IS_NOT_BORROWED: "The borrowing status is not borrowed",
+BORROWING_STATUS_IS_NOT_RETURNED: "The borrowing status is not returned",
+RETURN_AMOUNT_EXCEEDS_BORROW_AMOUNT: "The return amount exceeds the borrow amount",
 };
 
 export default errorMessages;
