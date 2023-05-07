@@ -1,5 +1,6 @@
 import { createContext,useState, useContext } from "react";
 import { message } from "antd";
+import { getEquipmentLogByTypenameAndStudentId,getRequestLogByTypenameAndStudentId } from "../../../../api/log";
 
 const ActionHistoryContext = createContext();
 
@@ -8,7 +9,6 @@ export const useActionHistoryContext = () => {
 };
 
 const ActionHistoryProvider = ({ children }) => {
-	const apiURL = "http://localhost:3008/logs";
 	const [data, setData] = useState([]); 
 	const [loading, setLoading] = useState(false);
 	const [tableSelection, setTableSelection] = useState("request");
@@ -22,87 +22,26 @@ const ActionHistoryProvider = ({ children }) => {
 		},
 	});
 
-	const fetchData = async () => {
-		try{
-			setLoading(true);
-			const data = await getLogData();
-			setData(data);
-			setLoading(false);
-			setTableParams({
-				...tableParams,
-				pagination: {
-					...tableParams.pagination,
-					total: data.length,
-				},
-			});
-		}
-		catch(error){
-			message.error(error.message);
-		}
-	};
-
-	const getLogData = async () => {
-		const url=apiURL+"/"+tableSelection;
-
-		try {
-			const response = await fetch(url);
-			if (response.ok) {
-				const data = await response.json();
-				return data;
-			}
-			else {
-				const errorMsg = await response.json();
-				throw new Error(errorMsg.error);
-			}
-		}
-		catch (error) {
-			message.error(error.message);
-		}
-	};
-
 	const onSearch = async(value) => {
+		setLoading(true);
 		try{
-			setLoading(true);
-			const data = await searchLog(value);
+			let data;
+			if(tableSelection === "request"){
+				data = await getRequestLogByTypenameAndStudentId(value);
+			}else{
+				data = await getEquipmentLogByTypenameAndStudentId(value);
+			}
 			setData(data);
-			setLoading(false);
-			setTableParams({
-				...tableParams,
-				pagination: {
-					...tableParams.pagination,
-					total: data.length,
-				},
-			});
-		}
-		catch(error){
+		}catch(error){
 			message.error(error.message);
 		}
+		setLoading(false);
 	};
 
-	const searchLog = async (values) => {
-		try {
-			const url=apiURL+"/"+tableSelection;
-			const urlParams= new URLSearchParams(values);
-			const response = await fetch(`${url}?${urlParams}`);
-			if (response.ok) {
-				const data = await response.json();
-				return data;
-			}
-			else {
-				const errorMsg = await response.json();
-				throw new Error(errorMsg.error);
-			}
-		}
-		catch (error) {
-			message.error(error.message);
-		}
-	};
-    
 	return (
 		<ActionHistoryContext.Provider
 			value={{
 				data,
-				fetchData,
 				loading,
 				tableParams,
 				setTableParams,

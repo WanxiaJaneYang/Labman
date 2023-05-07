@@ -2,27 +2,18 @@ import { Modal,Form } from "antd";
 import { useEquipmentContext } from "../../../Context";
 import ModifyEquipmentForm from "../../Forms/ModifyEquipmentForm";
 
-function ModifyEquipmentModal() {
-	const { modifyModalVisible,
-		setModifyModalVisible,
-		modalData,
-		setModalData,
-		onModify} = useEquipmentContext();
+const ModifyEquipmentModal=({open, modalData, hideModal}) =>{
+	const { onModify} = useEquipmentContext();
 
 	const [form] = Form.useForm();
 
-	const hideModifyModal = () => {
-		setModifyModalVisible(false);
-		setModalData(null);
-	};
-
 	const handleModify = async() => {
 		try {
-			const values = form.getFieldsValue();
+			const values = await form.validateFields();
 			console.log("Form values:", values);
 			values.type_id=modalData.type_id;
 			onModify(values);
-			hideModifyModal();
+			hideModal();
 			form.resetFields();
 		} catch (error) {
 			console.log("Form validation failed:", error);
@@ -33,14 +24,15 @@ function ModifyEquipmentModal() {
 		<Modal
 			title="Modify Equipment" 
 			width="70vw" 
-			open={modifyModalVisible} 
-			onCancel={hideModifyModal} 
+			open={open} 
+			onCancel={hideModal} 
 			onOk={handleModify}
 			maskStyle={{backgroundColor:"rgba(0,0,0,0.1)"}}
+			destroyOnClose={true}
 		>
-			<ModifyEquipmentForm form={form}/>
+			<ModifyEquipmentForm form={form} modalData={modalData}/>
 		</Modal>
 	);
-}
+};
 
 export default ModifyEquipmentModal;

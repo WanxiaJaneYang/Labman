@@ -25,3 +25,7 @@ Check the browser. Enter anything in login page to log in.
 
 ## MileStone 1 Point 
 Check the tag "Milestone1" in main branch
+
+## AWS SES email
+labman5000@proton.me
+Adelaide123.

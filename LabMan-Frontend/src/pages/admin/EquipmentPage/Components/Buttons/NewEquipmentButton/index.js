@@ -4,7 +4,7 @@ import {useEquipmentContext} from "../../../Context";
 import NewEquipmentForm from "../../Forms/NewEquipmentForm";
 
 const NewEquipmentButton = () => {
-	const{onFormSubmit}=useEquipmentContext();
+	const{onAdd}=useEquipmentContext();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -23,7 +23,7 @@ const NewEquipmentButton = () => {
 			const values = await form.validateFields();
 			values.available_amount=values.total_amount;
 			console.log("Form values:", values);
-			onFormSubmit(values);
+			onAdd(values);
 			// call the API to create a new request record here
 			hideModal();
 			form.resetFields();
