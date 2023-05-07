@@ -35,8 +35,8 @@ export async function insertBorrowingRecords(connection, borrowingRequest) {
 
 	} catch (error) {
 		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error(error.message);
+			throw new Error("Bad request "+error.message);
 		}
-		throw new Error("Interval error when inserting borrowing record: " + error.message);
+		throw new Error("Internal error when inserting borrowing record: " + error.message);
 	}
 }

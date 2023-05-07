@@ -15,8 +15,8 @@ export async function insertRequestRecord(connection, requestRecord) {
 		return request_id;
 	} catch (error) {
 		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error(error.message);
+			throw new Error("Bad request "+error.message);
 		}
-		throw new Error("Interval error when inserting request record: " + error.message);
+		throw new Error("Internal error when inserting request record: " + error.message);
 	}
 }

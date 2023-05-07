@@ -13,8 +13,8 @@ export async function compareAvailableAmount(connection, type_id,amount) {
 		return isAvailable;
 	} catch (error) {
 		if (Object.values(errorMessages).includes(error.message)) {
-			throw new Error(error.message);
+			throw new Error("Bad request "+error.message);
 		}
-		throw new Error("Interval error when check equipment availability: "+error.message);
+		throw new Error("Interval error when checking equipment availability: "+error.message);
 	}
 }
