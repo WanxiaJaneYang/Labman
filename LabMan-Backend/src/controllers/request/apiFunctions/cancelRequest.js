@@ -5,8 +5,7 @@ import { getRequestById } from "../helperFunctions/getRequestById.js";
 import { updateRequestStatus} from "../helperFunctions/updateRequestStatus.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
-import { errorMessages } from "../../../utils/errorMessages.js";
-
+import errorMessages from "../../../utils/constants/errorMessages.js";
 async function cancelRequest(req,res) {
 	try {
 		const { request_id } = req.params; 

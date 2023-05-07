@@ -8,6 +8,8 @@ async function fetchBorrowingRecord(connection, borrow_id) {
 		if (results.length === 0) {
 			throw new Error(errorMessages.BORROWING_DOESNOT_EXIST);
 		}
+		//console.log("fetch borrowing record: ");
+		//console.log(results);
         return results;
     } catch (error) {
 		if (Object.values(errorMessages).includes(error.message)) {
