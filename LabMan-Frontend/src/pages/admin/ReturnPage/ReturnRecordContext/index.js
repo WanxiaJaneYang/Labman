@@ -1,6 +1,8 @@
 import { message } from "antd";
 import { createContext, useContext, useState } from "react";
 import Prosime from "promise";
+import { getBorrowedRecords, confirmReturn, searchBorrowRecord } from "../../../../api/return";
+import { getEquipmentData } from "../../../../api/equipment";
 
 const ReturnRecordContext = createContext();
 
@@ -9,7 +11,6 @@ export const useReturnRecordContext = () => {
 };
 
 const ReturnRecordProvider = ({ children }) => {
-	const apiURL = "http://localhost:3008/return";
 	const[loading,setLoading] = useState(false);
 	const [selectedRows, setSelectedRows] = useState(null);
 	const [data, setData] = useState([]);
@@ -24,115 +25,61 @@ const ReturnRecordProvider = ({ children }) => {
 	});
 
 	const fetchData = async () => {
+		setLoading(true);
 		try{
-			setLoading(true);
-			await getBorrowedRecords();
-			setLoading(false);
-		}
-		catch(error){
+			const data=await getBorrowedRecords();
+			setData(data);
+		}catch(error){
 			message.error(error.message);
+			setData([]);
 		}
+		setLoading(false);
 	};
 
-	const getBorrowedRecords = async () => {
-		try {
-			const response = await fetch(apiURL);
-			if (response.ok) {
-				const data = await response.json();
-				setData(data);
-				console.log(data);
-			}else{
-				const err = await response.json();
-				throw new Error(err.error);
-			}
-		} catch (error) {
-			message.error(error.message);
-		}
-	};
-
-	const onReturnEquipment = async (values) => {
+	const onReturnEquipment = async (values) => {		
+		const borrow_id = values.borrow_id;
+		const returned_amount = values.return_amount;
 		try{
-			const borrow_id = values.borrow_id;
-			const returned_amount = values.returned_amount;
-			await returnEquipment(borrow_id, returned_amount);
+			await confirmReturn(borrow_id, returned_amount);
 			message.success("Return equipment successfully");
-			setSelectedRows(null);
+		}
+		catch(error){
+			message.error(error.message);
+		}finally{
 			fetchData();
-		}
-		catch(error){
-			message.error(error.message);
-		}
-	};
-
-	const returnEquipment = async (borrow_id, return_amount) => {
-		const url = apiURL + "/" + borrow_id+ "?return_amount=" + return_amount;
-		try{
-			const response = await fetch(url, {method:"PATCH"});
-			if(!response.ok){
-				const err = await response.json();
-				throw new Error(err.error);
-			}
-		}
-		catch(error){
-			message.error(error.message);
-		}
+		}	
 	};
 
 	const onReturnAllEquipment = async () => {
 		try{
-			console.log("on return selectedRows",selectedRows);
-			await Prosime.all(selectedRows.map((row) =>{
-				if(row.returned_amount==0){
-					return returnEquipment(row.borrow_id, row.borrow_amount);
-				}else{
-					return returnEquipment(row.borrow_id, row.borrow_amount-row.returned_amount);
-				}
-			}));
+			await Prosime.all(selectedRows.map(async(row) => await confirmReturn(row.borrow_id, row.borrow_amount-row.returned_amount)));
 			message.success("Return equipment successfully");
-			fetchData();
-		}
-		catch(error){
+		}catch(error){
 			message.error(error.message);
+		}finally{
+			fetchData();
 		}
 	};
 	
 	const getEquipmentTypeList = async () => {
-		try {
-			const response = await fetch("http://localhost:3008/equipment");
-			if (response.ok) {
-				const data = await response.json();
-				setEquipmentTypeList(data);
-			}else{
-				const err = await response.json();
-				throw new Error(err.error);
-			}
-		} catch (error) {
+		try{
+			const data = await getEquipmentData();
+			setEquipmentTypeList(data);
+		}catch(error){
 			message.error(error.message);
 		}
 	};
 
 	const onSearch = async (values) => {
 		setLoading(true);
-		await searchBorrowRecord(values);
-		setLoading(false);
-	};
-
-	const searchBorrowRecord = async (values) => {
 		try{
-			const urlParams= new URLSearchParams(values);
-			const response = await fetch(`${apiURL}/?${urlParams}`);
-			if (response.ok) {
-				const data = await response.json();
-				message.success("Borrow Record Found");
-				setData(data);
-			}else{
-				const err = await response.json();
-				throw new Error(err.error);
-			}
-		}
-		catch(error){
+			const data = await searchBorrowRecord(values);
+			setData(data);
+			message.success("record found");
+		}catch(error){
 			message.error(error.message);
 		}
+		setLoading(false);
 	};
 	
 	const value = {
