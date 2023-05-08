@@ -28,15 +28,16 @@ async function confirmReturn(req, res) {
 				return_date: borrowingRecord.return_date,
 				returned_amount: borrowingRecord.returned_amount,
 			};
-			const p2 = await updateAvailableAmountAndRemovable(connection, borrowingRecord.type_id, return_amount * (-1));
+			const p2 = await insertEquipmentLog(connection, equipmentLog);
+
+			const p3 = await updateAvailableAmountAndRemovable(connection, borrowingRecord.type_id, return_amount);
 
 			const borrow_status = borrowingRecord.returned_amount === borrowingRecord.borrow_amount ? 1 : 0;
-			const p3 = await updateBorrowingStatus(connection, borrow_id, borrow_status);
-			const p4 = await insertEquipmentLog(connection, equipmentLog);
+			const p4 = await updateBorrowingStatus(connection, borrow_id, borrow_status);
 
 			await Promise.all([p1, p2, p3, p4]);
 
-			return res.status(200).json({ success: "Borrowing record and equipment info updated successfully" });
+			return res.status(200).json({ success: "Returned equipment successfully" });
 		});
 	} catch (error) {
 		console.error(error);
