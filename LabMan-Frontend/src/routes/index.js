@@ -9,6 +9,8 @@ import StudentPage from "../pages/Admin/StudentPage";
 import ActionHistoryPage from "../pages/Admin/ActionHistoryPage";
 import BorrowPage from "../pages/Admin/BorrowPage";
 import CoursePage from "../pages/Admin/CoursePage";
+import IndividualCoursePage from "../pages/Admin/IndividualCoursePage";
+import StudentList from "../pages/Admin/StudentListPage";
 
 const routes = [
 	{
@@ -54,6 +56,18 @@ const routes = [
 			{
 				path: "course",
 				element:<CoursePage />,
+				children: [
+					{
+						path: ":courseId",
+						element: <IndividualCoursePage />,
+						children: [
+							{
+								path: "students",
+								element: <StudentList />,
+							},
+						],
+					},
+				],
 			}
 		]
 	}

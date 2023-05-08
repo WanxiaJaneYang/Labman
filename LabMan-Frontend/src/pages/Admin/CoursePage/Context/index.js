@@ -39,6 +39,18 @@ const CourseProvider = ({ children }) => {
 		setLoading(false);
 	};
 
+	const onSearch = async (values) => {
+		setLoading(true);
+		console.log("values:", values);
+		setLoading(false);
+	};
+
+	const onEdit = async (values) => {
+		setLoading(true);
+		console.log("values:", values);
+		setLoading(false);
+	};
+
 	return (
 		<CourseContext.Provider value={{
 			data,
@@ -52,6 +64,8 @@ const CourseProvider = ({ children }) => {
 			selectedRows,
 			setSelectedRows,
 			onDelete,
+			onSearch,
+			onEdit,
 		}}>
 			{children}
 		</CourseContext.Provider>
