@@ -3,11 +3,11 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function editEquipment(req, res) {
 	const { type_id } = req.params;
-	const { type_name, total_amount, available_amount } = req.body;
+	const { type_name, total_amount } = req.body;
 
 	try {
-		const query = "UPDATE equipment_type SET type_name = ?, total_amount = ?, available_amount = ? WHERE type_id = ?";
-		const params = [type_name, total_amount, available_amount, type_id];
+		const query = "UPDATE equipment_type SET type_name = ?, total_amount = ? WHERE type_id = ?";
+		const params = [type_name, total_amount, type_id];
 
 		const [results] = await pool.query(query, params);
 

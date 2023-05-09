@@ -4,11 +4,11 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 async function newEquipmentType(req, res) {
 	const { type_name, total_amount, available_amount } = req.body;
 	const removable = true;
-
+	const reserved_amount = 0;
 	try {
 		await pool.query(
-			"INSERT INTO equipment_type (type_name, total_amount, available_amount, removable) VALUES (?, ?, ?, ?)",
-			[type_name, total_amount, available_amount, removable]
+			"INSERT INTO equipment_type (type_name, total_amount, available_amount, removable,reserved_amount) VALUES (?, ?,?, ?, ?)",
+			[type_name, total_amount, available_amount, removable,reserved_amount]
 		);
 
 		return res.status(201).json({ message: "Equipment type created successfully" });
