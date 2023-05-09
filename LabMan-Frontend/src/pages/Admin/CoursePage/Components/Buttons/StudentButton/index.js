@@ -13,6 +13,7 @@ const StudentButton = ({course_id}) => {
 					style={{fontSize: "20px"}}
 					onClick={onClick}
 				/>
+				
 			</Tooltip>
 		</>
 	);

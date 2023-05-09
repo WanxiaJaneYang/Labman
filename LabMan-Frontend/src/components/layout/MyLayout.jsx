@@ -9,12 +9,18 @@ const MyLayout = ({ children, menuItems }) => {
 	const [selectedKey, setSelectedKey] = React.useState(window.location.pathname);
 	const navigate = useNavigate();
 	useEffect(() => {
-		setSelectedKey(window.location.pathname);
+		setSelectedKey(getFirstTwoPathSegments(location.pathname));
 	}, [location]);
 
 	const {
 		token: { colorBgContainer },
 	} = theme.useToken();
+
+	const getFirstTwoPathSegments = (pathname) => {
+		const segments = pathname.split("/");
+		return `/${segments[1]}/${segments[2]}`;
+	};
+
 	return (
 		<Layout>
 			<Sider

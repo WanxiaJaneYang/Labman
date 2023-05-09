@@ -1,13 +1,23 @@
 import { useParams } from "react-router-dom";
+import StudentListProvider from "./Context";
+import StudentListTable from "./Components/StudentListTable";
+import SearchStudentBar from "./Components/Buttons/SearchStudentBar";
+import { Row ,Space, Divider} from "antd";
 
 const StudentListPage = () => {
 	const { course_id } = useParams();
 	return (
-		<div>
-			<h1>
-                Student List Page: {course_id}
-			</h1>
-		</div>
+		<>
+			<Row justify={"end"} >
+				<Space>
+					<SearchStudentBar />
+				</Space>
+			</Row>
+			<Divider/>
+			<StudentListProvider course_id={course_id}>
+				<StudentListTable/>
+			</StudentListProvider>
+		</>
 	);
 };
 

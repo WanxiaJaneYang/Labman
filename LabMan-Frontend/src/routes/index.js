@@ -11,6 +11,7 @@ import BorrowPage from "../pages/Admin/BorrowPage";
 import CoursePage from "../pages/Admin/CoursePage";
 import IndividualCoursePage from "../pages/Admin/IndividualCoursePage";
 import StudentList from "../pages/Admin/StudentListPage";
+import CourseDetailPage from "../pages/Admin/CourseDetailPage";
 
 const routes = [
 	{
@@ -56,19 +57,20 @@ const routes = [
 			{
 				path: "course",
 				element:<CoursePage />,
+			},
+			{
+				path: "course/:course_id",
+				element: <IndividualCoursePage />, // Use CourseDetailsLayout here
 				children: [
 					{
-						path: ":courseId",
-						element: <IndividualCoursePage />,
-						children: [
-							{
-								path: "students",
-								element: <StudentList />,
-							},
-						],
+						index: true, // Set IndividualCoursePage as the default child route
+						element: <CourseDetailPage />,
 					},
-				],
-			}
+					{
+						path: "student_list",
+						element: <StudentList />,
+					},],
+			},
 		]
 	}
 ];

@@ -1,9 +1,7 @@
 import {Table, Space} from "antd";
 import {useCourseContext} from "../../Context";
 import {useEffect} from "react";
-import EditCourseButton from "../Buttons/EditCourseButton";
-import StudentButton from "../Buttons/StudentButton";
-import PackageSettingButton from "../Buttons/PackageButton";
+import ShowDetailButton from "../Buttons/ShowDetailButton";
 
 const CourseTable=()=>{
 	const {data, setTableParams, loading, tableParams, fetchData, selectedRows, setSelectedRows}=useCourseContext();
@@ -24,9 +22,7 @@ const CourseTable=()=>{
 			title: "Action",
 			render: (_, record) => (
 				<Space>
-					<EditCourseButton record={record}/>
-					<StudentButton course_id={record.course_id}/>
-					<PackageSettingButton course_id={record.course_id}/>
+					<ShowDetailButton course_id={record.course_id}/>
 				</Space>
 					
 			)       
