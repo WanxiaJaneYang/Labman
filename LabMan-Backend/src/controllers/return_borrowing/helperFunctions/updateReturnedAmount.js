@@ -5,7 +5,9 @@ async function updateReturnedAmount(connection, borrow_id, return_amount) {
 
 	try {
 		const [borrowingRecord] = await fetchBorrowingRecord(connection, borrow_id);
-
+		console.log("borrow: "+borrowingRecord.borrow_amount);
+		console.log("returned: "+borrowingRecord.returned_amount);
+		console.log("return :"+return_amount);
 		if (return_amount > borrowingRecord.borrow_amount - borrowingRecord.returned_amount) {
 			throw new Error(errorMessages.RETURN_AMOUNT_EXCEEDS_BORROW_AMOUNT);
 		}

@@ -37,10 +37,10 @@ async function collectRequest(req,res) {
 			const p3 = updateRequestStatus(connection, request_id, 1);
 			const p4 = updateReservedAmount(connection, request.type_id, request.borrow_amount*(-1));
 
-			await Promise.all([p1, p2, p3]);
-			return res.status(200).json({ success: "Request collected and log inserted successfully" });
-
+			await Promise.all([p1, p2, p3,p4]);
 		});
+
+		return res.status(200).json({ success: "Request collected and log inserted successfully" });
 	} catch (error) {
 		console.log(error);
 		if (Object.values(errorMessages).includes(error.message)) {

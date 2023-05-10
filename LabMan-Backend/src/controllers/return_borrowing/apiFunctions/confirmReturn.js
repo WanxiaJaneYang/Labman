@@ -36,9 +36,9 @@ async function confirmReturn(req, res) {
 			const p4 = await updateBorrowingStatus(connection, borrow_id, borrow_status);
 
 			await Promise.all([p1, p2, p3, p4]);
-
-			return res.status(200).json({ success: "Returned equipment successfully" });
 		});
+		return res.status(200).json({ success: "Returned equipment successfully" });
+
 	} catch (error) {
 		console.error(error);
 		if (Object.values(errorMessages).includes(error.message)) {

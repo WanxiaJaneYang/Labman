@@ -7,13 +7,14 @@ dotenv.config();
 const __dirname = fileURLToPath(new URL(import.meta.url)).replace(/\\/g, "/").split("/").slice(0, -1).join("/");
 
 const pool = mysql.createPool({
-	host: "localhost",
-	user: "root",
+	host: "labman5.mysql.database.azure.com",
+	user: "a1866621",
 	password: "Adelaide123N",
 	database: "labman",
 	port: 3306,
 	ssl: {
-		rejectUnauthorized: false,
+		rejectUnauthorized: true,
+		ca: fs.readFileSync(`${__dirname}/DigiCertGlobalRootCA.crt.pem`)
 	},
 	connectTimeout: 60000,
 });
