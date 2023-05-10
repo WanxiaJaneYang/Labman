@@ -1,53 +1,44 @@
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useParams, useLocation } from "react-router-dom";
 import { Breadcrumb, Row } from "antd";
-import { Link } from "react-router-dom";
+import { useMemo } from "react";
 
 const IndividualCoursePage = () => {
 	const { course_id } = useParams();
+	const location = useLocation();
 
-	const breadcrumbItems = [
-		{
-			title: "Course",
-			path: "/admin/course",
-			children: [
-				{
-					title: course_id,
-					path: `/admin/course/${course_id}`,
-					children: [
-						{
-							title: "Student List",
-							path: `/admin/course/${course_id}/student_list`,
-						},
-						{
-							title: "Package List",
-							path: `/admin/course/${course_id}/package_list`,
-						},
-					],
-				},
-			],
-		},
-	];
+	const breadcrumbItems = useMemo(() => {
+		const items = [
+			{
+				title: "Course",
+				href: "/admin/course",
+			},
+			{
+				title: course_id.toString(),
+				href: "/admin/course/" + course_id,
+			},
+		];
 
-	const renderBreadcrumb = (items) => {
-		return items.map((item, index) => (
-			<>
-				<Breadcrumb.Item key={index}>
-					<Link to={item.path}>{item.title}</Link>
-				</Breadcrumb.Item>
-				{item.children && (
-					<>
-						<Breadcrumb.Separator>/</Breadcrumb.Separator>
-						{renderBreadcrumb(item.children)}
-					</>
-				)}
-			</>
-		));
-	};
+		if (location.pathname === "/admin/course/" + course_id + "/student_list") {
+			items.push({
+				title: "Student List",
+				href: null,
+			});
+		} else if (
+			location.pathname === "/admin/course/" + course_id + "/package_list"
+		) {
+			items.push({
+				title: "Package List",
+				href: null,
+			});
+		}
+
+		return items;
+	}, [location.pathname, course_id]);
 
 	return (
 		<>
 			<Row>
-				<Breadcrumb>{renderBreadcrumb(breadcrumbItems)}</Breadcrumb>
+				<Breadcrumb items={breadcrumbItems} />
 			</Row>
 			<Outlet />
 		</>

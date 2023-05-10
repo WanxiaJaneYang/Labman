@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import AdminLayout from "../components/Layout/AdminLayout";
@@ -56,20 +56,26 @@ const routes = [
 			},
 			{
 				path: "course",
-				element:<CoursePage />,
-			},
-			{
-				path: "course/:course_id",
-				element: <IndividualCoursePage />, // Use CourseDetailsLayout here
-				children: [
+				element:<Outlet />,
+				children:[
 					{
-						index: true, // Set IndividualCoursePage as the default child route
-						element: <CourseDetailPage />,
+						index: true,
+						element: <CoursePage />,
 					},
 					{
-						path: "student_list",
-						element: <StudentList />,
-					},],
+						path: ":course_id",
+						element: <IndividualCoursePage />, // Use CourseDetailsLayout here
+						children: [
+							{
+								index: true, // Set IndividualCoursePage as the default child route
+								element: <CourseDetailPage />,
+							},
+							{
+								path: "student_list",
+								element: <StudentList />,
+							},],
+					},
+				],
 			},
 		]
 	}
