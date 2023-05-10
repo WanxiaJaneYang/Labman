@@ -30,8 +30,7 @@ const EquipmentTable = () => {
 
 	const rowSelection = {
 		selectedRowKeys: selectedRows ? selectedRows.map((row) => row.type_id) : [],
-		onChange: (selectedRows) => {
-			console.log("before set:", selectedRows);
+		onChange: (_,selectedRows) => {
 			setSelectedRows(selectedRows);
 			console.log("after set: ", selectedRows);
 		},
