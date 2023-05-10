@@ -9,7 +9,7 @@ async function newEquipmentType(req, res) {
 	const added_time = moment().format("YYYY-MM-DD HH:mm:ss");
 	try {
 		await pool.query(
-			"INSERT INTO equipment_type (type_name, total_amount, available_amount, removable,reserved_amount,added_time) VALUES (?, ?,?, ?, ?,?)",
+			"INSERT INTO equipment_type (type_name, total_amount, available_amount, removable,reserved_amount,last_edit_time) VALUES (?, ?,?, ?, ?,?)",
 			[type_name, total_amount, available_amount, removable,reserved_amount,added_time]
 		);
 

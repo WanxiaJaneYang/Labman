@@ -6,6 +6,9 @@ import { updateRequestStatus} from "../helperFunctions/updateRequestStatus.js";
 import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js";
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
+import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctions/updateAvailableAmountAndRemovable.js";
+import {updateReservedAmount} from "../../equipment/helperFunctions/updateReservedAmount.js";
+
 async function cancelRequest(req,res) {
 	try {
 		const { request_id } = req.params; 
@@ -30,13 +33,14 @@ async function cancelRequest(req,res) {
 
 		await runTransaction(async (connection) => {
 			// Update request_status to 2 (cancelled)
-			const updatePromise = updateRequestStatus(connection, request_id, 2);
+			const p1 = updateRequestStatus(connection, request_id, 2);
 
 			// Insert requestLog into request_Log table
-			const insertPromise = insertRequestLog(connection, requestLog);
-
+			const p2 = insertRequestLog(connection, requestLog);
+			const p3 = updateReservedAmount(connection, type_id, borrow_amount*(-1));
+			const p4 = updateAvailableAmountAndRemovable(connection, type_id,borrow_amount);
 			// Wait for both promises to complete
-			await Promise.all([updatePromise, insertPromise]);
+			await Promise.all([p1,p2, p3,p4]);
 		});
 		return res.status(200).json({ success: "Request cancelled successfully" });
 	} catch (error) {

@@ -6,6 +6,9 @@ import { compareAvailableAmount } from "../../equipment/helperFunctions/compareA
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
+import { updateReservedAmount } from "../../equipment/helperFunctions/updateReservedAmount.js";
+import { getRequestById } from "../helperFunctions/getRequestById.js";
+import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctions/updateAvailableAmountAndRemovable.js";
 
 async function editRequest(req, res) {
 	try {
@@ -23,18 +26,21 @@ async function editRequest(req, res) {
 			log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			request_id,
 		};
+		const change_amount = borrow_amount - (await getRequestById(pool, request_id)).borrow_amount;
 		await statusIsNew(pool,request_id);
 		await runTransaction(async (connection) => {
 			// Update the request record
 			await compareAvailableAmount(connection, type_id, borrow_amount);
 
-			const updateRequestPromise = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
+			const p1 = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
 
 			// Insert requestLog into request_Log table
-			const insertRequestLogPromise = insertRequestLog(connection, requestLog);
+			const p2 = insertRequestLog(connection, requestLog);
+			const p3 = updateReservedAmount(connection, type_id, change_amount);
+			const p4 = updateAvailableAmountAndRemovable(connection, type_id, change_amount*(-1));
 
 			// Wait for all promises to resolve
-			await Promise.all([updateRequestPromise, insertRequestLogPromise]);
+			await Promise.all([p1,p2, p3,p4]);
 		});
 		return res.status(200).json({ success: "Request updated and log inserted successfully" });
 	} catch (error) {

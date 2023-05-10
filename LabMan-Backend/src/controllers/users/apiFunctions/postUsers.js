@@ -1,4 +1,5 @@
 import pool from "../../../utils/MySQL/db.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
 import { checkUserDuplicate } from "../helperFunctions/checkUserDuplicate.js";
 
 async function newUser(req, res) {

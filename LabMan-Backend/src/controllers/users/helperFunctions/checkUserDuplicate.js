@@ -4,7 +4,7 @@ export async function checkUserDuplicate(connection, student_id) {
 	const getUserQuery = "SELECT * FROM students_user WHERE student_id = ?";
 	try {
 		const [result] = await connection.query(getUserQuery, [student_id]);
-		if (!result.length) {
+		if (result.length) {
 			throw new Error(errorMessages.DUPLICATE_USER);
 		}
 		return result[0];

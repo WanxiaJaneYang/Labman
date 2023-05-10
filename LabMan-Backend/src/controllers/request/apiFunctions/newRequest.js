@@ -5,6 +5,8 @@ import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js
 import { insertRequestRecord } from "../helperFunctions/insertRequestRecord.js";
 import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
+import { updateReservedAmount } from "../../equipment/helperFunctions/updateReservedAmount.js";
+import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctions/updateAvailableAmountAndRemovable.js";
 
 async function newRequest(req, res) {
 	try {
@@ -40,9 +42,14 @@ async function newRequest(req, res) {
 				request_id: insertRequestId,
 			};
 
-			await insertRequestLog(connection, requestLog);
-			return res.status(200).json({ message: "New request created successfully" });
+			const p1 = await insertRequestLog(connection, requestLog);
+			const p2 = updateReservedAmount(connection, type_id, borrow_amount);
+			const p3 = updateAvailableAmountAndRemovable(connection, type_id, borrow_amount*(-1));
+			// Wait for all promises to resolve
+			await Promise.all([p1, p2]);
 		});
+
+		return res.status(200).json({ message: "New request created successfully" });
 	} catch (error) {
 		console.error(error);
 
