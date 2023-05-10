@@ -37,7 +37,7 @@ const IndividualCoursePage = () => {
 
 	return (
 		<>
-			<Row>
+			<Row style={{marginBottom:"15px"}}>
 				<Breadcrumb items={breadcrumbItems} />
 			</Row>
 			<Outlet />
