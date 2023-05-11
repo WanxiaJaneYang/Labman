@@ -11,7 +11,7 @@ async function getEquipmentTypes(req, res) {
 		} catch (error) {
 			console.error(error);
 			if (Object.values(errorMessages).includes(error.message)) {
-				throw new Error(error.message);
+				return res.status(400).json({ error: "Bad request: "+error.message });
 			}
 			return res.status(500).json({ error: "Error retrieving equipment types" });
 		}
