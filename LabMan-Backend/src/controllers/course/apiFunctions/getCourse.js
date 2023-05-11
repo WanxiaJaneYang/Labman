@@ -4,7 +4,7 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 async function getCourse(req,res) {
 
 		if (req.query.course_id || req.query.course_name || req.query.coordinator_name ) {
-			return getfilteredCourse(req, res);
+			return getCoursebyId(req, res);
 		} else {
 			try {
 				const [results] = await pool.query("SELECT * FROM course");
@@ -19,7 +19,7 @@ async function getCourse(req,res) {
 		}
 }
 
-async function getfilteredCourse(req, res) {
+async function getCoursebyId(req, res) {
 
 	try {
 		const { course_id, course_name, coordinator_name } = req.query;
@@ -64,4 +64,4 @@ async function getfilteredCourse(req, res) {
 	}
 }
 
-export { getCourse };
+export { getCourse,getCoursebyId };
