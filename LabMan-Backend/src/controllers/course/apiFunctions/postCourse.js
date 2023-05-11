@@ -8,7 +8,7 @@ async function newCourse(req, res) {
 	const added_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
 	try {
-		await checkCourseDuplicate(pool, course_id);;
+		await checkCourseDuplicate(pool, course_id);
 		const query = "INSERT INTO course (course_id, course_name, coordinator_name, due_date,last_edit_time) VALUES (?, ?, ?,?,?)";
 		const params = [course_id, course_name, coordinator_name,due_date,added_time];
 		await pool.query(query, params);

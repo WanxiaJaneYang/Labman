@@ -15,16 +15,16 @@ const errorMessages = {
 	EQUIPMENT_LOG_REQUIRED_FIELD_INVALID: "Required information for equipment borrowing is invalid",
 	EQUIPMENT_TYPE_NOT_REMOVABLE: "Equipment type is not removable",
 
-    //borrowing
-    REQUEST_STATUS_IS_NOT_COLLECTED: "The request status is not collected",
-    BORROWING_DOESNOT_EXIST: "The borrowing does not exist",
-    BORROWING_STATUS_IS_NOT_BORROWED: "The borrowing status is not borrowed",
-    BORROWING_STATUS_IS_NOT_RETURNED: "The borrowing status is not returned",
-    RETURN_AMOUNT_EXCEEDS_BORROW_AMOUNT: "The return amount exceeds the borrow amount",
+	//borrowing
+	REQUEST_STATUS_IS_NOT_COLLECTED: "The request status is not collected",
+	BORROWING_DOESNOT_EXIST: "The borrowing does not exist",
+	BORROWING_STATUS_IS_NOT_BORROWED: "The borrowing status is not borrowed",
+	BORROWING_STATUS_IS_NOT_RETURNED: "The borrowing status is not returned",
+	RETURN_AMOUNT_EXCEEDS_BORROW_AMOUNT: "The return amount exceeds the borrow amount",
 
-    //course
-    DUPLICATE_COURSE: "Duplicate course",
-    COURSE_DOESNOT_EXIST: "The course does not exist",
+	//course
+	DUPLICATE_COURSE: "Duplicate course",
+	COURSE_DOESNOT_EXIST: "The course does not exist",
 
 	//enrollment
 	ENROLLMENT_DOESNOT_EXIST: "The enrollment does not exist",

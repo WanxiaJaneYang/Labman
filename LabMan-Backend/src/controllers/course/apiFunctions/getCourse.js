@@ -3,20 +3,20 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function getCourse(req,res) {
 
-		if (req.query.course_id || req.query.course_name || req.query.coordinator_name ) {
-			return getCoursebyId(req, res);
-		} else {
-			try {
-				const [results] = await pool.query("SELECT * FROM course");
-				return res.status(200).json(results);
-			} catch (error) {
-				console.error(error);
-				if (Object.values(errorMessages).includes(error.message)) {
-					return res.status(404).json({ error: error.message });
-				}
-				return res.status(500).json({ error: error.message });
+	if (req.query.course_id || req.query.course_name || req.query.coordinator_name ) {
+		return getCoursebyId(req, res);
+	} else {
+		try {
+			const [results] = await pool.query("SELECT * FROM course");
+			return res.status(200).json(results);
+		} catch (error) {
+			console.error(error);
+			if (Object.values(errorMessages).includes(error.message)) {
+				return res.status(404).json({ error: error.message });
 			}
+			return res.status(500).json({ error: error.message });
 		}
+	}
 }
 
 async function getCoursebyId(req, res) {
@@ -51,7 +51,6 @@ async function getCoursebyId(req, res) {
 
 		// Add ORDER BY clause to sort by edit_time
 		sql += " ORDER BY last_edit_time ASC";
-
 
 		const [results] = await pool.query(sql, params);
 		return res.status(200).json(results);

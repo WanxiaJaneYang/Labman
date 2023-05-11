@@ -4,7 +4,7 @@ import moment from "moment";
 import { checkCourseExists } from "../helperFunctions/checkCourseExists.js";
 
 async function updateCourse(req, res) {
-    const { course_id } = req.params;
+	const { course_id } = req.params;
 	const { course_name, coordinator_name, due_date } = req.body;
 
 	const last_edit_time = moment().format("YYYY-MM-DD HH:mm:ss");

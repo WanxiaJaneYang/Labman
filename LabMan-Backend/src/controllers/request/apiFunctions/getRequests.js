@@ -60,7 +60,6 @@ async function getfilteredRequests(req, res) {
 		// Add ORDER BY clause to sort by request_time
 		sql += " ORDER BY request_time ASC";
 
-
 		const [results] = await pool.query(sql, params);
 		return res.status(200).json(results);
 	} catch (error) {
