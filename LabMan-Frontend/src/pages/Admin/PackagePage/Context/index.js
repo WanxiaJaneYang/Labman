@@ -27,7 +27,6 @@ const PackageProvider = ({ children, course_id }) => {
 	const fetchData = async () => {
 		setLoading(true);
 		console.log("course_id:", course_id);
-		setData([]);
 		setLoading(false);
 	};
 
@@ -35,6 +34,7 @@ const PackageProvider = ({ children, course_id }) => {
 		<PackageContext.Provider value={
 			{
 				data,
+				setData,
 				loading,
 				tableParams,
 				setTableParams,
