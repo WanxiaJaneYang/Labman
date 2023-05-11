@@ -1,26 +1,29 @@
-// import pool from "../../../utils/MySQL/db.js";
-// import errorMessages from "../../../utils/constants/errorMessages.js";
-// import { checkUserExists } from "../helperFunctions/checkCourseExists.js";
+import pool from "../../../utils/MySQL/db.js";
+import errorMessages from "../../../utils/constants/errorMessages.js";
+import moment from "moment";
+import { checkCourseExists } from "../helperFunctions/checkCourseExists.js";
 
-// async function updateUser(req, res) {
-// 	const { student_id } = req.params;
-// 	const { email } = req.body;
+async function updateCourse(req, res) {
+    const { course_id } = req.params;
+	const { course_name, coordinator_name, due_date } = req.body;
 
-// 	try {
-// 		await checkUserExists(pool, student_id);
+	const last_edit_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
-// 		const query = "UPDATE students_user SET email = ? WHERE student_id = ?";
-// 		const params = [email, student_id];
-// 		await pool.query(query, params);
+	try {
+		await checkCourseExists(pool, course_id);
 
-// 		return res.status(200).json({ message: "User updated successfully" });
-// 	} catch (error) {
-// 		console.error(error);
-// 		if (Object.values(errorMessages).includes(error.message)) {
-// 			return res.status(404).json({ error: "Bad request: "+error.message });
-// 		}
-// 		return res.status(500).json({ error: "Internal error: "+error.message });
-// 	}
-// }
+		const query = "UPDATE course SET course_name = ?, coordinator_name = ?, due_date = ?, last_edit_time = ? WHERE course_id = ?";
+		const params = [course_name, coordinator_name, due_date, last_edit_time, course_id];
+		await pool.query(query, params);
 
-// export { updateUser };
+		return res.status(200).json({ message: "Course updated successfully" });
+	} catch (error) {
+		console.error(error);
+		if (Object.values(errorMessages).includes(error.message)) {
+			return res.status(404).json({ error: "Bad request: " + error.message });
+		}
+		return res.status(500).json({ error: "Internal error: " + error.message });
+	}
+}
+
+export { updateCourse };
