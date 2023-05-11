@@ -52,7 +52,11 @@ const ReturnRecordProvider = ({ children }) => {
 
 	const onReturnAllEquipment = async () => {
 		try{
-			await Prosime.all(selectedRows.map(async(row) => await confirmReturn(row.borrow_id, row.borrow_amount-row.returned_amount)));
+			await Prosime.all(selectedRows.map(async(row) => 
+			{
+				console.log("row: ",row);
+				console.log("return amount", row.borrow_amount-row.returned_amount);
+				await confirmReturn(row.borrow_id, row.borrow_amount-row.returned_amount);}));
 			message.success("Return equipment successfully");
 		}catch(error){
 			message.error(error.message);

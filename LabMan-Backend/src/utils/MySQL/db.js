@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import fs from "fs";
-import mysql from "mysql";
+import mysql from "mysql2/promise";
 import { fileURLToPath } from "url";
 
 dotenv.config();
@@ -20,18 +20,20 @@ const pool = mysql.createPool({
 });
 console.log("Connection pool object created successfully");
 
-pool.getConnection((err, connection) => {
-	if (err) {
-		console.error("database is not connectable: ", err);
-	} else {
-		console.log("database is connectable ");
-		connection.release();
+async function connectToDatabase() {
+	let connection;
+	try {
+		connection = await pool.getConnection();
+		console.log("database is connectable");
+	} catch (error) {
+		console.error("database is not connectable", error);
+	} finally {
+		if (connection) {
+			connection.release();
+		}
 	}
-});
-
-function connectToDatabase() {
 	return pool;
 }
 
-export { connectToDatabase };
+export {connectToDatabase};
 export default pool;

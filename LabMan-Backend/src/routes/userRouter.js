@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import { getUser, getUserByStudentID} from "../controllers/users/getUsers.js";
-import { newUser} from "../controllers/users/postUsers.js";
-import { updateUser} from "../controllers/users/putUser.js";
-import { deleteUser} from "../controllers/users/deleteUsers.js";
+import { getUser, getUserByStudentID} from "../controllers/users/apiFunctions/getUsers.js";
+import { newUser} from "../controllers/users/apiFunctions/postUsers.js";
+import { updateUser} from "../controllers/users/apiFunctions/putUser.js";
+import { deleteUser} from "../controllers/users/apiFunctions/deleteUsers.js";
 
 const userRouter = Router();
 
