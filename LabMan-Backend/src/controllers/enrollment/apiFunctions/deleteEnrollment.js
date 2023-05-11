@@ -5,7 +5,7 @@ import { checkEnrollmentExists } from "../helperFunctions/checkEnrollmentExists.
 async function deleteEnrollment(req, res) {
   const { course_id } = req.params;
   const { student_ids } = req.body;
-
+  //console.log(student_ids);
   try {
     const deletionPromises = student_ids.map(async (student_id) => {
       await checkEnrollmentExists(pool, course_id, student_id);
