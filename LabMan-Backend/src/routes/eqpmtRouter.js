@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { getEquipmentTypes } from "../controllers/equipment/getEquipment.js";
-import { newEquipmentType } from "../controllers/equipment/postEquipment.js";
-import { deleteEquipment } from "../controllers/equipment/deleteEquipment.js";
-import { editEquipment } from "../controllers/equipment/putEquipment.js";
+import { getEquipmentTypes } from "../controllers/equipment/apiFunctions/getEquipment.js";
+import { newEquipmentType } from "../controllers/equipment/apiFunctions/postEquipment.js";
+import { deleteEquipment } from "../controllers/equipment/apiFunctions/deleteEquipment.js";
+import { editEquipment } from "../controllers/equipment/apiFunctions/putEquipment.js";
 
 const eqpmtRouter = Router();
 
