@@ -1,20 +1,30 @@
 import { Outlet, useParams, useLocation } from "react-router-dom";
 import { Breadcrumb, Row } from "antd";
 import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 const IndividualCoursePage = () => {
 	const { course_id } = useParams();
 	const location = useLocation();
+	const navigate = useNavigate();
 
 	const breadcrumbItems = useMemo(() => {
 		const items = [
 			{
 				title: "Course",
-				href: "/admin/course",
+				href:"/admin/course",
+				onClick: (e) => {
+					e.preventDefault();
+					navigate("/admin/course");
+				}
 			},
 			{
 				title: course_id.toString(),
-				href: "/admin/course/" + course_id,
+				href:"/admin/course/" + course_id,
+				onClick: (e) => {
+					e.preventDefault();
+					navigate("/admin/course/" + course_id);
+				}
 			},
 		];
 
@@ -37,7 +47,7 @@ const IndividualCoursePage = () => {
 
 	return (
 		<>
-			<Row style={{marginBottom:"15px"}}>
+			<Row style={{marginBottom:"15px" }}>
 				<Breadcrumb items={breadcrumbItems} />
 			</Row>
 			<Outlet />

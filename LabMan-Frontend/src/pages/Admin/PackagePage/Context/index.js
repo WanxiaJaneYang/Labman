@@ -1,15 +1,16 @@
 import { useContext,createContext, useState} from "react";
 
-const StudentListContext = createContext();
+const PackageContext = createContext();
 
-export const useStudentListContext = () => {
-	return useContext(StudentListContext);
+export const usePackageContext = () => {
+	return useContext(PackageContext);
 };
 
-const StudentListProvider = ({ children, course_id }) => {
+const PackageProvider = ({ children, course_id }) => {
 	const [data, setData] = useState([
 		{
-			student_id: "a111111111",
+			package_id: "1",
+			package_name: "Package 1",
 		},
 	]);
 	const [loading, setLoading] = useState(false);
@@ -26,31 +27,23 @@ const StudentListProvider = ({ children, course_id }) => {
 	const fetchData = async () => {
 		setLoading(true);
 		console.log("course_id:", course_id);
-		setLoading(false);
-	};
-
-	const onSearch = async (value) => {
-		setLoading(true);
-		console.log("course_id:", course_id);
-		console.log("search:", value);
 		setData([]);
 		setLoading(false);
 	};
 
 	return (
-		<StudentListContext.Provider value={
+		<PackageContext.Provider value={
 			{
 				data,
-				fetchData,
 				loading,
 				tableParams,
 				setTableParams,
-				onSearch,
+				fetchData,
 			}
 		}>
 			{children}
-		</StudentListContext.Provider>
+		</PackageContext.Provider>
 	);
 };
 
-export default StudentListProvider;
+export default PackageProvider;

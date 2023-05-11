@@ -12,6 +12,7 @@ import CoursePage from "../pages/Admin/CoursePage";
 import IndividualCoursePage from "../pages/Admin/IndividualCoursePage";
 import StudentList from "../pages/Admin/StudentListPage";
 import CourseDetailPage from "../pages/Admin/CourseDetailPage";
+import PackagePage from "../pages/Admin/PackagePage";
 
 const routes = [
 	{
@@ -73,7 +74,12 @@ const routes = [
 							{
 								path: "student_list",
 								element: <StudentList />,
-							},],
+							},
+							{
+								path: "package_list",
+								element: <PackagePage />,
+							}
+						],
 					},
 				],
 			},
