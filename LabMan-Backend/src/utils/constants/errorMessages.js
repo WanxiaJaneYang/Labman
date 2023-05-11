@@ -21,6 +21,9 @@ const errorMessages = {
 	BORROWING_STATUS_IS_NOT_BORROWED: "The borrowing status is not borrowed",
 	BORROWING_STATUS_IS_NOT_RETURNED: "The borrowing status is not returned",
 	RETURN_AMOUNT_EXCEEDS_BORROW_AMOUNT: "The return amount exceeds the borrow amount",
+
+	//course package
+	DUPLICATE_PACKAGE: "Duplicate package",
 };
 
 export default errorMessages;
