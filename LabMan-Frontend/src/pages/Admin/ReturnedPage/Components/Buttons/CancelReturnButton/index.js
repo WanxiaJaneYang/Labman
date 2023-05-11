@@ -3,7 +3,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal, message } from "antd";
 const { confirm } = Modal;
 
-function CancelReturnButton() {
+function CancelAllReturnButton() {
 	const { selectedRows, onCancel } = useReturnedRecordContext();
   
 	const handleCancel = () => {
@@ -26,10 +26,10 @@ function CancelReturnButton() {
   
 	return (
 		<Button type={"primary"} onClick={handleCancel}>
-		Cancel
+		CancelAll
 		</Button>
 	);
 }
   
-export default CancelReturnButton;
+export default CancelAllReturnButton;
   

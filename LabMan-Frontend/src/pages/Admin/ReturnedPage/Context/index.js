@@ -56,9 +56,20 @@ const ReturnedRecordProvider = ({ children }) => {
 		setLoading(false);
 	};
 	
-	const onCancel = async () => {
+	const onCancelAll = async () => {
 		try{
-			await Promise.all(selectedRows.map(async(row) => await cancelReturnedRecord(row.borrow_id)));
+			await Promise.all(selectedRows.map(async(row) => await cancelReturnedRecord(row.borrow_id, row.returned_amount)));
+			message.success("Cancel returned record successfully");
+		}catch(error){
+			message.error(error.message);
+		}finally{
+			fetchData();
+		}
+	};
+
+	const onCanel=async (borrow_id, return_amount) => {
+		try{
+			await cancelReturnedRecord(borrow_id, return_amount);
 			message.success("Cancel returned record successfully");
 		}catch(error){
 			message.error(error.message);
@@ -79,7 +90,8 @@ const ReturnedRecordProvider = ({ children }) => {
 		EquipmentTypeList,
 		getEquipmentTypeList,
 		onSearch,
-		onCancel,
+		onCancelAll,
+		onCanel,
 	};
 
 	return (
