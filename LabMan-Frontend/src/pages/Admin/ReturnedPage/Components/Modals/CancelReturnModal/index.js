@@ -1,17 +1,22 @@
 import {Modal, Form, InputNumber} from "antd";
 import {useState} from "react";
-import {onCancel} from "../../../Context";
+import {useReturnedRecordContext} from "../../../Context";
 
 const CancelReturnModal = ({open, hideModal, data}) => {
 	const [form] = Form.useForm();
 	const [confirmLoading, setConfirmLoading] = useState(false);
+	const {onCancelReturn} = useReturnedRecordContext();
     
 	const onOk = async () => {
 		setConfirmLoading(true);
 		const values = await form.validateFields();
 		values.borrow_id = data.borrow_id;
-		await onCancel(values);
+		await onCancelReturn(values);
 		setConfirmLoading(false);
+		closeModal();
+	};
+
+	const closeModal = () => {
 		hideModal();
 		form.resetFields();
 	};
@@ -20,8 +25,7 @@ const CancelReturnModal = ({open, hideModal, data}) => {
 		<Modal
 			title="Cancel Return"
 			open={open}
-			onCancel={hideModal}
-			footer={null}
+			onCancel={closeModal}
 			confirmLoading={confirmLoading}
 			destroyOnClose={true}
 			onOk={onOk}

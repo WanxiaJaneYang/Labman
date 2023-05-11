@@ -58,7 +58,9 @@ const ReturnedRecordProvider = ({ children }) => {
 	
 	const onCancelAll = async () => {
 		try{
-			await Promise.all(selectedRows.map(async(row) => await cancelReturnedRecord(row.borrow_id, row.returned_amount)));
+			await Promise.all(selectedRows.map(async(row) => {
+				await cancelReturnedRecord(row.borrow_id, row.returned_amount);
+			}));
 			message.success("Cancel returned record successfully");
 		}catch(error){
 			message.error(error.message);
@@ -67,7 +69,8 @@ const ReturnedRecordProvider = ({ children }) => {
 		}
 	};
 
-	const onCanel=async (borrow_id, return_amount) => {
+	const onCancelReturn=async (values) => {
+		const {borrow_id, return_amount} = values;
 		try{
 			await cancelReturnedRecord(borrow_id, return_amount);
 			message.success("Cancel returned record successfully");
@@ -91,7 +94,7 @@ const ReturnedRecordProvider = ({ children }) => {
 		getEquipmentTypeList,
 		onSearch,
 		onCancelAll,
-		onCanel,
+		onCancelReturn,
 	};
 
 	return (

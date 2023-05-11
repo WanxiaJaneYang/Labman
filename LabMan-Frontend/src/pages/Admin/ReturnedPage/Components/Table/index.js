@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import { useReturnedRecordContext } from "../../Context";
 import { useEffect } from "react";
-import { CancelButton } from "../Buttons/CancelButton";
+import CancelButton  from "../Buttons/CancelButton";
 
 const ReturnedRecordTable = () => {
 	const { 

@@ -1,7 +1,7 @@
 import { CloseOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import { useState } from "react";
-import CancelReturnModal from "../Modals/CancelReturnModal";
+import CancelReturnModal from "../../Modals/CancelReturnModal";
 
 const CancelButton = ({record}) => {
 	const [open, setOpen] = useState(false);
