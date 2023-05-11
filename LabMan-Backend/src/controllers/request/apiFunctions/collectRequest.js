@@ -44,7 +44,7 @@ async function collectRequest(req,res) {
 	} catch (error) {
 		console.log(error);
 		if (Object.values(errorMessages).includes(error.message)) {
-			return res.status(404).json({ error: "Bad request: "+error.message });
+			return res.status(400).json({ error: "Bad request: "+error.message });
 		}
 		return res.status(500).json({ error: "Internal error: " +error.message });
 	}
