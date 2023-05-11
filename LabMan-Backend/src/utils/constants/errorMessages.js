@@ -24,6 +24,7 @@ const errorMessages = {
 
 	//course package
 	DUPLICATE_PACKAGE: "Duplicate package",
+	PACKAGE_DOESNOT_EXIST: "The package does not exist",
 };
 
 export default errorMessages;

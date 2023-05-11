@@ -9,6 +9,6 @@ coursePackageRouter.get("/", getPackageByCourse);
   
 coursePackageRouter.post("/",newPackage);
 
-coursePackageRouter.delete("/:course_id", deletePackage);
+coursePackageRouter.delete("/:package_id", deletePackage);
 
 export { coursePackageRouter };
