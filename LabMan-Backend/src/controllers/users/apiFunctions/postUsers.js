@@ -6,7 +6,7 @@ async function newUser(req, res) {
 	const { student_id, email, password } = req.body;
 
 	try {
-		await checkUserDuplicate(pool, student_id);;
+		await checkUserDuplicate(pool, student_id);
 		const query = "INSERT INTO students_user (student_id, email, password) VALUES (?, ?, ?)";
 		const params = [student_id, email, password];
 		await pool.query(query, params);
@@ -15,7 +15,7 @@ async function newUser(req, res) {
 	} catch (error) {
 		console.error(error);
 		if (Object.values(errorMessages).includes(error.message)) {
-			return res.status(404).json({ error: "Bad request: "+error.message });
+			return res.status(400).json({ error: "Bad request: "+error.message });
 		}
 		return res.status(500).json({ error: "Internal error: "+error.message });
 	}

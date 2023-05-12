@@ -20,14 +20,18 @@ async function getReturns(req, res) {
 
 	try {
 		const [results] = await pool.query(query, conditions);
+		//404 if no borrowing exist
+		if (results.length === 0) {
+			return res.status(404).json(errorMessages.BORROWING_DOESNOT_EXIST);
+		}
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);
 		if (Object.values(errorMessages).includes(error.message)) {
-			return res.status(404).json({ error: "Bad request: " + error.message });
+			return res.status(400).json({ error: "Bad request: " + error.message });
 		}
 		return res.status(500).json({ error: "Internal error: " + error.message });
 	}
-};
+}
 
 export { getReturns };

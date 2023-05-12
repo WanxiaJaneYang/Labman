@@ -46,16 +46,16 @@ async function newRequest(req, res) {
 			const p2 = updateReservedAmount(connection, type_id, borrow_amount);
 			const p3 = updateAvailableAmountAndRemovable(connection, type_id, borrow_amount*(-1));
 			// Wait for all promises to resolve
-			await Promise.all([p1, p2]);
+			await Promise.all([p1, p2,p3]);
 		});
 
-		return res.status(200).json({ message: "New request created successfully" });
+		return res.status(201).json({ message: "New request created successfully" });
 	} catch (error) {
 		console.error(error);
 
 		// Send error response
 		if (Object.values(errorMessages).includes(error.message)) {
-			return res.status(404).json({ error: "Bad request: "+error.message });
+			return res.status(400).json({ error: "Bad request: "+error.message });
 		}
 		return res.status(500).json({ error: "Internal error: " +error.message });
 	}

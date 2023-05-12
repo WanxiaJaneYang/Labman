@@ -7,13 +7,17 @@ async function getEquipmentLogs(req, res) {
 	} else {
 		try {
 			const [results] = await pool.query("SELECT * FROM equipment_log");
+			//404 if no equipment logs exist
+			if (results.length === 0) {
+				return res.status(404).json(errorMessages.EQUIPMENT_LOG_DOESNOT_EXIST);
+			}
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
 			if (Object.values(errorMessages).includes(error.message)) {
-				return res.status(404).json({ error: "Bad request: "+error.message });
+				return res.status(400).json({ error: "Bad request: " + error.message });
 			}
-			return res.status(500).json({ error: "Internal error: " +error.message });
+			return res.status(500).json({ error: "Internal error: " + error.message });
 		}
 	}
 }
@@ -65,14 +69,18 @@ async function getfilteredEquipmentLogs(req, res) {
 
 	try {
 		const [results] = await pool.query(sql, params);
+		//404 if no equipment logs exist
+		if (results.length === 0) {
+			return res.status(404).json(errorMessages.EQUIPMENT_LOG_DOESNOT_EXIST);
+		}
 		return res.status(200).json(results);
-	  } catch (error) {
+	} catch (error) {
 		console.error(error);
 		if (Object.values(errorMessages).includes(error.message)) {
-			return res.status(404).json({ error: "Bad request: "+error.message });
+			return res.status(400).json({ error: "Bad request: " + error.message });
 		}
-		return res.status(500).json({ error: "Internal error: " +error.message });
-	  }
+		return res.status(500).json({ error: "Internal error: " + error.message });
+	}
 }
 
 export { getEquipmentLogs };
