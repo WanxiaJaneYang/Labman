@@ -14,10 +14,13 @@ async function updateReturnedAmount(connection, borrow_id, return_amount) {
 
 		const new_returned_amount = borrowingRecord.returned_amount + return_amount;
 		//console.log(new_returned_amount);
-		const query = "UPDATE borrowings SET returned_amount = ? WHERE borrow_id = ?";
-		await connection.query(query, [new_returned_amount, borrow_id]);
+		const query = "UPDATE borrowings SET returned_amount = ?,actual_return_date = ? WHERE borrow_id = ?";
+		await connection.query(query, [new_returned_amount, new Date(),borrow_id]);
 
 	} catch (error) {
+		if (Object.values(errorMessages).includes(error.message)) {
+			throw new Error(error.message);
+		}
 		throw new Error("Failed update returned amount: " + error.message);
 	}
 }

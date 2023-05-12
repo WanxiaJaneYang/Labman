@@ -4,7 +4,6 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 async function getReturns(req, res) {
 
 	const { borrow_status, student_id, type_name, start_date, end_date } = req.query;
-	console.log(borrow_status);
 	let sql = "SELECT * FROM borrowings";
 
 	// Add WHERE clauses based on the query parameters
@@ -39,7 +38,7 @@ async function getReturns(req, res) {
 	if (whereClauses.length > 0) {
 		sql += " WHERE " + whereClauses.join(" AND ");
 	}
-	console.log(sql);
+	//console.log(sql);
 
 	try {
 		const [results] = await pool.query(sql, params);

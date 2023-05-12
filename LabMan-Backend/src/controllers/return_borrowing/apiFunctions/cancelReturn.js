@@ -5,6 +5,7 @@ import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctio
 import { updateReturnedAmount } from "../helperFunctions/updateReturnedAmount.js";
 import { updateBorrowingStatus } from "../helperFunctions/updateBorrowingStatus.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
+import moment from "moment";
 
 async function cancelReturn(req, res) {
 	try {
@@ -13,16 +14,10 @@ async function cancelReturn(req, res) {
 
 		await runTransaction(async (connection) => {
 
-			let borrowingRecord;
+			const p1 = await updateReturnedAmount(connection, borrow_id, cancel_return_amount*(-1));
 
-			const p1 = updateReturnedAmount(connection, borrow_id, cancel_return_amount * (-1))
-			  .then(() => {
-				return fetchBorrowingRecord(connection, borrow_id); // Wait for updateReturnedAmount and fetchBorrowingRecord to complete
-			  })
-			  .then((result) => {
-				borrowingRecord = result;
-			  });
-			  
+			// create equipment log
+			const [borrowingRecord] = await fetchBorrowingRecord(connection, borrow_id);
 			const equipmentLog = {
 				borrow_id: borrowingRecord.borrow_id,
 				type_id: borrowingRecord.type_id,
@@ -30,16 +25,16 @@ async function cancelReturn(req, res) {
 				student_id: borrowingRecord.student_id,
 				borrow_amount: borrowingRecord.borrow_amount,
 				log_type: 2,
-				log_time: new Date(),
+				log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 				return_date: borrowingRecord.return_date,
 				returned_amount: borrowingRecord.returned_amount,
 			};
-			const p2 = await insertEquipmentLog(connection, equipmentLog);
+			const p2 =  insertEquipmentLog(connection, equipmentLog);
 
-			const p3 = await updateAvailableAmountAndRemovable(connection, borrowingRecord.type_id, cancel_return_amount*(-1));
+			const p3 =  updateAvailableAmountAndRemovable(connection, borrowingRecord.type_id, cancel_return_amount*(-1));
 
-			const borrow_status = 0;
-			const p4 = await updateBorrowingStatus(connection, borrow_id, borrow_status);
+			const borrow_status = borrowingRecord.returned_amount === borrowingRecord.borrow_amount ? 1 : 0;
+			const p4 =  await updateBorrowingStatus(connection, borrow_id, borrow_status);
 
 			await Promise.all([p1, p2, p3, p4]);
 

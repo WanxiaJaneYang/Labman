@@ -5,6 +5,7 @@ import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctio
 import { updateReturnedAmount } from "../helperFunctions/updateReturnedAmount.js";
 import { updateBorrowingStatus } from "../helperFunctions/updateBorrowingStatus.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
+import moment from "moment";
 
 async function confirmReturn(req, res) {
 	try {
@@ -24,16 +25,16 @@ async function confirmReturn(req, res) {
 				student_id: borrowingRecord.student_id,
 				borrow_amount: borrowingRecord.borrow_amount,
 				log_type: 1,
-				log_time: new Date(),
+				log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 				return_date: borrowingRecord.return_date,
 				returned_amount: borrowingRecord.returned_amount,
 			};
-			const p2 = await insertEquipmentLog(connection, equipmentLog);
+			const p2 =  insertEquipmentLog(connection, equipmentLog);
 
-			const p3 = await updateAvailableAmountAndRemovable(connection, borrowingRecord.type_id, return_amount);
+			const p3 =  updateAvailableAmountAndRemovable(connection, borrowingRecord.type_id, return_amount);
 
 			const borrow_status = borrowingRecord.returned_amount === borrowingRecord.borrow_amount ? 1 : 0;
-			const p4 = await updateBorrowingStatus(connection, borrow_id, borrow_status);
+			const p4 =  await updateBorrowingStatus(connection, borrow_id, borrow_status);
 
 			await Promise.all([p1, p2, p3, p4]);
 		});

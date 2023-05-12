@@ -3,10 +3,11 @@ import { getEquipmentById } from "./getEquipmentById.js";
 
 export async function compareAvailableAmount(connection, type_id,amount) {
 	try {
-		const result=await getEquipmentById(connection, type_id);
-		const isAvailable = result[0].available_amount >= amount;
-		// console.log(result[0].available_amount);
-		// console.log(isAvailable);
+		const [result] = await getEquipmentById(connection, type_id);
+		// console.log(result);
+		const isAvailable = result.available_amount >= amount;
+		// console.log(result.available_amount);
+
 		if (!isAvailable) {
 			throw new Error(errorMessages.NOT_ENOUGH_EQUIPMENT);
 		}
