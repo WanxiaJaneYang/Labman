@@ -12,6 +12,27 @@ export const getAllCourses = async () => {
 	}
 };
 
+export const getCourseByCoursenameAndCoordinator = async (course_name, coordinator_name) => {
+	const urlParmas = new URLSearchParams();
+	urlParmas.append("course_name",course_name);
+	urlParmas.append("coordinator_name",coordinator_name);
+	const response = await axios.get(API_URL_COURSE+"?"+urlParmas.toString());
+	if(response.status === 200){
+		return response.data;
+	}else{
+		throw new Error(response.error);
+	}
+};
+
+export const getCourseById = async (id) => {
+	const response = await axios.get(API_URL_COURSE+"/"+id);
+	if(response.status === 200){
+		return response.data;
+	}else{
+		throw new Error(response.error);
+	}
+};
+
 export const postCourse = async (values) => {
 	const response = await axios.post(API_URL_COURSE,values);
 	if(response.status === 201){
@@ -38,7 +59,3 @@ export const editCourse = async (id,values) => {
 		throw new Error(response.error);
 	}
 };
-
-
-
-
