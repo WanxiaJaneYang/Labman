@@ -49,7 +49,7 @@ async function newRequest(req, res) {
 			await Promise.all([p1, p2,p3]);
 		});
 
-		return res.status(200).json({ message: "New request created successfully" });
+		return res.status(201).json({ message: "New request created successfully" });
 	} catch (error) {
 		console.error(error);
 
