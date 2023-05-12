@@ -1,4 +1,6 @@
 import { createContext, useContext, useState } from "react";
+import { getAllCourses, getCourseByCoursenameAndCoordinator, deleteCourse, postCourse } from "../../../../api/course";
+import { message } from "antd";
 
 const CourseContext = createContext();
 
@@ -22,33 +24,43 @@ const CourseProvider = ({ children }) => {
 
 	const fetchData = async () => {
 		setLoading(true);
-		setData([
-			{
-				course_id: 1,
-				courseCode: "CSE1001",
-				courseName: "Introduction to Computer Science",
-				courseCoordinator: "Dr. John Doe",
-			},
-		]);
+		await getAllCourses().then((data) => {
+			setData(data);
+		}).catch((err) => {
+			message.error(err.message);
+		});
 		setLoading(false);
 	};
 
-	const onDelete = async () => {
+	const onDelete = async () => {	
+		await Promise.all(selectedRows.map(async (row) => {
+			await deleteCourse(row.course_id);
+		})).then(() => {
+			message.success("Delete course successfully!");
+			setSelectedRows([]);
+			fetchData();
+		}).catch((err) => {
+			message.error(err.message);
+		});			
+	};
+
+	const onSearch = async (course_name, coordinator_name) => {
 		setLoading(true);
-		console.log("selectedRows:", selectedRows);
+		await getCourseByCoursenameAndCoordinator(course_name, coordinator_name).then((data) => {
+			setData(data);
+		}).catch((err) => {
+			message.error(err.message);
+		});
 		setLoading(false);
 	};
 
-	const onSearch = async (values) => {
-		setLoading(true);
-		console.log("values:", values);
-		setLoading(false);
-	};
-
-	const onEdit = async (values) => {
-		setLoading(true);
-		console.log("values:", values);
-		setLoading(false);
+	const onAdd = async (values) => {
+		await postCourse(values).then(() => {
+			message.success("Add course successfully!");
+			fetchData();
+		}).catch((err) => {
+			message.error(err.message);
+		});
 	};
 
 	return (
@@ -65,7 +77,7 @@ const CourseProvider = ({ children }) => {
 			setSelectedRows,
 			onDelete,
 			onSearch,
-			onEdit,
+			onAdd,
 		}}>
 			{children}
 		</CourseContext.Provider>

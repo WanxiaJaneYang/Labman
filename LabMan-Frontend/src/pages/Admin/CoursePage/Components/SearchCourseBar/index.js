@@ -1,17 +1,51 @@
-import {Input} from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button} from "antd";
+import { Input, Space } from "antd";
 import { useCourseContext } from "../../Context";
-const {Search} = Input;
+import { useState } from "react";
 
 const SearchCourseBar = () => {
-	const {onCourseSearch} = useCourseContext();
+	const [courseName, setCourseName] = useState("");
+	const [coordinator, setCoordinator] = useState("");
 
-	const onSearch = (value) => {
-		console.log("onSearch, value:", value);
-		onCourseSearch(value);
+	const {onSearch} =useCourseContext();
+
+	const onClick = () => {
+		onSearch(courseName, coordinator);
+	};
+
+	const onCoursenameInputChange = (e) => {
+		const trimValue=e.target.value.trim();
+		setCourseName(trimValue);
+	};
+
+	const onCoordinatorInputChange = (e) => {
+		const trimValue=e.target.value.trim();
+		setCoordinator(trimValue);
 	};
 
 	return (
-		<Search placeholder="Input Course Code/Name" onSearch={onSearch} enterButton />
+		<Space>
+			<Input 
+				onChange={onCoursenameInputChange}
+				placeholder="Input Course Name" 
+				allowClear
+				onPressEnter={onClick}
+			/>
+			<Input 
+				onChange={onCoordinatorInputChange}
+				placeholder="Input Course Coordinator" 
+				allowClear
+				onPressEnter={onClick}
+			/>
+			<Button 
+				type="primary" 
+				icon={<SearchOutlined />}
+				onClick={onClick}
+			>
+				Search
+			</Button>
+		</Space>
 	);
 };
 

@@ -1,6 +1,6 @@
 import { useContext, useState, createContext } from "react";
 import { message } from "antd";
-import { getCourseById, editCourse } from "../../../../api/course/service";
+import { getCourseById, editCourse } from "../../../../api/course";
 import { useNavigate } from "react-router-dom";
 
 const CourseDetailContext = createContext();
