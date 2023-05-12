@@ -13,10 +13,16 @@ async function cancelReturn(req, res) {
 
 		await runTransaction(async (connection) => {
 
-			const p1 = await updateReturnedAmount(connection, borrow_id, cancel_return_amount*(-1));
+			let borrowingRecord;
 
-			// create equipment log
-			const [borrowingRecord] = await fetchBorrowingRecord(connection, borrow_id);
+			const p1 = updateReturnedAmount(connection, borrow_id, cancel_return_amount * (-1))
+			  .then(() => {
+				return fetchBorrowingRecord(connection, borrow_id); // Wait for updateReturnedAmount and fetchBorrowingRecord to complete
+			  })
+			  .then((result) => {
+				borrowingRecord = result;
+			  });
+			  
 			const equipmentLog = {
 				borrow_id: borrowingRecord.borrow_id,
 				type_id: borrowingRecord.type_id,
