@@ -56,8 +56,8 @@ export const confirmReturn = async (borrow_id, return_amount) => {
 	}
 };
 
-export const cancelReturnedRecord = async (borrow_id) => {
-	const response = await axios.patch(API_URL_RETURN+"/cancel/"+borrow_id);
+export const cancelReturnedRecord = async (borrow_id, return_amount) => {
+	const response = await axios.patch(API_URL_RETURN+"/cancel/"+borrow_id+"?return_amount="+return_amount);
 	if (response.status === 200) {
 		return;
 	} else {

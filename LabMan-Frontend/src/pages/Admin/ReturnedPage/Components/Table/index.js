@@ -1,6 +1,7 @@
 import { Table } from "antd";
 import { useReturnedRecordContext } from "../../Context";
 import { useEffect } from "react";
+import CancelButton  from "../Buttons/CancelButton";
 
 const ReturnedRecordTable = () => {
 	const { 
@@ -61,7 +62,15 @@ const ReturnedRecordTable = () => {
 		{
 			title: "Returned Amount",
 			dataIndex: "returned_amount",
-		}
+		},
+		{
+			title: "Action",
+			render: (_, record) => {
+				return (
+					<CancelButton record={record}/>
+				);
+			},
+		},
 	];
 
 	const rowSelection = {

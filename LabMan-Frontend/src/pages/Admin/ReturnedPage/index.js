@@ -1,8 +1,9 @@
 import ReturnedRecordProvider from "./Context";
 import ReturnedRecordTable from "./Components/Table";
 import SearchReturnedBar from "./Components/Buttons/SearchReturnedBar";
-import CancelReturnedButton from "./Components/Buttons/CancelReturnButton";
-import { Row, Col, Divider, Space} from "antd";
+import CancelAllReturnedButton from "./Components/Buttons/CancelReturnButton";
+import { Row, Col, Divider,Space} from "antd";
+import ShowUnreturnedButton from "./Components/Buttons/ShowUnreturnedButton";
 
 const ReturnedPage = () => {
 	return (
@@ -10,9 +11,12 @@ const ReturnedPage = () => {
 			<Row justify="space-between" align="middle">
 				<Space>
 					<Col>
-						<CancelReturnedButton/>
+						<CancelAllReturnedButton/>
 					</Col>
-				</Space>
+					<Col>
+						<ShowUnreturnedButton/>
+					</Col>		
+				</Space>		
 				<Col>
 					<SearchReturnedBar />
 				</Col>
