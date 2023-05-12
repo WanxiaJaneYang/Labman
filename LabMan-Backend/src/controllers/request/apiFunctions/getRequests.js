@@ -7,6 +7,10 @@ async function getRequests(req,res) {
 	} else {
 		try {
 			const [results] = await pool.query("SELECT * FROM requests");
+			//404 if no requests exist
+			if (results.length === 0) {
+				return res.status(404).json(errorMessages.REQUEST_DOESNOT_EXIST);
+			}
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
@@ -61,6 +65,10 @@ async function getfilteredRequests(req,res) {
 
 	try {
 		const [results] = await pool.query(sql, params);
+		//404 if no requests exist
+		if (results.length === 0) {
+			return res.status(404).json(errorMessages.REQUEST_DOESNOT_EXIST);
+		}
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);

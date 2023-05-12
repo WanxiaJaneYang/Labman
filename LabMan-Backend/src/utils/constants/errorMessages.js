@@ -21,6 +21,12 @@ const errorMessages = {
 	BORROWING_STATUS_IS_NOT_BORROWED: "The borrowing status is not borrowed",
 	BORROWING_STATUS_IS_NOT_RETURNED: "The borrowing status is not returned",
 	RETURN_AMOUNT_EXCEEDS_BORROW_AMOUNT: "The return amount exceeds the borrow amount",
+
+	//equipment log
+	EQUIPMENT_LOG_DOESNOT_EXIST: "The equipment log does not exist",
+
+	//request log
+	REQUEST_LOG_DOESNOT_EXIST: "The request log does not exist",
 };
 
 export default errorMessages;

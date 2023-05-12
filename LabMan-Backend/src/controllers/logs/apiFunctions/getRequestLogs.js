@@ -7,6 +7,10 @@ async function getRequestLogs(req, res) {
 	} else {
 		try {
 			const [results] = await pool.query("SELECT * FROM request_log");
+			//404 if no request logs exist
+			if (results.length === 0) {
+				return res.status(404).json(errorMessages.REQUEST_LOG_DOESNOT_EXIST);
+			}
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
@@ -57,6 +61,10 @@ async function getfilteredRequestLogs(req, res) {
 
 	try {
 		const [results] = await pool.query(sql, params);
+		//404 if no request logs exist
+		if (results.length === 0) {
+			return res.status(404).json(errorMessages.REQUEST_LOG_DOESNOT_EXIST);
+		}
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);

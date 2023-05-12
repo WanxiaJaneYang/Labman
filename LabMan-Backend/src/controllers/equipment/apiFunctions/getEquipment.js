@@ -7,6 +7,10 @@ async function getEquipmentTypes(req, res) {
 	} else {
 		try {
 			const [results] = await pool.query("SELECT * FROM equipment_type");
+			//404 if no equipment types exist
+			if (results.length === 0) {
+				return res.status(404).json(errorMessages.EQUIPMENT_TYPE_DOESNOT_EXIST);
+			}
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
