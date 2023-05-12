@@ -10,7 +10,7 @@ async function getCourse(req, res) {
 			const [results] = await pool.query("SELECT * FROM course");
 			//404 not found
 			if (results.length === 0) {
-				res.status(404).json(errorMessages.COURSE_NOT_FOUND);
+				res.status(404).json({error:errorMessages.COURSE_NOT_FOUND});
 			}
 			return res.status(200).json(results);
 		} catch (error) {
@@ -59,7 +59,7 @@ async function getCoursebyId(req, res) {
 		const [results] = await pool.query(sql, params);
 		//404 not found
 		if (results.length === 0) {
-			res.status(404).json(errorMessages.COURSE_NOT_FOUND);
+			res.status(404).json({error:errorMessages.COURSE_NOT_FOUND});
 		}
 		return res.status(200).json(results);
 	} catch (error) {

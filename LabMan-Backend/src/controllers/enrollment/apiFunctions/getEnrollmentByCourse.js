@@ -14,7 +14,7 @@ async function getEnrollmentByCourse(req, res) {
 		const [results] = await pool.query(query, params);
 		//404 error if no enrollment found
 		if (results.length === 0) {
-			res.status(404).json(errorMessages.ENROLLMENT_NOT_FOUND);
+			res.status(404).json({error:errorMessages.ENROLLMENT_NOT_FOUND});
 		}
 
 		return res.status(200).json(results);
