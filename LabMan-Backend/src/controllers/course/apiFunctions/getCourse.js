@@ -1,13 +1,17 @@
 import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
 
-async function getCourse(req,res) {
+async function getCourse(req, res) {
 
-	if (req.query.course_id || req.query.course_name || req.query.coordinator_name ) {
+	if (req.query.course_id || req.query.course_name || req.query.coordinator_name) {
 		return getCoursebyId(req, res);
 	} else {
 		try {
 			const [results] = await pool.query("SELECT * FROM course");
+			//404 not found
+			if (results.length === 0) {
+				res.status(404).json(errorMessages.COURSE_NOT_FOUND);
+			}
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
@@ -53,6 +57,10 @@ async function getCoursebyId(req, res) {
 		sql += " ORDER BY last_edit_time ASC";
 
 		const [results] = await pool.query(sql, params);
+		//404 not found
+		if (results.length === 0) {
+			res.status(404).json(errorMessages.COURSE_NOT_FOUND);
+		}
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);
@@ -63,4 +71,4 @@ async function getCoursebyId(req, res) {
 	}
 }
 
-export { getCourse,getCoursebyId };
+export { getCourse, getCoursebyId };
