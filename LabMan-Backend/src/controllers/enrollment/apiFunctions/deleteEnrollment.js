@@ -3,8 +3,7 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 import { checkEnrollmentExists } from "../helperFunctions/checkEnrollmentExists.js";
 
 async function deleteEnrollment(req, res) {
-	const { course_id } = req.params;
-	const { student_ids } = req.body;
+	const { course_id,student_ids } = req.params;
 	//console.log(student_ids);
 	try {
 		const deletionPromises = student_ids.map(async (student_id) => {
