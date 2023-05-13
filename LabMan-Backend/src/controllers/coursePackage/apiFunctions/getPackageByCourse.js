@@ -1,12 +1,12 @@
 import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
-// import { checkCourseExists } from "../../course/helperFunctions/checkCourseExists.js";
+import { checkCourseExists } from "../../course/helperFunctions/checkCourseExists.js";
 
 async function getPackageByCourse(req, res) {
-	const { course_id } = req.query;
+	const { course_id } = req.params;
 
 	try {
-		// await checkCourseExists(pool, course_id);
+		await checkCourseExists(pool, course_id);
 
 		const query = "SELECT * FROM course_package WHERE course_id = ?";
 		const params = [course_id];

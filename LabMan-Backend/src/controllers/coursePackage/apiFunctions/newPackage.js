@@ -4,7 +4,8 @@ import { checkPackageDuplicate } from "../helperFunctions/checkPackageDuplicate.
 import moment from "moment";
 
 async function newPackage(req, res) {
-	const { course_id, package_name } = req.body;
+	const { course_id } = req.params;
+	const { package_name } = req.body;
 	const added_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
 	try {
