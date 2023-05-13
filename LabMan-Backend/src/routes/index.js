@@ -5,7 +5,7 @@ import { userRouter } from "./userRouter.js";
 import { eqpmtRouter } from "./eqpmtRouter.js";
 import { logRouter } from "./logRouter.js";
 import { returnRouter } from "./returnRouter.js";
-import {coursePackageRouter} from "./coursePackageRouter.js";
+import { courseRouter } from "./courseRouter.js";
 
 const v1Router = Router();
 v1Router.use(express.json());
@@ -21,6 +21,6 @@ v1Router.use("/return", returnRouter);
 v1Router.use("/equipment", eqpmtRouter);
 v1Router.use("/users", userRouter);
 v1Router.use("/logs", logRouter);
-v1Router.use("/coursePackage", coursePackageRouter);
+v1Router.use("/course", courseRouter);
 
 export { v1Router };

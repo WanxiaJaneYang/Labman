@@ -25,6 +25,14 @@ const errorMessages = {
 	//course package
 	DUPLICATE_PACKAGE: "Duplicate package",
 	PACKAGE_DOESNOT_EXIST: "The package does not exist",
+	
+	//course
+	DUPLICATE_COURSE: "Duplicate course",
+	COURSE_DOESNOT_EXIST: "The course does not exist",
+
+	//enrollment
+	ENROLLMENT_DOESNOT_EXIST: "The enrollment does not exist",
+	DUPLICATE_ENROLLMENT: "Duplicate enrollment",
 };
 
 export default errorMessages;
