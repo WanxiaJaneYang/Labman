@@ -1,22 +1,18 @@
 import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
-import { runTransaction } from "../../../utils/MySQL/transaction.js";
+import { checkEnrollmentDuplicate } from "../helperFunctions/checkEnrollmentDuplicate.js";
 
-async function newEnrollmentBatch(req, res) {
-	const { course_id } = req.params;
-	const { student_ids } = req.body;
+async function newEnrollment(req, res) {
+	const { course_id, student_id } = req.params;
 
 	try {
-		await runTransaction(async (connection) => {
-			const enrollmentPromises = student_ids.map((student_id) => {
-				const query = "INSERT INTO enrollment (course_id, student_id) VALUES (?, ?)";
-				const params = [course_id, student_id];
-				return pool.query(query, params);
-			});
+		await checkEnrollmentDuplicate(pool, course_id, student_id);
 
-			await Promise.all(enrollmentPromises);
-		});
-		return res.status(201).json({ message: "Bulk enrollments are created successfully" });
+		const query = "INSERT INTO enrollment (course_id, student_id) VALUES (?, ?)";
+		const params = [course_id, student_id];
+		await pool.query(query, params);
+
+		return res.status(201).json({ message: "Enrollments created successfully" });
 	} catch (error) {
 		console.error(error);
 		if (Object.values(errorMessages).includes(error.message)) {
@@ -26,4 +22,6 @@ async function newEnrollmentBatch(req, res) {
 	}
 }
 
-export { newEnrollmentBatch };
+// For recall module
+export { newEnrollment };
+

@@ -1,6 +1,6 @@
 import errorMessages from "../../../utils/constants/errorMessages.js";
 
-export async function getCoursebyId(connection, course_id) {
+export async function checkCourseExists(connection, course_id) {
 	const getCourseQuery = "SELECT * FROM course WHERE course_id = ?";
 	try {
 		const [result] = await connection.query(getCourseQuery, [course_id]);

@@ -1,7 +1,7 @@
 import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
 import moment from "moment";
-import { getCoursebyId } from "../helperFunctions/getCoursebyId.js";
+import { checkCourseExists } from "../helperFunctions/checkCourseExists.js";
 
 async function updateCourse(req, res) {
 	const { course_id } = req.params;
@@ -10,7 +10,7 @@ async function updateCourse(req, res) {
 	const last_edit_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
 	try {
-		await getCoursebyId(pool, course_id);
+		await checkCourseExists(pool, course_id);
 
 		const query = "UPDATE course SET course_name = ?, coordinator_name = ?, due_date = ?, last_edit_time = ? WHERE course_id = ?";
 		const params = [course_name, coordinator_name, due_date, last_edit_time, course_id];

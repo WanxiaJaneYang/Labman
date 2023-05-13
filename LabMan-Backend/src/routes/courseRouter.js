@@ -4,15 +4,16 @@ import { getCourse} from "../controllers/course/apiFunctions/getCourse.js";
 import { newCourse} from "../controllers/course/apiFunctions/postCourse.js";
 import { updateCourse} from "../controllers/course/apiFunctions/putCourse.js";
 import { deleteCourse} from "../controllers/course/apiFunctions/deleteCourse.js";
-import { Router } from "express";
 import { getEnrollmentByCourse} from "../controllers/enrollment/apiFunctions/getEnrollmentByCourse.js";
+import { newEnrollment} from "../controllers/enrollment/apiFunctions/newEnrollment.js";
 import { newEnrollmentBatch} from "../controllers/enrollment/apiFunctions/newEnrollmentBatch.js";
 import { deleteEnrollment } from "../controllers/enrollment/apiFunctions/deleteEnrollment.js";
-
+import { getCourseById } from "../controllers/course/apiFunctions/getCourse.js";
 
 const courseRouter = Router();
 
 courseRouter.get("/", getCourse);
+courseRouter.get("/:course_id", getCourseById);
   
 courseRouter.post("/", newCourse);
 
