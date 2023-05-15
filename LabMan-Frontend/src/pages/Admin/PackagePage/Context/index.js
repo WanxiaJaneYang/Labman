@@ -1,4 +1,6 @@
 import { useContext,createContext, useState} from "react";
+import { getPackages, deletePackage } from "../../../../api/package";
+import { message } from "antd";
 
 const PackageContext = createContext();
 
@@ -7,12 +9,7 @@ export const usePackageContext = () => {
 };
 
 const PackageProvider = ({ children, course_id }) => {
-	const [data, setData] = useState([
-		{
-			package_id: "1",
-			package_name: "Package 1",
-		},
-	]);
+	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [tableParams, setTableParams] = useState({
 		pagination: {
@@ -23,10 +20,48 @@ const PackageProvider = ({ children, course_id }) => {
 			total: 0,
 		},
 	});
+	const[selectedRows, setSelectedRows] = useState([]);
 
 	const fetchData = async () => {
 		setLoading(true);
-		console.log("course_id:", course_id);
+		getPackages(course_id).then((data) => {
+			setData(data);
+		}).catch((error) => {
+			message.error(error.message);
+		});
+		setLoading(false);
+	};
+
+	const onAdd = async (values) => {
+		setLoading(true);
+		console.log("add package for course_id:", course_id, ", course_name:", values.course_name);
+		values.type_amount_pairs.map((pair) => {
+			console.log("add pair");
+			console.log("type_id:", pair.type_id, ", amount:", pair.amount);
+		});
+		setLoading(false);
+	};
+
+	const onDelete = async () => {
+		setLoading(true);
+		Promise.all(selectedRows.map(async(row) => {
+			await deletePackage(course_id, row.package_id);
+		})).then(() => {
+			message.success("Delete package successfully");
+			fetchData();
+		}).catch((error) => {
+			message.error(error.message);
+		});
+		setLoading(false);
+	};
+
+	const onEdit = async (values) => {
+		setLoading(true);
+		console.log("edit package for course_id:", course_id, ", course_name:", values.course_name);
+		values.type_amount_pairs.map((pair) => {
+			console.log("edit pair");
+			console.log("type_id:", pair.type_id, ", amount:", pair.amount);
+		});
 		setLoading(false);
 	};
 
@@ -39,6 +74,12 @@ const PackageProvider = ({ children, course_id }) => {
 				tableParams,
 				setTableParams,
 				fetchData,
+				onAdd,
+				onDelete,
+				onEdit,
+				selectedRows,
+				setSelectedRows,
+				course_id,
 			}
 		}>
 			{children}

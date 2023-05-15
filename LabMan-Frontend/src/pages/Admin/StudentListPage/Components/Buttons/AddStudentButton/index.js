@@ -1,11 +1,13 @@
 import { Button, Modal, Form } from "antd";
 import AddStudentForm from "../../Forms/AddStudentForm";
 import { useState } from "react";
+import { useStudentListContext } from "../../../Context";
 
 const AddStudentButton = () => {
 	const [form] = Form.useForm();
 	const [open, setOpen] = useState(false);
 	const [confirmLoading, setConfirmLoading] = useState(false);
+	const {onAdd}=useStudentListContext();
 	const onClick = () => {
 		setOpen(true);
 	};
@@ -16,8 +18,9 @@ const AddStudentButton = () => {
 
 	const handleOk = async () =>{
 		const data=await form.validateFields();
+		console.log( "form submitting", data);
 		setConfirmLoading(true);
-		console.log(data);
+		await onAdd(data);
 		setConfirmLoading(false);
 		hideModal();
 	};

@@ -8,15 +8,15 @@ const CourseTable=()=>{
 	const columns = [
 		{
 			title: "Course Code",
-			dataIndex: "courseCode",
+			dataIndex: "course_id",
 		},
 		{
 			title: "Course Name",
-			dataIndex: "courseName",
+			dataIndex: "course_name",
 		},
 		{
 			title: "Course Coordinator",
-			dataIndex: "courseCoordinator",
+			dataIndex: "coordinator_name",
 		},
 		{
 			title: "Action",
@@ -62,13 +62,13 @@ const CourseTable=()=>{
     
 	return(
 		<Table 
+			rowKey={(record) => record.course_id}
 			dataSource={data}
 			rowSelection={rowSelection}
 			columns={columns}
 			loading={loading}
 			pagination={tableParams.pagination}
 			onChange={onTableChange}
-			rowKey={(record) => record.course_id}
 			scroll={{ x: "max-content" }}
 		/>
 	);

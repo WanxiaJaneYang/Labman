@@ -3,10 +3,8 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { getEquipmentData } from "../../../../../../api/equipment";
 
-const EditPackageForm = ({ form }) => {
+const NewPackageForm = ({ form }) => {
 	const [equipmentTypeList, setEquipmentTypeList] = useState([]);
-	const [packageData, setPackageData] = useState({});
-
 	const getEquipmentTypeList = async () => {
 		getEquipmentData().then((data) => {
 			setEquipmentTypeList(data);
@@ -15,27 +13,9 @@ const EditPackageForm = ({ form }) => {
 		});
 	};
 
-	const getPackageData = async () => {
-		getPackageData().then((data) => {
-			setPackageData(data);
-		}).catch((error) => {
-			message.error(error.message);
-		});
-	};
-
 	useEffect(() => {
 		getEquipmentTypeList();
-		getPackageData();
 	}, []);
-
-	useEffect(() => {
-		if (packageData) {
-			form.setFieldsValue({
-				package_name: packageData.package_name,
-				type_amount_pairs: packageData.type_amount_pairs,
-			});
-		}
-	}, [packageData]);
 
 	return(
 		<Form form={form}>
@@ -92,4 +72,4 @@ const EditPackageForm = ({ form }) => {
 	);
 };
 
-export default EditPackageForm;
+export default NewPackageForm;

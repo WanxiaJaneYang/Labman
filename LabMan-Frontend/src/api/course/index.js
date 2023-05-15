@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-const API_URL_COURSE = API_BASE_URL+"/course";
+const API_URL=process.env.REACT_APP_BASE_API_URL;
+const API_URL_COURSE = API_URL+"/course";
 
 export const getAllCourses = async () => {
 	const response = await axios.get(API_URL_COURSE);

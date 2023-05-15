@@ -1,4 +1,6 @@
 import { useContext,createContext, useState} from "react";
+import { getStudentList, getStudentByStudentId, postStudents,deleteStudent } from "../../../../api/enrollment";
+import { message } from "antd";
 
 const StudentListContext = createContext();
 
@@ -22,21 +24,48 @@ const StudentListProvider = ({ children, course_id }) => {
 			total: 0,
 		},
 	});
+	const[selectedRows, setSelectedRows] = useState([]);
 
 	const fetchData = async () => {
 		setLoading(true);
-		console.log("course_id:", course_id);
+		getStudentList(course_id).then((data) => {
+			setData(data);
+		}).catch((error) => {
+			message.error(error.message);
+		});
 		setLoading(false);
 	};
 
-	const onSearch = async (value) => {
+	const onSearch = async (student_id) => {
 		setLoading(true);
-		console.log("course_id:", course_id);
-		console.log("search:", value);
-		setData([]);
+		getStudentByStudentId(course_id, student_id).then((data) => {
+			setData(data);
+		}).catch((error) => {
+			message.error(error.message);
+		});
 		setLoading(false);
 	};
 
+	const onAdd = async (values) => {
+		postStudents(course_id, values).then(() => {
+			message.success("Add student successfully");
+			fetchData();
+		}).catch((error) => {
+			message.error(error.message);
+		});
+	};
+
+	const onDelete = async () => {
+		Promise.all(selectedRows.map(async(row) => {
+			await deleteStudent(course_id, row.student_id);
+		})).then(() => {
+			message.success("Delete student successfully");
+			fetchData();
+		}).catch((error) => {
+			message.error(error.message);
+		});
+	};
+	
 	return (
 		<StudentListContext.Provider value={
 			{
@@ -46,6 +75,11 @@ const StudentListProvider = ({ children, course_id }) => {
 				tableParams,
 				setTableParams,
 				onSearch,
+				onAdd,
+				onDelete,
+				selectedRows,
+				setSelectedRows,
+				course_id,
 			}
 		}>
 			{children}

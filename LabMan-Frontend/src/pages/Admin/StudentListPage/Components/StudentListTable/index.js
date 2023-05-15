@@ -3,7 +3,7 @@ import { useStudentListContext } from "../../Context";
 import { useEffect } from "react";
 
 const StudentListTable = () => {
-	const { data,fetchData, tableParams, setTableParams, loading, selectedRows,  setSelectedRows} = useStudentListContext();
+	const { data,fetchData, tableParams, setTableParams, loading, selectedRows, setSelectedRows} = useStudentListContext();
 
 	const columns = [
 		{

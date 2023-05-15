@@ -1,15 +1,16 @@
 import {Input} from "antd";
+import {useStudentListContext} from "../../../Context";
 
 const {Search} = Input;
 const SearchStudentBar = () => {
+	const {onSearch} = useStudentListContext();
 	
-	const onSearch = (value) => {
-		console.log("onSearch, value:", value);
-		
+	const search = (value) => {
+		onSearch(value);		
 	};
 
 	return (
-		<Search placeholder="Input Student ID" onSearch={onSearch} enterButton />
+		<Search placeholder="Input Student ID" onSearch={search} enterButton />
 	);
 };
 

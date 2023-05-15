@@ -5,14 +5,14 @@ const { confirm } = Modal;
 import { useCourseDetailContext } from "../../../Context";
 
 const CoordinatorName = () => {
-	const { course, changeCoordinatorName } = useCourseDetailContext();
-	const [coordinatorName, setCoordinatorName] = useState(course?.coordinator_name);
+	const {coordinator_name, changeCoordinatorName } = useCourseDetailContext();
+	const [coordinatorName, setCoordinatorName] = useState(coordinator_name);
 
 	const onEnd = () => {
-		if(coordinatorName!== course.coordinator_name){
+		if(coordinatorName!== coordinator_name){
 			if(coordinatorName === ""){
 				message.warning("Course name cannot be empty.");
-				setCoordinatorName(course.coordinator_name);
+				setCoordinatorName(coordinator_name);
 			}else{
 				showConfirm();
 			}
@@ -23,6 +23,10 @@ const CoordinatorName = () => {
 		onEnd();
 	}, [coordinatorName]);
 
+	useEffect(() => {
+		setCoordinatorName(coordinator_name);
+	}, [coordinator_name]);
+
 	const showConfirm = () => {
 		confirm({
 			title: "Do you want to submit the changes?",
@@ -31,7 +35,7 @@ const CoordinatorName = () => {
 				changeCoordinatorName(coordinatorName);
 			},
 			onCancel() {
-				setCoordinatorName(course.coordinator_name);
+				setCoordinatorName(coordinator_name);
 			},
 		});
 	};
@@ -42,6 +46,7 @@ const CoordinatorName = () => {
 				{
 					onChange: setCoordinatorName,
 					onEnd: onEnd,
+					onCancel:onEnd,
 				}
 			}>
 				{coordinatorName}
