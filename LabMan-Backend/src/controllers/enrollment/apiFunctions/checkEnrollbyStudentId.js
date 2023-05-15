@@ -12,7 +12,7 @@ async function checkEnrollbyStudentId(req, res) {
         const [result] = await pool.query(getEnrollQuery, [course_id, student_id]);
         // console.log(result);
         if (result.length === 0) {
-            return res.status(200).json({ message: "Not enrolled" });
+            return res.status(404).json({ message: "Not enrolled" });
         } else {
             return res.status(200).json(result);
         }
