@@ -29,3 +29,6 @@ Check the tag "Milestone1" in main branch
 ## AWS SES email
 labman5000@proton.me
 Adelaide123.
+
+## Frontend test
+In Labman-Frontend folder, use command "npm test"
