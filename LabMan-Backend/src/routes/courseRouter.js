@@ -11,6 +11,7 @@ import { getCourseById } from "../controllers/course/apiFunctions/getCourse.js";
 import { getPackageByCourse} from "../controllers/coursePackage/apiFunctions/getPackageByCourse.js";
 import { newPackage} from "../controllers/coursePackage/apiFunctions/newPackage.js";
 import { deletePackage } from "../controllers/coursePackage/apiFunctions/deletePackage.js";
+import {checkEnrollbyStudentId} from "../controllers/enrollment/apiFunctions/checkEnrollbyStudentId.js";
 
 const courseRouter = Router();
 
@@ -24,6 +25,8 @@ courseRouter.get("/:course_id/enrollment", getEnrollmentByCourse);
 courseRouter.post("/:course_id/student/:student_id",newEnrollment);
 courseRouter.post("/:course_id/batch",newEnrollmentBatch);
 courseRouter.delete("/:course_id/student/:student_id", deleteEnrollment);
+//get all the enrolled course of a student
+courseRouter.get("/:course_id/student/:student_id", checkEnrollbyStudentId);
 
 courseRouter.get("/:course_id/package", getPackageByCourse);
 courseRouter.post("/:course_id/package",newPackage);

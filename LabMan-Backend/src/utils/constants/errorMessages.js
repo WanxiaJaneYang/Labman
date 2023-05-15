@@ -31,7 +31,7 @@ const errorMessages = {
 	COURSE_DOESNOT_EXIST: "The course does not exist",
 
 	//enrollment
-	ENROLLMENT_DOESNOT_EXIST: "The enrollment does not exist",
+	ENROLLMENT_NOT_FOUND: "The enrollment does not exist",
 	DUPLICATE_ENROLLMENT: "Duplicate enrollment",
 };
 
