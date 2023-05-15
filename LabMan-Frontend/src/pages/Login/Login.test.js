@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor, act } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
 import Login from ".";
 
@@ -19,9 +19,11 @@ describe("Login behavior", () => {
 			const passwordInput = getByPlaceholderText("Password");
 			const loginButton = getByText("Log in");
 
-			fireEvent.change(usernameInput, { target: { value: "testuser" } });
-			fireEvent.change(passwordInput, { target: { value: "testpass" } });
-			fireEvent.click(loginButton);
+			await act(async () => {
+				fireEvent.change(usernameInput, { target: { value: "testuser" } });
+				fireEvent.change(passwordInput, { target: { value: "testpass" } });
+				fireEvent.click(loginButton);
+			});
 
 			await waitFor(() => {
 				expect(navigate).toHaveBeenCalledWith("/admin/request");
@@ -31,7 +33,7 @@ describe("Login behavior", () => {
 
 	describe("when credentials are missing", () => {
 		// New test: does not redirect when username is empty
-		test("does not redirect when username is empty", () => {
+		test("does not redirect when username is empty", async () => {
 			const navigate = jest.fn();
 			useNavigate.mockReturnValue(navigate);
 			const { getByPlaceholderText, getByText } = render(<Login />);
@@ -39,15 +41,17 @@ describe("Login behavior", () => {
 			const passwordInput = getByPlaceholderText("Password");
 			const loginButton = getByText("Log in");
 
-			// Leave username empty
-			fireEvent.change(passwordInput, { target: { value: "testpass" } });
-			fireEvent.click(loginButton);
+			await act(async () => {
+				// Leave username empty
+				fireEvent.change(passwordInput, { target: { value: "testpass" } });
+				fireEvent.click(loginButton);
+			});
 
 			expect(navigate).not.toHaveBeenCalled();
 		});
 
 		// New test: does not redirect when password is empty
-		test("does not redirect when password is empty", () => {
+		test("does not redirect when password is empty", async () => {
 			const navigate = jest.fn();
 			useNavigate.mockReturnValue(navigate);
 			const { getByPlaceholderText, getByText } = render(<Login />);
@@ -55,24 +59,28 @@ describe("Login behavior", () => {
 			const usernameInput = getByPlaceholderText("Username");
 			const loginButton = getByText("Log in");
 
-			fireEvent.change(usernameInput, { target: { value: "testuser" } });
-			// Leave password empty
-			fireEvent.click(loginButton);
+			await act(async () => {
+				fireEvent.change(usernameInput, { target: { value: "testuser" } });
+				// Leave password empty
+				fireEvent.click(loginButton);
+			});
 
 			expect(navigate).not.toHaveBeenCalled();
 		});
 
 		// New test: does not redirect when both are empty
-		test("does not redirect when both are empty", () => {
+		test("does not redirect when both are empty", async () => {
 			const navigate = jest.fn();
 			useNavigate.mockReturnValue(navigate);
 			const { getByText } = render(<Login />);
 
 			const loginButton = getByText("Log in");
 
-			// Leave username empty
-			// Leave password empty
-			fireEvent.click(loginButton);
+			await act(async () => {
+				// Leave username empty
+				// Leave password empty
+				fireEvent.click(loginButton);
+			});
 
 			expect(navigate).not.toHaveBeenCalled();
 		});
