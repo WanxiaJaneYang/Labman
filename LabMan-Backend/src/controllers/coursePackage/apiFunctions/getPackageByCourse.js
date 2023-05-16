@@ -14,7 +14,7 @@ async function getPackageByCourse(req, res) {
 
 		//404 not found
 		if (results.length === 0) {
-			res.status(404).json({ error: errorMessages.PACKAGE_DOESNOT_EXIST});
+			throw new Error(errorMessages.PACKAGE_DOESNOT_EXIST);
 		}
 		return res.status(200).json(results);
 	} catch (error) {
