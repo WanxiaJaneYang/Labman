@@ -21,6 +21,27 @@ const errorMessages = {
 	BORROWING_STATUS_IS_NOT_BORROWED: "The borrowing status is not borrowed",
 	BORROWING_STATUS_IS_NOT_RETURNED: "The borrowing status is not returned",
 	RETURN_AMOUNT_EXCEEDS_BORROW_AMOUNT: "The return amount exceeds the borrow amount",
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//type package
+	TPYE_IN_PACKAGE_NOT_FOUND:"No equipment type in this package",
 };
 
 export default errorMessages;
