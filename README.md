@@ -31,4 +31,7 @@ labman5000@proton.me
 Adelaide123.
 
 ## Frontend test
-In Labman-Frontend folder, use command "npm test"
+In Labman-Frontend folder, use command "npm test".
+
+## Backend test
+Postman is the most suitable tool to test the backend RESTful APIs. Test cases have been added into Labman-Backend/test_cases.
