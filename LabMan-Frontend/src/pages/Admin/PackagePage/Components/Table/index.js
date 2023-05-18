@@ -1,7 +1,7 @@
 import { Table } from "antd";
-import EditPackageButton from "../Buttons/EditPackageButton";
 import { usePackageContext } from "../../Context";
 import { useEffect } from "react";
+import ShowDetailButton from "../Buttons/ShowDetailButton";
 
 const CoursePackageTable = () => {
 	const columns = [
@@ -12,7 +12,7 @@ const CoursePackageTable = () => {
 		{
 			title:"action",
 			render:(_,record)=>(
-				<EditPackageButton record={record}/>
+				<ShowDetailButton package_id={record.package_id}/>
 			)
 		}
 	];

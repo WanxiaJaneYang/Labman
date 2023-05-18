@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 const IndividualCoursePage = () => {
-	const { course_id } = useParams();
+	const { course_id, package_id } = useParams();
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -31,14 +31,40 @@ const IndividualCoursePage = () => {
 		if (location.pathname === "/admin/course/" + course_id + "/student_list") {
 			items.push({
 				title: "Student List",
-				href: null,
+				href: "/admin/course/" + course_id + "/student_list",
+				onClick: (e) => {
+					e.preventDefault();
+					navigate("/admin/course/" + course_id + "/student_list");
+				}
 			});
 		} else if (
 			location.pathname === "/admin/course/" + course_id + "/package_list"
 		) {
 			items.push({
 				title: "Package List",
-				href: null,
+				href: "/admin/course/" + course_id + "/package_list",
+				onClick: (e) => {
+					e.preventDefault();
+					navigate("/admin/course/" + course_id + "/package_list");
+				}
+			});
+		}else if (
+			location.pathname === "/admin/course/" + course_id + "/package_list/"+package_id) {
+			items.push({
+				title: "Package List",
+				href: "/admin/course/" + course_id + "/package_list",
+				onClick: (e) => {
+					e.preventDefault();
+					navigate("/admin/course/" + course_id + "/package_list");
+				}
+			});
+			items.push({
+				title: "Package",
+				href: "/admin/course/" + course_id + "/package_list/"+package_id,
+				onClick: (e) => {
+					e.preventDefault();
+					navigate("/admin/course/" + course_id + "/package_list/"+package_id);
+				}
 			});
 		}
 
