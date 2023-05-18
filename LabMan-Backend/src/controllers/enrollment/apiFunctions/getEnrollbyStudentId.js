@@ -6,7 +6,7 @@ async function getEnrollbyStudentId(req, res) {
     const { student_id } = req.params;
     try {
         await checkUserExists(pool, student_id);
-        const getEnrollQuery = "SELECT * FROM enrollment WHERE student_id = ?";
+        const getEnrollQuery = "SELECT enrollment.course_id, course.course_name, course.due_date FROM enrollment JOIN course ON enrollment.course_id = course.course_id WHERE enrollment.student_id = ?";
         const [result] = await pool.query(getEnrollQuery, [student_id]);
         // console.log(result);
         if (result.length === 0) {

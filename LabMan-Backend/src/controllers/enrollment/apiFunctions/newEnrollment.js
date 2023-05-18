@@ -1,11 +1,16 @@
 import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
 import { checkEnrollmentDuplicate } from "../helperFunctions/checkEnrollmentDuplicate.js";
+import { checkCourseExists } from "../../course/helperFunctions/checkCourseExists.js";
+import { checkUserExists } from "../../users/helperFunctions/checkUserExists.js";
 
 async function newEnrollment(req, res) {
-	const { course_id, student_id } = req.params;
 
 	try {
+		const { course_id, student_id } = req.params;
+
+		await checkUserExists(pool, student_id);
+		await checkCourseExists(pool, course_id);
 		await checkEnrollmentDuplicate(pool, course_id, student_id);
 
 		const query = "INSERT INTO enrollment (course_id, student_id) VALUES (?, ?)";
