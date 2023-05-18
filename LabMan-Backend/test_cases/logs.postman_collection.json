@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "83bf14c1-7e6d-4189-b361-ac297424b145",
+		"name": "logs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26694117"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3008/logs/request/?student_id=a1877777",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/logs/request",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"logs",
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/logs/equipment",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/logs/equipment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"logs",
+						"equipment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/logs/request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/logs/request",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"logs",
+						"request"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
