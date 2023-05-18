@@ -15,7 +15,7 @@ async function editRequest(req, res) {
 		const { request_id } = req.params;
 
 		// Create a collecting log of the request
-		const { student_id, type_id, type_name, borrow_amount, return_date, upper_bound_amount } = req.body;
+		const { student_id, type_id, type_name, borrow_amount, return_date} = req.body;
 		const requestLog = {
 			type_id,
 			type_name,
@@ -26,16 +26,17 @@ async function editRequest(req, res) {
 			log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			request_id,
 		};
-		if (borrow_amount > upper_bound_amount) {
+		const existingRequest = await getRequestById(pool, request_id);
+		if (borrow_amount > existingRequest.upper_bound_amount) {
 			throw new Error(errorMessages.borrowAmountExceedsUpperBound);
 		}
-		const change_amount = borrow_amount - (await getRequestById(pool, request_id)).borrow_amount;
+		const change_amount = borrow_amount - existingRequest.borrow_amount;
 		await statusIsNew(pool, request_id);
 		await runTransaction(async (connection) => {
 			// Update the request record
 			await compareAvailableAmount(connection, type_id, borrow_amount);
 
-			const p1 = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
+			const p1 = updateRequest(connection, type_id, type_name, borrow_amount, return_date, request_id);
 
 			// Insert requestLog into request_Log table
 			const p2 = insertRequestLog(connection, requestLog);
