@@ -10,7 +10,7 @@ const CancelButton = ({record}) => {
 	};
 
 	return (
-		<Tooltip title={"Cancel Returned Record"}>
+		<Tooltip title={"Undo Return"}>
 			<CloseOutlined 
 				fontSize={20}
 				onClick={onClick}
