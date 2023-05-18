@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "08487625-c3c0-43c4-b695-204d4a975d39",
+		"name": "return",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26694117"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3008/return",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/return",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"return"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/return/cancel/57?return_amount=1",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/return/cancel/57?return_amount=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"return",
+						"cancel",
+						"57"
+					],
+					"query": [
+						{
+							"key": "return_amount",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
