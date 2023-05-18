@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet} from "react-router";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import AdminLayout from "../components/Layout/AdminLayout";
@@ -14,6 +14,7 @@ import StudentList from "../pages/Admin/StudentListPage";
 import CourseDetailPage from "../pages/Admin/CourseDetailPage";
 import PackagePage from "../pages/Admin/PackagePage";
 import IndividualPackagePage from "../pages/Admin/IndividualPackagePage";
+import ReturnedPage from "../pages/Admin/ReturnedPage";
 
 const routes = [
 	{
@@ -42,7 +43,17 @@ const routes = [
 			},
 			{
 				path: "return",
-				element: <ReturnPage />,
+				element:<Outlet />,
+				children: [
+					{
+						index: true,
+						element: <ReturnPage />,
+					},
+					{
+						path: "returned",
+						element: <ReturnedPage />,
+					},
+				],
 			},
 			{
 				path: "equipment",
