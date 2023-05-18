@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, Outlet} from "react-router";
 import Login from "../pages/Login";
 import PageNotFound from "../pages/PageNotFound";
 import AdminLayout from "../components/Layout/AdminLayout";
@@ -8,6 +8,7 @@ import EquipmentPage from "../pages/Admin/EquipmentPage";
 import StudentPage from "../pages/Admin/StudentPage";
 import ActionHistoryPage from "../pages/Admin/ActionHistoryPage";
 import BorrowPage from "../pages/Admin/BorrowPage";
+import ReturnedPage from "../pages/Admin/ReturnedPage";
 
 const routes = [
 	{
@@ -36,7 +37,17 @@ const routes = [
 			},
 			{
 				path: "return",
-				element: <ReturnPage />,
+				element:<Outlet />,
+				children: [
+					{
+						index: true,
+						element: <ReturnPage />,
+					},
+					{
+						path: "returned",
+						element: <ReturnedPage />,
+					},
+				],
 			},
 			{
 				path: "equipment",
