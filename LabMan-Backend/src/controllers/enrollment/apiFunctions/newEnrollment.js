@@ -3,7 +3,6 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 import { checkUserExists } from "../../users/helperFunctions/checkUserExists.js";
 import { checkEnrollmentDuplicate } from "../helperFunctions/checkEnrollmentDuplicate.js";
 import { checkCourseExists } from "../../course/helperFunctions/checkCourseExists.js";
-import { checkUserExists } from "../../users/helperFunctions/checkUserExists.js";
 
 async function newEnrollment(req, res) {
 
