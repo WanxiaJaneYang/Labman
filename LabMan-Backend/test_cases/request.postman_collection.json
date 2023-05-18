@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "df1e7c29-e810-488e-8f5b-428b3f491117",
+		"name": "request",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26694117"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3008/request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"student_id\": \"a1982735\",\n  \"type_id\": \"27\",\n    \"type_name\": \"Micropipettes\",\n  \"borrow_amount\": 3,\n  \"return_date\":\"2023-08-01 12:12:12\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3008/request",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/request/collect",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3008/request/collect/45",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"request",
+						"collect",
+						"45"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/request/cancel/26",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/request/cancel/40",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"request",
+						"cancel",
+						"40"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/request/78",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"student_id\": \"a1982735\",\n  \"type_id\": \"42\",\n      \"type_name\": \"Reagent Bottles\",\n  \"borrow_amount\": 1,\n  \"return_date\":\"2023-08-01 08:08:08\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3008/request/38",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"request",
+						"38"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/request?type_name=Beakers&borrow_amount=2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/request?type_name=Beakers&borrow_amount=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"request"
+					],
+					"query": [
+						{
+							"key": "type_name",
+							"value": "Beakers"
+						},
+						{
+							"key": "borrow_amount",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/request?request_status=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"request"
+					],
+					"query": [
+						{
+							"key": "request_status",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3008/return/57?return_amount=2",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3008/return/57?return_amount=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"return",
+						"57"
+					],
+					"query": [
+						{
+							"key": "return_amount",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
