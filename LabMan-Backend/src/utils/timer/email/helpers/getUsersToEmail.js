@@ -9,6 +9,7 @@ async function getUsersToEmail() {
 
 		const [results] = await pool.query(query, remind_time);
         console.log(results);
+
         if (results.length===0) {
             throw new Error("No users to email");
         }
