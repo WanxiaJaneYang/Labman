@@ -33,6 +33,10 @@ const errorMessages = {
 	//enrollment
 	ENROLLMENT_NOT_FOUND: "The enrollment does not exist",
 	DUPLICATE_ENROLLMENT: "Duplicate enrollment",
+
+	//type package
+	TPYE_IN_PACKAGE_NOT_FOUND:"The equipment type is not found in this package",
+	DUPLICATE_TYPE_IN_PACKAGE: "Duplicate equipment type in package",
 };
 
 export default errorMessages;
