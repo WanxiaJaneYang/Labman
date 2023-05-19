@@ -1,8 +1,9 @@
-import {Form, Button, Input} from "antd";
-import {PlusOutlined, MinusCircleOutlined} from "@ant-design/icons";
+import {Form, Button, Input, Upload, message} from "antd";
+import {PlusOutlined, MinusCircleOutlined, UploadOutlined} from "@ant-design/icons";
 import {getStudentById} from "../../../../../../api/student";
 import { getStudentByStudentId } from "../../../../../../api/enrollment";
 import { useStudentListContext } from "../../../Context";
+import Papa from "papaparse";
 
 const AddStudentForm = ({form}) => {
 	const {course_id} = useStudentListContext();
@@ -73,6 +74,43 @@ const AddStudentForm = ({form}) => {
 								>
                                     Add Student
 								</Button>
+							</Form.Item>
+							<Form.Item>
+								<Upload 
+									{
+										...{
+											name: "file",
+											action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+											headers: {
+												authorization: "authorization-text",
+											},
+											onChange(info) {
+												if (info.file.status !== "uploading") {
+													console.log(info.file, info.fileList);
+												}
+												if (info.file.status === "done") {
+													message.success(`${info.file.name} file uploaded successfully`);
+													Papa.parse(info.file.originFileObj, {
+														complete: function(results) {
+															const student_id = results.data.map((row) => {
+																if (/^a\d{7}$/.test(row[0]) ) {
+																	return row[0];
+																}
+															});
+															form.setFieldsValue({student_id});
+															
+														}
+													});
+												} else if (info.file.status === "error") {
+													message.error(`${info.file.name} file upload failed.`);
+												}											
+											},
+											accept: ".csv",
+										}
+									}									
+								>
+									<Button icon={<UploadOutlined/>}>Import Students</Button>
+								</Upload>
 							</Form.Item>
 						</>
 					);

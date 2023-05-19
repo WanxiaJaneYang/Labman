@@ -1,4 +1,4 @@
-import { Button, Modal, Form, message } from "antd";
+import { Button, Modal, Form } from "antd";
 import { useState } from "react";
 import AddEquipmentForm from "../../Form/AddEquipmentForm";
 import { usePackageDetailContext } from "../../../Context";
@@ -17,15 +17,11 @@ const AddEquipmentButton = () => {
 		setOpen(false);
 	};
 
-	const onOk = () => {
+	const onOk =async () => {
 		setLoading(true);
-		form.validateFields().then((values) => {
-			onAdd(values);
-			hideModal();
-		}).catch((error) => {
-			message.error(error.message);
-			hideModal();
-		});
+		const values= await form.validateFields();
+		await onAdd(values);
+		hideModal();
 		setLoading(false);
 	};
 

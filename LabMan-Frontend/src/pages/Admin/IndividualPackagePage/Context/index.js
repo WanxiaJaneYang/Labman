@@ -1,6 +1,6 @@
 import { useContext,createContext, useState} from "react";
 import { message } from "antd";
-import { deletePackage } from "../../../../api/package";
+import { deleteEquipment, getPackageById, editEquipment, addEquipment} from "../../../../api/package";
 
 const PackageDetailContext = createContext();
 
@@ -8,7 +8,7 @@ export const usePackageDetailContext = () => {
 	return useContext(PackageDetailContext);
 };
 
-const PackageDetailProvider = ({ children, course_id, package_id }) => {
+const PackageDetailProvider = ({ children, package_id }) => {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [tableParams, setTableParams] = useState({
@@ -24,16 +24,22 @@ const PackageDetailProvider = ({ children, course_id, package_id }) => {
 
 	const fetchData = async () => {
 		setLoading(true);
-		
+		try{
+			const data = await getPackageById(package_id);
+			setData(data);
+		}catch(error){
+			message.error(error.message);
+		}		
 		setLoading(false);
 	};
 
 	const onAdd = async (values) => {
 		setLoading(true);
-		console.log("add package for course_id:", course_id, ", course_name:", values.course_name);
-		values.type_amount_pairs.map((pair) => {
-			console.log("add pair");
-			console.log("type_id:", pair.type_id, ", amount:", pair.amount);
+		addEquipment(package_id, values.type_id, values).then(() => {
+			message.success("Add package successfully");
+			fetchData();
+		}).catch((error) => {
+			message.error(error.message);
 		});
 		setLoading(false);
 	};
@@ -41,7 +47,7 @@ const PackageDetailProvider = ({ children, course_id, package_id }) => {
 	const onDelete = async () => {
 		setLoading(true);
 		Promise.all(selectedRows.map(async(row) => {
-			await deletePackage(course_id, row.package_id);
+			await deleteEquipment(package_id, row.type_id);
 		})).then(() => {
 			message.success("Delete package successfully");
 			fetchData();
@@ -53,10 +59,11 @@ const PackageDetailProvider = ({ children, course_id, package_id }) => {
 
 	const onEdit = async (values) => {
 		setLoading(true);
-		console.log("edit package for course_id:", course_id, ", course_name:", values.course_name);
-		values.type_amount_pairs.map((pair) => {
-			console.log("edit pair");
-			console.log("type_id:", pair.type_id, ", amount:", pair.amount);
+		editEquipment(package_id, values.type_id, values).then(() => {
+			message.success("Edit package successfully");
+			fetchData();
+		}).catch((error) => {
+			message.error(error.message);
 		});
 		setLoading(false);
 	};
@@ -75,7 +82,6 @@ const PackageDetailProvider = ({ children, course_id, package_id }) => {
 				onEdit,
 				selectedRows,
 				setSelectedRows,
-				course_id,
 				package_id,
 			}
 		}>

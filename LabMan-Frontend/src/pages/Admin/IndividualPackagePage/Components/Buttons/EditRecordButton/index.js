@@ -1,5 +1,5 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Modal, Form, message } from "antd";
+import { Modal, Form } from "antd";
 import { useState } from "react";
 import EditEquipmentForm from "../../Form/EditEquipmentForm";
 import { usePackageDetailContext } from "../../../Context";
@@ -13,7 +13,8 @@ const EditRecordButton = ({ record}) => {
 	const onClick = () => {
 		setOpen(true);
 		form.setFieldValue("type_id", record.type_id);
-		form.setFieldValue("upper_bound_type_amount", record.upper_bound_type_amount);
+		form.setFieldValue("upper_bound_amount", record.upper_bound_amount);
+		form.setFieldValue("type_name", record.type_name);
 	};
 
 	const hideModal = () => {
@@ -21,15 +22,11 @@ const EditRecordButton = ({ record}) => {
 		setOpen(false);
 	};
 
-	const onOk = () => {
+	const onOk = async() => {
 		setLoading(true);
-		form.validateFields().then((values) => {
-			onEdit(values);
-			hideModal();
-		}).catch((error) => {
-			message.error(error.message);
-			hideModal();
-		});
+		const values = await form.validateFields();
+		await onEdit(values);
+		hideModal();
 		setLoading(false);
 	};
 

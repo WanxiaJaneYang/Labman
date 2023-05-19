@@ -2,7 +2,6 @@ import { Table } from "antd";
 import { usePackageDetailContext } from "../../Context";
 import { useEffect } from "react";
 import EditRecordButton from "../Buttons/EditRecordButton";
-import DeleteRecordButton from "../Buttons/DeleteRecordButton";
 
 const PackageDetailTable = () => {
 	const { data, fetchData, loading, tableParams,setTableParams, onChange, selectedRows, setSelectedRows } = usePackageDetailContext();
@@ -14,14 +13,13 @@ const PackageDetailTable = () => {
 		},
 		{
 			title: "Quantity",
-			dataIndex: "upper_bound_type_amount",
+			dataIndex: "upper_bound_amount",
 		},
 		{
 			title: "Action",
 			render: (_, record) => (
 				<>
 					<EditRecordButton record={record}/>
-					<DeleteRecordButton record={record}/>
 				</>
 			),
 		},

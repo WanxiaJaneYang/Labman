@@ -17,7 +17,7 @@ export const getStudentList = async (course_id) => {
 
 export const getStudentByStudentId = async (course_id, student_id) => {
 	try{
-		const response=await axios.get(API_URL_COURSE+"/"+course_id+"/enrollment/"+student_id);
+		const response=await axios.get(API_URL_COURSE+"/"+course_id+"/student/"+student_id);
 		return response.data;
 	}catch(error){
 		if(error.response){
