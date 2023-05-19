@@ -9,11 +9,7 @@ export const useStudentListContext = () => {
 };
 
 const StudentListProvider = ({ children, course_id }) => {
-	const [data, setData] = useState([
-		{
-			student_id: "a111111111",
-		},
-	]);
+	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [tableParams, setTableParams] = useState({
 		pagination: {

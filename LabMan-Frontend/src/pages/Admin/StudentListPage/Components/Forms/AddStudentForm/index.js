@@ -29,7 +29,7 @@ const AddStudentForm = ({form}) => {
 
 	return (
 		<Form form={form}>
-			<Form.List name={"student_ids"}>
+			<Form.List name={"student_id"}>
 				{(fields, {add, remove}) => {
 					return (
 						<>

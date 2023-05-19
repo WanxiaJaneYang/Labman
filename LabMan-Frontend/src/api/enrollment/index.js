@@ -30,7 +30,7 @@ export const getStudentByStudentId = async (course_id, student_id) => {
 
 export const postStudents = async (course_id, value) => {
 	try{
-		const response = await axios.post(API_URL_COURSE+"/"+course_id+"/student",value);
+		const response = await axios.post(API_URL_COURSE+"/"+course_id+"/batch", value);
 		if(response.status === 201){
 			return;
 		}else{
