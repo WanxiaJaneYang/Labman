@@ -9,6 +9,7 @@ import StudentPage from "../pages/Admin/StudentPage";
 import ActionHistoryPage from "../pages/Admin/ActionHistoryPage";
 import BorrowPage from "../pages/Admin/BorrowPage";
 import ReturnedPage from "../pages/Admin/ReturnedPage";
+import GeneralSettingPage from "../pages/Admin/GeneralSettingPage";
 
 const routes = [
 	{
@@ -61,6 +62,10 @@ const routes = [
 				path: "actionHistory",
 				element:<ActionHistoryPage />,
 			},
+			{
+				path: "setting",
+				element:<GeneralSettingPage />,
+			}
 		]
 	}
 ];
