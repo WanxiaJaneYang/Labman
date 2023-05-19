@@ -1,39 +1,73 @@
-import { Form, Input, InputNumber, DatePicker } from "antd";
-import { useRequestRecordContext } from "../../../Context";
-import EquipmentTypeSelector from "../../Selector/EquipmentTypeSelector";
-import { useEffect } from "react";
+import { Form, Input, message, Select } from "antd";
+import { useEffect, useState } from "react";
+import { getCourseListByStudentId } from "../../../../../../api/enrollment";
+import { getPackages, getPackageById } from "../../../../../../api/package";
+import { getStudentById } from "../../../../../../api/student";
 
 function NewRequestRecordForm({ form }) {
-	const {selectedEquipmentType, equipmentTypeList, searchStudentID} = useRequestRecordContext();
+	const[courseList, setCourseList] = useState([]);
+	const[packageList, setPackageList] = useState([]);
+	const course_id=Form.useWatch("course_id", form);
+	const package_id=Form.useWatch("package_id", form);
 
-	//when selected type change, update the type name value
-	useEffect(() => {
-		form.setFieldsValue({
-			type_name: selectedEquipmentType,
-		});
-	}, [selectedEquipmentType]);
-
-	//validate the borrow amount to see if it is greater than available amount
-	const validateAmount = (_, value) => {
-		const availableAmount = equipmentTypeList.find((type)=>type.type_name===selectedEquipmentType)?.available_amount;
-		if (value <= availableAmount) {
-			return Promise.resolve();
-		} else {
-			return Promise.reject(
-				new Error("Borrow amount can not be greater than "+availableAmount+"!")
-			);
+	const getCourseList = async () => {
+		const student_id=form.getFieldValue("student_id");
+		try{
+			const response = await getCourseListByStudentId(student_id);
+			setCourseList(response);
+		}catch(error){
+			message.error(error.message);
 		}
 	};
 
+	const getPackageList = async (course_id) => {
+		try{
+			const response = await getPackages(course_id);
+			setPackageList(response);
+		}catch(error){
+			message.error(error.message);
+		}
+	};
+
+	const getPackageDetail = async(package_id) => {
+		try{
+			const response = await getPackageById(package_id);
+			console.log(response);
+		}catch(error){
+			message.error(error.message);
+		}
+	};
+
+	useEffect(() => {
+		const student_id=form.getFieldValue("student_id");
+		if(student_id){
+			getCourseList();
+		}
+	}, [form]);
+
+	useEffect(() => {
+		if(course_id){
+			getPackageList(course_id);
+		}
+	}, [course_id]);
+
+	useEffect(() => {
+		if(package_id){
+			getPackageDetail(package_id);
+		}
+	}, [package_id]);
+
 	const validateStudentID = async(_, value) => {
 		if (/^a\d{7}$/.test(value) ) {
-			const existed =await searchStudentID(value);
-			if(existed){
-				// setStudentExists(true);
-				return Promise.resolve("Student exists");
-			}else{
+			try{
+				const response = await getStudentById(value);
+				if(response){
+					getCourseList();
+					return Promise.resolve();
+				}
+			}catch(error){
 				return Promise.reject(
-					new Error("Student ID does not exist")
+					new Error("Student ID does not exist!")
 				);
 			}
 		} else {
@@ -45,20 +79,6 @@ function NewRequestRecordForm({ form }) {
 
 	return (
 		<Form form={form} layout="vertical">
-			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
-				<EquipmentTypeSelector />
-			</Form.Item>
-			<Form.Item 
-				label="Borrow Amount" 
-				name="borrow_amount" 
-				rules={[
-					{ required: true },
-					{ type: "number", min: 0, message: "Borrow Amount must be greater than 0" },
-					{ validator: validateAmount },
-				]}
-			>
-				<InputNumber />
-			</Form.Item>
 			<Form.Item 
 				label="Student ID" 
 				name="student_id" 
@@ -68,15 +88,30 @@ function NewRequestRecordForm({ form }) {
 				]}>
 				<Input />
 			</Form.Item>
-			<Form.Item 
-				label="Due Date" 
-				name="return_date" 
-				rules={[
-					{ required: true },
-				]}>
-				<DatePicker allowClear/>
+			<Form.Item name={"course_id"} label="Course" rules={[{ required: true }]}>
+				<Select
+					showSearch
+					filterOption={(input, option) =>
+						option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+					}
+					options={courseList.map((courseList) => ({
+						label: courseList.course_name,
+						value: courseList.course_id,
+					}))}
+				/>
 			</Form.Item>
-			{/* Add more form items as needed */}
+			<Form.Item name={"package_id"} label="Package" rules={[{ required: true }]}>
+				<Select
+					showSearch
+					filterOption={(input, option) =>
+						option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+					}
+					options={packageList.map((packageList) => ({
+						label: packageList.package_name,
+						value: packageList.package_id,
+					}))}
+				/>
+			</Form.Item>
 		</Form>
 	);
 }

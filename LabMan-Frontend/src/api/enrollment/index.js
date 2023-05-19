@@ -62,3 +62,15 @@ export const deleteStudent = async (course_id, student_id) => {
 	}
 };
 
+export const getCourseListByStudentId = async (student_id) => {
+	try{
+		const response=await axios.get(API_URL_COURSE+"/student/"+student_id);
+		return response.data;
+	}catch(error){
+		if(error.response){
+			throw new Error(error.response.data.error);
+		}else{
+			throw new Error(error.message);
+		}
+	}
+};
