@@ -36,7 +36,8 @@ const EditRecordButton = ({ record}) => {
 			<EditOutlined 
 				onClick={onClick}
 			/>
-			<Modal title="Edit Equipment And Amount"
+			<Modal 
+				title="Edit Amount"
 				open={open}
 				onCancel={hideModal}
 				onOk={onOk}

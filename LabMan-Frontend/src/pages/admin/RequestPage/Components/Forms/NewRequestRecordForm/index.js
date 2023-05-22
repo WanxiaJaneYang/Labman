@@ -1,5 +1,6 @@
-import { Form, Input, message, Select } from "antd";
+import { Form, Input, InputNumber, message, Select, Row, Space } from "antd";
 import { useEffect, useState } from "react";
+import { MinusCircleOutlined } from "@ant-design/icons";
 import { getCourseListByStudentId } from "../../../../../../api/enrollment";
 import { getPackages, getPackageById } from "../../../../../../api/package";
 import { getStudentById } from "../../../../../../api/student";
@@ -7,6 +8,7 @@ import { getStudentById } from "../../../../../../api/student";
 function NewRequestRecordForm({ form }) {
 	const[courseList, setCourseList] = useState([]);
 	const[packageList, setPackageList] = useState([]);
+	const [equipmentList, setEquipmentList] = useState([]);
 	const course_id=Form.useWatch("course_id", form);
 	const package_id=Form.useWatch("package_id", form);
 
@@ -32,7 +34,10 @@ function NewRequestRecordForm({ form }) {
 	const getPackageDetail = async(package_id) => {
 		try{
 			const response = await getPackageById(package_id);
-			console.log(response);
+			form.setFieldsValue({
+				"request_items": response
+			});
+			setEquipmentList(response);
 		}catch(error){
 			message.error(error.message);
 		}
@@ -77,6 +82,14 @@ function NewRequestRecordForm({ form }) {
 		}
 	};
 
+	const getUpperLimit = (type_name) => {
+		equipmentList.forEach((equipment) => {
+			if(equipment.type_name===type_name){
+				return equipment.upper_bound_amount;
+			}
+		});
+	};
+
 	return (
 		<Form form={form} layout="vertical">
 			<Form.Item 
@@ -112,6 +125,43 @@ function NewRequestRecordForm({ form }) {
 					}))}
 				/>
 			</Form.Item>
+			<Form.List name="request_items">
+				{(fields, { remove }) => (
+					<>
+						{fields.map(({ key, name, ...restField }) => (
+							<Row key={key} >
+								<Space>
+									<Form.Item
+										{...restField}
+										label="Equipment Type"
+										name={[name, "type_name"]}
+										hidden={true}
+										key={"type_name"+key}
+									/>
+									<Form.Item
+										{...restField}
+										label="Equipment ID"
+										name={[name, "type_id"]}
+										hidden={true}
+										key={"type_id"+key}
+									/>
+									<Form.Item
+										{...restField}
+										label={form.getFieldValue(["request_items", key, "type_name"])+" Amount"}
+										name={[name, "borrow_amount"]}
+										key={"request_amount"+key}
+									>
+										<InputNumber type="number" min={1} max={
+											getUpperLimit(form.getFieldValue(["request_items", key, "type_name"]))
+										}/>
+									</Form.Item>
+									<MinusCircleOutlined onClick={() => remove(name)} />
+								</Space>
+							</Row>
+						))}
+					</>
+				)}
+			</Form.List>
 		</Form>
 	);
 }
