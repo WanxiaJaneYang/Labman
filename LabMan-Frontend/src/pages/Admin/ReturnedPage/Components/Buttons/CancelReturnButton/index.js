@@ -31,7 +31,7 @@ function CancelAllReturnButton() {
 	return (
 		<>
 			<Button type={"primary"} onClick={handleCancel}>
-		CancelAll
+		Cancel All
 			</Button>
 			<Modal
 				title="Do you want to cancel the return record?"
