@@ -27,7 +27,9 @@ const PackageProvider = ({ children, course_id }) => {
 		getPackages(course_id).then((data) => {
 			setData(data);
 		}).catch((error) => {
-			message.error(error.message);
+			if(error.response.status !== 404){
+				message.error(error.response.error);
+			}
 		});
 		setLoading(false);
 	};
