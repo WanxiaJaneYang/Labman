@@ -18,7 +18,11 @@ function NewRequestRecordForm({ form }) {
 			const response = await getCourseListByStudentId(student_id);
 			setCourseList(response);
 		}catch(error){
-			message.error(error.message);
+			if(error.response.status===404){
+				message.error("Student has not enrolled in any course!");
+			}else{
+				message.error(error.message);
+			}
 		}
 	};
 
@@ -27,7 +31,11 @@ function NewRequestRecordForm({ form }) {
 			const response = await getPackages(course_id);
 			setPackageList(response);
 		}catch(error){
-			message.error(error.message);
+			if(error.response.status===404){
+				message.error("Course has no package!");
+			}else{
+				message.error(error.message);
+			}
 		}
 	};
 
@@ -39,7 +47,11 @@ function NewRequestRecordForm({ form }) {
 			});
 			setEquipmentList(response);
 		}catch(error){
-			message.error(error.message);
+			if(error.response.status===404){
+				message.error("Package includes no equipment!");
+			}else{
+				message.error(error.response.error);
+			}
 		}
 	};
 

@@ -22,6 +22,15 @@ export const deletePackage = async (course_id, package_id) => {
 	}
 };
 
+export const addPackage = async (course_id, values) => {
+	const response = await axios.post(API_URL_COURSE+"/"+course_id+"/package", values);
+	if(response.status === 201){
+		return;
+	}else{
+		throw new Error(response.error);
+	}
+};
+
 export const getPackageById = async ( package_id) => {
 	const response = await axios.get(API_URL_PACKAGE+"/"+package_id);
 	if(response.status === 200){

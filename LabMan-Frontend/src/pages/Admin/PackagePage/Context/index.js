@@ -1,5 +1,5 @@
 import { useContext,createContext, useState} from "react";
-import { getPackages, deletePackage } from "../../../../api/package";
+import { getPackages, deletePackage,addPackage } from "../../../../api/package";
 import { message } from "antd";
 
 const PackageContext = createContext();
@@ -27,17 +27,20 @@ const PackageProvider = ({ children, course_id }) => {
 		getPackages(course_id).then((data) => {
 			setData(data);
 		}).catch((error) => {
-			message.error(error.message);
+			if(error.response.status !== 404){
+				message.error(error.response.error);
+			}
 		});
 		setLoading(false);
 	};
 
 	const onAdd = async (values) => {
 		setLoading(true);
-		console.log("add package for course_id:", course_id, ", course_name:", values.course_name);
-		values.type_amount_pairs.map((pair) => {
-			console.log("add pair");
-			console.log("type_id:", pair.type_id, ", amount:", pair.amount);
+		addPackage(course_id, values).then(() => {
+			message.success("Add package successfully");
+			fetchData();
+		}).catch((error) => {
+			message.error(error.message);
 		});
 		setLoading(false);
 	};

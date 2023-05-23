@@ -3,21 +3,22 @@ import { getCourseById, getCourseByCoursenameAndCoordinator } from "../../../../
 import moment from "moment";
 
 const NewCourseForm = ({ form}) => {
-	const courseCodeValidator = (_, value) => {
-		getCourseById(value).then(() => {
+	const courseCodeValidator = async(_, value) => {
+		try{
+			await getCourseById(value);
 			return Promise.reject("Course code already exists.");
-		}).catch(() => {
-			return Promise.resolve();
-		});
-	};
-
-	const courseNameValidator = (_, value) => {
-		getCourseByCoursenameAndCoordinator(value,"").then(() => {
-			return Promise.reject("Course name already exists.");
-		}).catch(() => {
+		}catch(error){
 			return Promise.resolve();
 		}
-		);
+	};
+
+	const courseNameValidator = async(_, value) => {
+		try{
+			await getCourseByCoursenameAndCoordinator(value, form.getFieldValue("course_coordinator"));
+			return Promise.reject("Course name already exists.");
+		}catch(error){
+			return Promise.resolve();
+		}
 	};
 
 	return(
@@ -49,7 +50,7 @@ const NewCourseForm = ({ form}) => {
 				}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="Course Coordinator" name="course_coordinator">
+				<Form.Item label="Course Coordinator" name="coordinator_name">
 					<Input />
 				</Form.Item>
 				<Form.Item label="Equipment Return Date" name="due_date"

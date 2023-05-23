@@ -27,7 +27,11 @@ const StudentListProvider = ({ children, course_id }) => {
 		getStudentList(course_id).then((data) => {
 			setData(data);
 		}).catch((error) => {
-			message.error(error.message);
+			if (error.response.status === 404) {
+				setData([]);
+			}else{
+				message.error(error.response.error);
+			}
 		});
 		setLoading(false);
 	};

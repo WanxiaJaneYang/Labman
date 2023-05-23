@@ -12,8 +12,6 @@ const ReturnTable = () => {
 		setSelectedRows, 
 		tableParams, 
 		setTableParams,
-		equipmentTypeList, 
-		getEquipmentTypeList,
 	} = useReturnRecordContext();
 
 	const formatDate = (dateValue) => {
@@ -29,13 +27,6 @@ const ReturnTable = () => {
 		{
 			title: "Equipment Name",
 			dataIndex: "type_name",
-			filters: 
-				equipmentTypeList? equipmentTypeList.map((item) => {
-					return {
-						text: item.type_name,
-						value: item.type_name,
-					};
-				}):[],
 		},
 		{
 			title: "Borrow Time",
@@ -84,7 +75,6 @@ const ReturnTable = () => {
 
 	useEffect(() => {
 		fetchData();
-		getEquipmentTypeList();
 	}, []);
 
 	useEffect(() => {
