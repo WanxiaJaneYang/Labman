@@ -7,6 +7,7 @@ const NewCourseButton = () => {
 	const {onAdd}=useCourseContext();
 	const [open, setOpen] = useState(false);
 	const [form] = Form.useForm();
+	const [loading, setLoading] = useState(false);
 
 	const onClick = () => {
 		setOpen(true);
@@ -18,9 +19,12 @@ const NewCourseButton = () => {
 	};
     
 	const onOk = async() => {
+		setLoading(true);
 		const values = await form.validateFields();
 		values.due_date = values.due_date.format("YYYY-MM-DD HH:mm:ss");
+		console.log(values);
 		await onAdd(values);
+		setLoading(false);
 		hideModal();
 	};
 
@@ -35,6 +39,7 @@ const NewCourseButton = () => {
 				onOk={onOk}
 				onCancel={hideModal}
 				destroyOnClose={true}
+				confirmLoading={loading}
 			>
 				<NewCourseForm form={form}/>
 			</Modal>

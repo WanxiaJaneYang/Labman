@@ -1,73 +1,31 @@
-import { Form,Input, Select, Space, InputNumber, Button,message } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { useState, useEffect } from "react";
-import { getEquipmentData } from "../../../../../../api/equipment";
+import { Form,Input} from "antd";
+import { usePackageContext } from "../../../Context";
 
 const NewPackageForm = ({ form }) => {
-	const [equipmentTypeList, setEquipmentTypeList] = useState([]);
-	const getEquipmentTypeList = async () => {
-		getEquipmentData().then((data) => {
-			setEquipmentTypeList(data);
-		}).catch((error) => {
-			message.error(error.message);
+	const {data}=usePackageContext();
+
+	const nameValidator = async (rule, value) => {
+		if (value === "") {
+			throw new Error("Please input package name!");
+		}
+		if (value.length > 50) {
+			throw new Error("Package name is too long!");
+		}
+		data.forEach((item) => {
+			if (item.package_name === value) {
+				throw new Error("Package name already exists!");
+			}
 		});
 	};
 
-	useEffect(() => {
-		getEquipmentTypeList();
-	}, []);
-
 	return(
 		<Form form={form}>
-			<Form.Item label="Name" name="package_name" rules={[{ required: true }]}>
+			<Form.Item label="Name" name="package_name" rules={[
+				{ required: true },
+				{validator:nameValidator}
+			]}>
 				<Input />
 			</Form.Item>
-			<Form.List name="type_amount_pairs">
-				{(fields, { add, remove }) => (
-					<>
-						{fields.map(({ key, name, ...restField }) => (
-							<Space key={key} align="baseline">
-								<Form.Item
-									{...restField}
-									label="Equipment Type"
-									name={[name, "type_id"]}
-									rules={[{ required: true, message: "Missing Equipment Type" }]}
-								>
-									<Select showSearch
-										optionFilterProp="children"
-										filterOption={(input, option) =>
-											option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-										}
-										style={{ width: 150 }}
-									>
-										{equipmentTypeList.map((type) => {
-											return (
-												<Select.Option key={type.type_name} value={type.type_id}>
-													{type.type_name}
-												</Select.Option>
-											);
-										})}
-									</Select>
-								</Form.Item>
-								<Form.Item
-									{...restField}
-									label="Amount"
-									name={[name, "amount"]}
-									rules={[{ required: true, message: "Missing Amount" }]}
-								>
-									<InputNumber min={1} />
-								</Form.Item>
-								<MinusCircleOutlined onClick={() => remove(name)} />
-							</Space> 
-						))}
-						<Form.Item>
-							<Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                Add Equipment Type
-							</Button>
-						</Form.Item>
-					</>
-				)}
-			</Form.List>
 		</Form>
 	);
 };
