@@ -36,12 +36,19 @@ const StudentProvider = ({ children }) => {
 
 	// add the new student
 	const onAdd = async (values) => {
-		try{
-			await postStudent(values);
-			message.success("Successfully added");
-		}catch(error){
+		await Promise.all(values.student_ids.map(async(item) => {
+			const student_value={
+				student_id: item,
+				email: item+"@adelaide.edu.au",
+				password: item
+			};
+			console.log(student_value);
+			await postStudent(student_value);
+		})).then(() => {
+			message.success("Add student successfully");
+		}).catch((error) => {
 			message.error(error.message);
-		}
+		});
 		await fetchData();
 
 	};
