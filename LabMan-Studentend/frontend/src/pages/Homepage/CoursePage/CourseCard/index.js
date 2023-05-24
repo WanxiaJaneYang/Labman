@@ -2,9 +2,11 @@ import { Card, Descriptions, Space, message } from "antd";
 import { useEffect, useState } from "react";
 import { getCourseListByStudentId } from "../../../../api/course";
 import { getID } from "../../../../utils";
+import { useNavigate } from "react-router-dom";
 
 const CourseCards=()=>{
 	const [courseList,setCourseList]=useState([]);
+	const navigate = useNavigate();
 
 	const getCourses=async()=>{
 		const student_id = getID();
@@ -12,8 +14,13 @@ const CourseCards=()=>{
 			const response=await getCourseListByStudentId(student_id);
 			setCourseList(response);
 		}catch(error){
-			if(error.response.status===404){
-				message.info("No courses found");
+			if(error.response && error.response.status===404){
+				if(student_id==undefined){
+					message.info("Please login first");
+					navigate("/login");
+				}else{
+					message.info("No courses found");
+				}
 			}else{
 				message.error(error.message);
 			}

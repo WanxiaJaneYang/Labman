@@ -1,15 +1,19 @@
-import { Breadcrumb, Button, Divider, Form, message } from "antd";
+import { Breadcrumb, Button, Divider, Form, Spin, message } from "antd";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import RequestForm from "./RequestForm";
 import { getID } from "../../../utils";
 import { postRequest } from "../../../api/request";
+import { useState } from "react";
 
 const RequestPage = () => {
 	const {course_id} = useParams();
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
+	const [loading,setLoading]=useState(false);
+
 	const onClick = async() => {
+		setLoading(true);
 		const student_id=getID();
 		const values = await form.validateFields();
 		try{
@@ -28,18 +32,19 @@ const RequestPage = () => {
 		}catch(error){
 			message.error(error.response.data.error);
 		}
+		setLoading(false);
 	};
 		
 	return(
 		<div>
+			<Spin spinning={loading}/>
 			<Breadcrumb items={[
 				{
 					title: "Homepage",
 				},
 				{
 					title: "Request",
-					onClick:(e)=>{
-						e.preventDefault();
+					onClick: () => {
 						navigate("/homepage/request");
 					}
 				},
