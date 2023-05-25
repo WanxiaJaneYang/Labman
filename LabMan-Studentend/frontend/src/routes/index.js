@@ -7,6 +7,8 @@ import RequestPage from "../pages/Homepage/RequestPage";
 import ReturnPage from "../pages/Homepage/ReturnPage";
 import AnouncementPage from "../pages/Homepage/AnnouncementPage";
 import ViewRequestPage from "../pages/Homepage/ViewRequestPage";
+import EditRequestPage from "../pages/Homepage/EditRequestPage";
+import CancelRequestPage from "../pages/Homepage/CancelRequestPage";
 
 const routes = [
 	{
@@ -36,6 +38,14 @@ const routes = [
 			{
 				path:"request/view",
 				element: <ViewRequestPage />,
+			},
+			{
+				path: "request/edit-request/:request_id",
+				element: <EditRequestPage />,
+			},
+			{
+				path: "request/cancel-request/:request_id",
+				element: <CancelRequestPage />,
 			},
 			{
 				path: "return",
