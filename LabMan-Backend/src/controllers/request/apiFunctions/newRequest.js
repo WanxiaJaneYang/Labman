@@ -12,11 +12,17 @@ async function newRequest(req, res) {
 	try {
 		const { type_id, type_name, student_id, borrow_amount,  package_id, upper_bound_amount} = req.body;
 
-		//get course in package by package_id
-		const [course] = await pool.query(`SELECT course_id FROM course_package WHERE package_id = ?`,[package_id]);
+		//check if the package has been borrowed by the student before (not cancelled)
+		const [check] = await pool.query(`SELECT * FROM requests WHERE student_id = ? AND package_id = ? AND (request_status = 1 OR request_status = 0)`,[student_id, package_id]);
+		//if the package has been borrowed by the student before, return error
+		if(check.length > 0){
+			return res.status(400).json({ error: "Bad request: the student has borrowed this package before" });
+		}
 		//get due date of course
+		const [course] = await pool.query(`SELECT course_id FROM course_package WHERE package_id = ?`,[package_id]);
 		const [return_date] = await pool.query(`SELECT due_date FROM course WHERE course_id = ?`,[course[0].course_id]);
 		const due_date = return_date[0].due_date;
+
 		// Create new request record
 		const requestRecord = {
 			student_id,
