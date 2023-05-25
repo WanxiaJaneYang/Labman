@@ -9,6 +9,7 @@ import AnouncementPage from "../pages/Homepage/AnnouncementPage";
 import ViewRequestPage from "../pages/Homepage/ViewRequestPage";
 import EditRequestPage from "../pages/Homepage/EditRequestPage";
 import CancelRequestPage from "../pages/Homepage/CancelRequestPage";
+import ViewReturnedPage from "../pages/Homepage/ViewReturnedPage";
 
 const routes = [
 	{
@@ -50,6 +51,10 @@ const routes = [
 			{
 				path: "return",
 				element: <ReturnPage />,
+			},
+			{
+				path:"return/view",
+				element: <ViewReturnedPage />,
 			},
 			{
 				path: "announcement",

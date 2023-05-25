@@ -10,8 +10,8 @@ export const postRequest=async (values)=>{
 			return;
 		}
 	}catch(error){
-		if(error.response){
-			throw new Error(error.response.data.message);
+		if(error.response && error.response.data){
+			throw new Error(error.response.data.error);
 		}else{
 			throw new Error(error.message);
 		}		

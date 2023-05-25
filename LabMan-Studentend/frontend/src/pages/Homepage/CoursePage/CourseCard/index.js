@@ -1,4 +1,4 @@
-import { Card, Descriptions, Divider, Space, message } from "antd";
+import { Card, Descriptions, Divider, Space, message, Empty } from "antd";
 import { useEffect, useState } from "react";
 import { getCourseListByStudentId } from "../../../../api/course";
 import { getID } from "../../../../utils";
@@ -36,12 +36,12 @@ const CourseCards=()=>{
 		<>
 			{courseList.map((course)=>{
 				return(
-					<>
+					<div key={course.course_id}>
 						<Card key={course.course_id} 
 							type="inner"
 							title={course.course_id} 
 							style={{ width: "auto" }} 
-							extra={<Space>
+							extra={<Space key={course.course_id+"space"}>
 								<a onClick={(e)=>{
 									e.preventDefault();
 									navigate(`/homepage/request/${course.course_id}`);						
@@ -49,18 +49,24 @@ const CourseCards=()=>{
 							</Space>
 							}
 						>
-							<Descriptions>
+							<Descriptions >
 								<Descriptions.Item label="Course Name">{course.course_name}</Descriptions.Item>
 								<Descriptions.Item label="Course Coordinator">{course.coordinator_name}</Descriptions.Item>
 								<Descriptions.Item label="Due Date">{formatDate(course.due_date)}</Descriptions.Item>
 							</Descriptions>
 						</Card>
-						<Divider/>
-					</>
+						<Divider key={course.course_id+"divider"}/>
+					</div>
 						
 				);
 			})}
-			
+			{courseList.length===0 && <Empty
+				description={
+					<span>
+						No courses found
+					</span>
+				}
+			/>}		
 			
 		</>
 	);

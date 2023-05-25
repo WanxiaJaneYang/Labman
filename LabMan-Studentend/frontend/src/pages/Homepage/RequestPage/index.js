@@ -30,7 +30,7 @@ const RequestPage = () => {
 			message.success("Request successfully!");
 			navigate("/homepage/request");
 		}catch(error){
-			message.error(error.response.data.error);
+			message.error(error.message);
 		}
 		setLoading(false);
 	};

@@ -1,4 +1,4 @@
-import { Form, message, Select, InputNumber,Row, Space } from "antd";
+import { Form, message,Select, Input, InputNumber,Row, Space } from "antd";
 import { getCoursePackageListByCourseId } from "../../../../api/course";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -46,7 +46,7 @@ const RequestForm = ({form}) => {
 			if(error.response.status===404){
 				message.error("Package includes no equipment!");
 			}else{
-				message.error(error.response.error);
+				message.error(error.message);
 			}
 		}
 	};
@@ -75,16 +75,20 @@ const RequestForm = ({form}) => {
 										{...restField}
 										label="Equipment Type"
 										name={[name, "type_name"]}
-										hidden={true}
+										style={{display:"none"}}
 										key={"type_name"+key}
-									/>
+									>
+										<Input/>
+									</Form.Item>
 									<Form.Item
 										{...restField}
 										label="Equipment ID"
 										name={[name, "type_id"]}
-										hidden={true}
+										style={{display:"none"}}
 										key={"type_id"+key}
-									/>
+									>
+										<Input/>
+									</Form.Item>
 									<Form.Item
 										{...restField}
 										label={form.getFieldValue(["request_items", key, "type_name"])+" Amount"}
@@ -110,8 +114,10 @@ const RequestForm = ({form}) => {
 										label="Upper Limit"
 										name={[name, "upper_bound_amount"]}
 										key={"upper_bound_amount"+key}
-										hidden={true}
-									/>
+										style={{display:"none"}}
+									>
+										<InputNumber />
+									</Form.Item>
 									<MinusCircleOutlined onClick={() => remove(name)} />
 								</Space>
 							</Row>

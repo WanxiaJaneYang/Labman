@@ -1,4 +1,4 @@
-import { Card, Divider, message, Space } from "antd";
+import { Card, Divider, Empty, message, Space } from "antd";
 import { getRequestListByStudentId } from "../../../../api/request";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../../../utils/date";
@@ -59,6 +59,13 @@ const RequestCard = () => {
 					);
 				}
 				)}
+				{requestList.length === 0 && <Empty
+					description={
+						<span>
+							No request found
+						</span>
+					}
+				/>}
 			</div>
 		</>
 		

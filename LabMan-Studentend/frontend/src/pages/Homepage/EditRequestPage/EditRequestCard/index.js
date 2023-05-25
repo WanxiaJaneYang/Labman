@@ -2,8 +2,10 @@ import { Button, Card, Form, InputNumber, Spin, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { putRequest, getRequestListByStudentId } from "../../../../api/request";
+import { formatDate} from "../../../../utils/date";
 
 const EditRequestCard = () => {
+	const navigate = useNavigate();
 	const {request_id} = useParams();
 	const [request, setRequest] = useState({
 		request_id: "",
@@ -59,14 +61,15 @@ const EditRequestCard = () => {
 	const onSubmit = async() => {
 		setLoading(true);
 		const values = await form.validateFields();
-		const request={
+		const requestForm={
 			...request,
-			borrow_amount:values.borrow_amount
+			borrow_amount:values.borrow_amount,
+			return_date:formatDate(request.return_date),
 		};
 		try{
-			await putRequest(request.request_id, request);
+			await putRequest(request.request_id, requestForm);
 			message.success("Request edited successfully");
-			useNavigate("/homepage/request/view");
+			navigate("/homepage/request/view");
 		}catch(error){
 			message.error(error.message);
 		}
