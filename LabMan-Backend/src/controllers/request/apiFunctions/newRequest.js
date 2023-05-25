@@ -10,8 +10,13 @@ import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctio
 
 async function newRequest(req, res) {
 	try {
-		const { type_id, type_name, student_id, borrow_amount, return_date , package_id, upper_bound_amount} = req.body;
+		const { type_id, type_name, student_id, borrow_amount,  package_id, upper_bound_amount} = req.body;
 
+		//get course in package by package_id
+		const [course] = await pool.query(`SELECT course_id FROM course_package WHERE package_id = ?`,[package_id]);
+		//get due date of course
+		const [return_date] = await pool.query(`SELECT due_date FROM course WHERE course_id = ?`,[course[0].course_id]);
+		const due_date = return_date[0].due_date;
 		// Create new request record
 		const requestRecord = {
 			student_id,
@@ -19,7 +24,7 @@ async function newRequest(req, res) {
 			type_name,
 			borrow_amount,
 			request_time: moment().format("YYYY-MM-DD HH:mm:ss"),
-			return_date,
+			return_date: due_date,
 			request_status: 0, // 0 = pending/new request
 			package_id, 
 			upper_bound_amount
@@ -38,7 +43,7 @@ async function newRequest(req, res) {
 				type_name,
 				student_id,
 				borrow_amount,
-				return_date,
+				return_date: due_date,
 				log_type: 0, // 0 = new request
 				log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 				request_id: insertRequestId,
