@@ -12,10 +12,10 @@ import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctio
 
 async function editRequest(req, res) {
 	try {
-		const { request_id } = req.params; 
+		const { request_id } = req.params;
 
 		// Create a collecting log of the request
-		const { student_id, type_id, type_name, borrow_amount, return_date } = req.body;
+		const { student_id, type_id, type_name, borrow_amount, return_date} = req.body;
 		const requestLog = {
 			type_id,
 			type_name,
@@ -26,29 +26,33 @@ async function editRequest(req, res) {
 			log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			request_id,
 		};
-		const change_amount = borrow_amount - (await getRequestById(pool, request_id)).borrow_amount;
-		await statusIsNew(pool,request_id);
+		const existingRequest = await getRequestById(pool, request_id);
+		if (borrow_amount > existingRequest.upper_bound_amount) {
+			throw new Error(errorMessages.borrowAmountExceedsUpperBound);
+		}
+		const change_amount = borrow_amount - existingRequest.borrow_amount;
+		await statusIsNew(pool, request_id);
 		await runTransaction(async (connection) => {
 			// Update the request record
 			await compareAvailableAmount(connection, type_id, borrow_amount);
 
-			const p1 = updateRequest(connection, type_id, student_id, type_name, borrow_amount, return_date, request_id);
+			const p1 = updateRequest(connection, type_id, type_name, borrow_amount, return_date, request_id);
 
 			// Insert requestLog into request_Log table
 			const p2 = insertRequestLog(connection, requestLog);
 			const p3 = updateReservedAmount(connection, type_id, change_amount);
-			const p4 = updateAvailableAmountAndRemovable(connection, type_id, change_amount*(-1));
+			const p4 = updateAvailableAmountAndRemovable(connection, type_id, change_amount * (-1));
 
 			// Wait for all promises to resolve
-			await Promise.all([p1,p2, p3,p4]);
+			await Promise.all([p1, p2, p3, p4]);
 		});
 		return res.status(200).json({ success: "Request updated and log inserted successfully" });
 	} catch (error) {
 		console.log(error);
 		if (Object.values(errorMessages).includes(error.message)) {
-			return res.status(400).json({ error: "Bad request: "+error.message });
+			return res.status(400).json({ error: "Bad request: " + error.message });
 		}
-		return res.status(500).json({ error: "Internal error: " +error.message });
+		return res.status(500).json({ error: "Internal error: " + error.message });
 	}
 }
 

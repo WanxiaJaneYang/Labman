@@ -42,8 +42,8 @@ export const putRequest=async (values)=>{
 	}
 };
 
-export const cancelRequest=async (request_id)=>{
-	const response=await axios.patch(API_URL_REQUEST+"/cancel/"+request_id);
+export const cancelRequest=async (request_id, values)=>{
+	const response=await axios.patch(API_URL_REQUEST+"/cancel/"+request_id, values);
 	if(response.status === 200){
 		return;
 	}else{
