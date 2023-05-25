@@ -10,7 +10,7 @@ import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctio
 
 async function newRequest(req, res) {
 	try {
-		const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
+		const { type_id, type_name, student_id, borrow_amount, return_date , package_id, upper_bound_amount} = req.body;
 
 		// Create new request record
 		const requestRecord = {
@@ -21,6 +21,8 @@ async function newRequest(req, res) {
 			request_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			return_date,
 			request_status: 0, // 0 = pending/new request
+			package_id, 
+			upper_bound_amount
 		};
 
 		// Execute the SQL query with the request_id parameter
