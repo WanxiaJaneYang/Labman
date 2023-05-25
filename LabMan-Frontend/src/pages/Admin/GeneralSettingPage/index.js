@@ -1,18 +1,24 @@
-import React from "react";
-import { Collapse, Divider } from "antd";
+import { Collapse, message, Button } from "antd";
+import { useEffect, useState } from "react";
+import { getAnnouncement } from "../../../api/announcement";
 
 const { Panel } = Collapse;
 
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
-
 const GeneralSettingPage = () => {
-	const onChange = (key) => {
-		console.log(key);
+	const [text, setText] = useState(""); 
+	
+	const getText = async () => {
+		try{
+			const response = await getAnnouncement();
+			setText(response);
+		}catch(error){
+			message.error(error.message);
+		}
 	};
+
+	useEffect(() => {
+		getText();
+	}, []);
 
 	const emailNotification = () => {
 		return (
@@ -21,19 +27,13 @@ const GeneralSettingPage = () => {
 	};
 
 	return (
-        <>
-            <Divider>
-            <Panel header="Email Notification" key="1">
-				{emailNotification()}
-			</Panel>
-            </Divider>
-        </>
-		<Collapse defaultActiveKey={["1"]} onChange={onChange}>
+		<Collapse defaultActiveKey={["1"]} >
 			<Panel header="Email Notification" key="1">
 				{emailNotification()}
 			</Panel>
 			<Panel header="Announcement" key="2">
 				<p>{text}</p>
+				<Button>edit</Button>
 			</Panel>
 		</Collapse>
 	);
