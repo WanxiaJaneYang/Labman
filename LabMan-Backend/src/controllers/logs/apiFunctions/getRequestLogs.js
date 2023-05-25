@@ -29,13 +29,13 @@ async function getfilteredRequestLogs(req, res) {
 	const params = [];
 
 	if (student_id) {
-		whereClauses.push("student_id = ?");
-		params.push(student_id);
+		whereClauses.push("student_id LIKE ?");
+		params.push(`%${student_id}%`);
 	}
 
 	if (type_name) {
-		whereClauses.push("type_name = ?");
-		params.push(type_name);
+		whereClauses.push("type_name LIKE ?");
+		params.push(`%${type_name}%`);
 	}
 
 	if (start_date) {
