@@ -1,39 +1,32 @@
-import { Collapse, message, Button } from "antd";
-import { useEffect, useState } from "react";
-import { getAnnouncement } from "../../../api/announcement";
+import { Collapse } from "antd";
+import Announcement from "./Component/Announcement";
+import {useNavigate} from "react-router-dom";
 
 const { Panel } = Collapse;
 
 const GeneralSettingPage = () => {
-	const [text, setText] = useState(""); 
-	
-	const getText = async () => {
-		try{
-			const response = await getAnnouncement();
-			setText(response);
-		}catch(error){
-			message.error(error.message);
-		}
-	};
+	const navigate = useNavigate();
 
-	useEffect(() => {
-		getText();
-	}, []);
+	const onEmailClick = () => {
+		navigate("/admin/setting/email");
+	};
 
 	const emailNotification = () => {
 		return (
-			<p>Automatically sending email 8 days earlier before due date</p>
+			<>
+				<p>Automatically sending email 7 days earlier before due date</p>
+				<a onClick={onEmailClick}>Show Sent Email</a>
+			</>
 		);
 	};
 
 	return (
-		<Collapse defaultActiveKey={["1"]} >
+		<Collapse defaultActiveKey={["1","2"]} >
 			<Panel header="Email Notification" key="1">
 				{emailNotification()}
 			</Panel>
 			<Panel header="Announcement" key="2">
-				<p>{text}</p>
-				<Button>edit</Button>
+				<Announcement/>
 			</Panel>
 		</Collapse>
 	);

@@ -16,6 +16,7 @@ import PackagePage from "../pages/Admin/PackagePage";
 import IndividualPackagePage from "../pages/Admin/IndividualPackagePage";
 import ReturnedPage from "../pages/Admin/ReturnedPage";
 import GeneralSettingPage from "../pages/Admin/GeneralSettingPage";
+import EmailPage from "../pages/Admin/EmailPage";
 
 const routes = [
 	{
@@ -103,6 +104,10 @@ const routes = [
 			{
 				path: "setting",
 				element:<GeneralSettingPage />,
+			},
+			{
+				path:"setting/email",
+				element:<EmailPage />,
 			}
 		]
 	}
