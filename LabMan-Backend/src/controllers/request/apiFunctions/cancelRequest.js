@@ -12,6 +12,8 @@ import {updateReservedAmount} from "../../equipment/helperFunctions/updateReserv
 async function cancelRequest(req,res) {
 	try {
 		const { request_id } = req.params; 
+		const { cancel_reason } = req.body; 
+
 
 		const requestRecord = await getRequestById(pool, request_id);
 		await statusIsNew(pool,request_id);
@@ -25,9 +27,10 @@ async function cancelRequest(req,res) {
 			student_id,
 			borrow_amount,
 			return_date,
-			log_type: 3, // 3 = collected
+			log_type: 3, // 3 = cancel
 			log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 			request_id,
+			cancel_reason,
 		};
 		// console.log(requestLog);
 
