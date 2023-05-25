@@ -13,13 +13,13 @@ async function getUsersToEmail() {
 		const [results] = await pool.query(query, [remind_time1,remind_time2,remind_time3]);
         // console.log("users found: ");
         // console.log(results);
-
+        // console.log(results.length);
         if (results.length === 0) {
             throw new Error("No users to remind");
         }
 		return results;
 	} catch (error) {
-		console.error(error);
+        throw new Error(error.message);
 	}
 }
 
