@@ -10,7 +10,18 @@ import { updateAvailableAmountAndRemovable } from "../../equipment/helperFunctio
 
 async function newRequest(req, res) {
 	try {
-		const { type_id, type_name, student_id, borrow_amount, return_date } = req.body;
+		const { type_id, type_name, student_id, borrow_amount,  package_id, upper_bound_amount} = req.body;
+
+		//check if the package has been borrowed by the student before (not cancelled)
+		const [check] = await pool.query(`SELECT * FROM requests WHERE student_id = ? AND package_id = ? AND (request_status = 1 OR request_status = 0)`,[student_id, package_id]);
+		//if the package has been borrowed by the student before, return error
+		if(check.length > 0){
+			return res.status(400).json({ error: "Bad request: the student has borrowed this package before" });
+		}
+		//get due date of course
+		const [course] = await pool.query(`SELECT course_id FROM course_package WHERE package_id = ?`,[package_id]);
+		const [return_date] = await pool.query(`SELECT due_date FROM course WHERE course_id = ?`,[course[0].course_id]);
+		const due_date = return_date[0].due_date;
 
 		// Create new request record
 		const requestRecord = {
@@ -19,8 +30,10 @@ async function newRequest(req, res) {
 			type_name,
 			borrow_amount,
 			request_time: moment().format("YYYY-MM-DD HH:mm:ss"),
-			return_date,
+			return_date: due_date,
 			request_status: 0, // 0 = pending/new request
+			package_id, 
+			upper_bound_amount
 		};
 
 		// Execute the SQL query with the request_id parameter
@@ -36,7 +49,7 @@ async function newRequest(req, res) {
 				type_name,
 				student_id,
 				borrow_amount,
-				return_date,
+				return_date: due_date,
 				log_type: 0, // 0 = new request
 				log_time: moment().format("YYYY-MM-DD HH:mm:ss"),
 				request_id: insertRequestId,
