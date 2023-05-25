@@ -1,5 +1,5 @@
 import { sendEmailsToUsers } from './helpers/sendEmailsToUsers.js';
-//UAT environment
+//UAT environment, send email every 9am
 import cron from 'node-cron';
 export function startEmailTimer() {
     // Schedule the task to run every day at 9AM
@@ -8,11 +8,10 @@ export function startEmailTimer() {
     });
 }
 
-//testing environment
+//testing environment, // send email per 30 seconds
 // export function startEmailTimer() {
 //     // Set the interval for sending emails (e.g., every 24 hours)
-//     const interval = 30 * 1000; // per 30 seconds
-
+//     const interval = 30 * 1000; 
 //     // Start the timer
 //     setInterval(() => {
 //         sendEmailsToUsers();
