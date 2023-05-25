@@ -47,7 +47,22 @@ const RequestRecordProvider = ({ children }) => {
 	
 	const onAdd = async (values) => {
 		try{
-			await postRequest(values);
+			const student_id = values.student_id;
+			const package_id = values.package_id;
+			await Promise.all(values.request_items.map(async (item) => {
+				const type_id = item.type_id;
+				const type_name= item.type_name;
+				const borrow_amount = item.borrow_amount;
+				const request_values = {
+					student_id,
+					package_id,
+					type_id,
+					type_name,
+					borrow_amount,
+				};
+				console.log(request_values);
+				await postRequest(request_values);
+			}));
 			message.success("Request Added Successfully!");
 		}catch(error){
 			message.error(error.message);
