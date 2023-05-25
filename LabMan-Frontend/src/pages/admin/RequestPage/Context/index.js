@@ -60,7 +60,6 @@ const RequestRecordProvider = ({ children }) => {
 					type_name,
 					borrow_amount,
 				};
-				console.log(request_values);
 				await postRequest(request_values);
 			}));
 			message.success("Request Added Successfully!");

@@ -21,7 +21,7 @@ function CancelRequestRecordButton() {
 		try {
 			const values = await form.validateFields();
 			values.cancel_reason=values.cancel_reason.trim() +"(by Admin)";
-			await onCancelRequest(selectedRows, values);
+			await onCancelRequest(values);
 			setVisible(false);
 		} catch (error) {
 			message.error(error.message);
