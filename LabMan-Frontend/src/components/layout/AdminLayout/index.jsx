@@ -6,6 +6,7 @@ import {
 	FileOutlined,
 	FormOutlined,
 	BookOutlined,
+	ToolOutlined,
 } from "@ant-design/icons";
 import { Outlet } from "react-router";
 
@@ -40,6 +41,11 @@ const adminMenuItems = [
 		icon:<FileOutlined />,
 		label: "Action History",
 	},
+	{
+		key: "/admin/setting",
+		icon: <ToolOutlined />,
+		label: "Setting",
+	}
 ];
 
 const AdminLayout = () => {

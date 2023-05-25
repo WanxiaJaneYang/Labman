@@ -7,11 +7,11 @@ async function getReturns(req, res) {
 	const conditions = [];
 
 	if (req.query.type_name) {
-		conditions.push(`type_name = '${req.query.type_name}'`);
+		conditions.push(`type_name LIKE '%${req.query.type_name}%'`);
 	}
 
 	if (req.query.student_id) {
-		conditions.push(`student_id = '${req.query.student_id}'`);
+		conditions.push(`student_id LIKE '%${req.query.student_id}%'`);
 	}
 
 	if (conditions.length > 0) {
