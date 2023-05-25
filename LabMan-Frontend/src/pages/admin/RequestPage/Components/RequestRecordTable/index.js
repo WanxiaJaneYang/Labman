@@ -13,8 +13,6 @@ const RequestRecordTable = () => {
 		loading,
 		tableParams,
 		setTableParams,
-		equipmentTypeList,
-		getEquipmentTypeList,
 		setModalData,
 	} = useRequestRecordContext();
 
@@ -32,12 +30,6 @@ const RequestRecordTable = () => {
 		{
 			title: "Equipment Name",
 			dataIndex: "type_name",
-			filters: equipmentTypeList.map((type) => {
-				return {
-					text: type.type_name,
-					value: type.type_name,
-				};
-			}),
 		},
 		{
 			title: "Student ID",
@@ -91,7 +83,6 @@ const RequestRecordTable = () => {
 	};
 
 	useEffect(() => {
-		getEquipmentTypeList();
 		fetchData();
 	}, []);
 

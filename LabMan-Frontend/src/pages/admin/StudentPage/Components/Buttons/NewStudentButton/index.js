@@ -14,19 +14,16 @@ const NewStudentButton = () => {
 		setIsModalOpen(true);
 	};
 
-	const hideModal = () => {
+	const hideModal = () => {		
+		form.resetFields();
 		setIsModalOpen(false);
 	};
 
 	const okHandler = async() => {
 		try {
 			const values = await form.validateFields();
-			values.email=values.student_id+"@adelaide.edu.au";
-			values.password="123456";
 			onAdd(values);
-			// call the API to create a new request record here
 			hideModal();
-			form.resetFields();
 		} catch (error) {
 			console.log("Form validation failed:", error);
 		}

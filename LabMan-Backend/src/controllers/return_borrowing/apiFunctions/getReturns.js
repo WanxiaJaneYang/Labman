@@ -2,7 +2,8 @@ import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function getReturns(req, res) {
-	let query = "SELECT * FROM borrowings WHERE borrow_status = 0";
+
+	let query = `SELECT * FROM borrowings WHERE borrow_status = '${req.query.borrow_status}'`;
 	const conditions = [];
 
 	if (req.query.type_name) {
