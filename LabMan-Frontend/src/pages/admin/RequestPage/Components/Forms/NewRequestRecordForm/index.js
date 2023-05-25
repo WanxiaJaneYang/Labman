@@ -167,6 +167,12 @@ function NewRequestRecordForm({ form }) {
 											getUpperLimit(form.getFieldValue(["request_items", key, "type_name"]))
 										}/>
 									</Form.Item>
+									<Form.Item 
+										{...restField}
+										name={[name, "upper_bound_amount"]}
+										hidden={true}
+										key={"upper_bound_amount"+key}
+									/>
 									<MinusCircleOutlined onClick={() => remove(name)} />
 								</Space>
 							</Row>

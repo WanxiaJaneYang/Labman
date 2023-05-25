@@ -2,7 +2,6 @@ import { DatePicker, Form, Input, InputNumber } from "antd";
 import { useRequestRecordContext } from "../../../Context";
 import { useEffect } from "react";
 import moment from "moment";
-import EquipmentTypeSelector from "../../Selector/EquipmentTypeSelector";
 
 function ModifyRequestForm({ form}) {
 	const { modalData,searchStudentID, equipmentTypeList,selectedEquipmentType} = useRequestRecordContext();
@@ -14,6 +13,10 @@ function ModifyRequestForm({ form}) {
 				student_id: modalData.student_id,
 				borrow_amount: modalData.borrow_amount,
 				return_date: moment(modalData.return_date),
+				package_id: modalData.package_id,
+				upper_bound_amount: modalData.upper_bound_amount,
+				type_id: modalData.type_id,
+				request_id: modalData.request_id,
 			});
 		} else {
 			form.resetFields();
@@ -49,6 +52,12 @@ function ModifyRequestForm({ form}) {
 		const availableAmount = equipmentTypeList.find((type)=>type.type_name===selectedEquipmentType)?.available_amount;
 		if(!availableAmount) return Promise.reject(new Error("Please select equipment type"));
 		if (value <= availableAmount) {
+			const upper_bound_amount=form.getFieldValue("upper_bound_amount");
+			if(value>upper_bound_amount){
+				return Promise.reject(
+					new Error(`Borrow Amount must be less than or equal to upper bound amount ${upper_bound_amount}`)
+				);
+			}
 			return Promise.resolve();
 		} else {
 			return Promise.reject(
@@ -62,9 +71,15 @@ function ModifyRequestForm({ form}) {
 			form={form} 
 			layout="vertical"
 		>
-			<Form.Item label="Equipment Name" name="type_name" rules={[{ required: true }]}>
-				<EquipmentTypeSelector placeholder={modalData?modalData.type_name:null}/>
-			</Form.Item>
+			<Form.Item 
+				name={"type_id"} hidden/>
+			<Form.Item
+				name={"request_id"} hidden/>
+			<Form.Item label="Equipment Name" 
+				name="type_name" 
+				hidden={true}
+				rules={[{ required: true } ]}/>
+			<Form.Item name={"package_id"} hidden/>
 			<Form.Item 
 				label="Student ID" 
 				name="student_id" 
@@ -72,7 +87,9 @@ function ModifyRequestForm({ form}) {
 					{ required: true },
 					{ validator: validateStudentID },
 				]}>
-				<Input />
+				<Input 
+					disabled={true}
+				/>
 			</Form.Item>
 			<Form.Item 
 				label="Borrow Amount" 
@@ -85,9 +102,12 @@ function ModifyRequestForm({ form}) {
 			>
 				<InputNumber />
 			</Form.Item>
-			<Form.Item label="Return Date" name="return_date" rules={[{ required: true }]}>
-				<DatePicker	allowClear/>
+			<Form.Item label="Due Date" name="return_date" rules={[{ required: true }]}>
+				<DatePicker	
+					allowClear={true}
+				/>
 			</Form.Item>
+			<Form.Item name={"upper_bound_amount"} hidden/>
 		</Form>
 	);
 

@@ -53,12 +53,14 @@ const RequestRecordProvider = ({ children }) => {
 				const type_id = item.type_id;
 				const type_name= item.type_name;
 				const borrow_amount = item.borrow_amount;
+				const upper_bound_amount = item.upper_bound_amount;
 				const request_values = {
 					student_id,
 					package_id,
 					type_id,
 					type_name,
 					borrow_amount,
+					upper_bound_amount,
 				};
 				await postRequest(request_values);
 			}));
