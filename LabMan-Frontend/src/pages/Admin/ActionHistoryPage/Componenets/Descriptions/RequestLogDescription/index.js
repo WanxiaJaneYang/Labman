@@ -2,13 +2,13 @@ import { Descriptions } from "antd";
 
 const RequestLogDescription = ({data}) => {
 	const getStatus = (status) => {
-		if (status === "0") {
+		if (status === 0) {
 			return "Generated";
-		}else if (status === "1") {
+		}else if (status === 1) {
 			return "Collected";
-		}else if (status === "2") {
+		}else if (status === 2) {
 			return "Edit";
-		}else if (status === "3") {
+		}else if (status === 3) {
 			return "Cancelled";
 		}
 	};
@@ -30,6 +30,8 @@ const RequestLogDescription = ({data}) => {
 			<Descriptions.Item label="Due Day" span={2}>{getTime(data.return_date)}</Descriptions.Item>
 			<Descriptions.Item label="Action" span={1}>{getStatus(data.log_type)}</Descriptions.Item>
 			<Descriptions.Item label="Time" span={3}>{getTime(data.log_time)}</Descriptions.Item>
+			{(data.log_type === 3) &&<Descriptions.Item label="Cancel Reason" span={3}>{data.cancel_reason}</Descriptions.Item>
+			}
 		</Descriptions>
 	);
 };

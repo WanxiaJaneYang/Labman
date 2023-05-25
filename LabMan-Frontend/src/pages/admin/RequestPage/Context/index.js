@@ -70,10 +70,10 @@ const RequestRecordProvider = ({ children }) => {
 		fetchData();
 	};
 
-	const onCancelRequest= async () => {
+	const onCancelRequest= async (values) => {
 		try{
 			await Promise.all(selectedRows.map(async (row) => {
-				await cancelRequest(row.request_id);
+				await cancelRequest(row.request_id, values);
 			}));
 			message.success("Request Cancelled Successfully!");
 		}catch(error){
