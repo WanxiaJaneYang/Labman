@@ -24,12 +24,12 @@ const Homepage = () => {
 		},
 		{
 			key: "/homepage/return",
-			label: "Return",
+			label: "Borrowing",
 		},
 		{
 			key: "/homepage/announcement",
-			label: "Announcement",
-		}
+			label: "Notice",
+		},
 	];
     
 	const { token: { colorBgContainer } } = theme.useToken();

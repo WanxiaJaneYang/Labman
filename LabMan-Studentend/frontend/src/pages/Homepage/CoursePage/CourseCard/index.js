@@ -1,8 +1,9 @@
-import { Card, Descriptions, Space, message } from "antd";
+import { Card, Descriptions, Divider, Space, message } from "antd";
 import { useEffect, useState } from "react";
 import { getCourseListByStudentId } from "../../../../api/course";
 import { getID } from "../../../../utils";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../../../utils/date";
 
 const CourseCards=()=>{
 	const [courseList,setCourseList]=useState([]);
@@ -31,26 +32,22 @@ const CourseCards=()=>{
 		getCourses();
 	},[]);
 
-	const formatDate=(date)=>{
-		date = new Date(date);
-		const year = date.getFullYear();
-		const month = date.getMonth()+1;
-		const day = date.getDate();
-		return `${year}-${month}-${day}`;
-	};
-
 	return(
 		<>
-			<Space
-				direction="vertical"
-			>
-				{courseList.map((course)=>{
-					return(
+			{courseList.map((course)=>{
+				return(
+					<>
 						<Card key={course.course_id} 
 							type="inner"
 							title={course.course_id} 
-							style={{ width: 300 }} 
-							extra={<a href={`/homepage/request/${course.course_id}`}>Request</a>}
+							style={{ width: "auto" }} 
+							extra={<Space>
+								<a onClick={(e)=>{
+									e.preventDefault();
+									navigate(`/homepage/request/${course.course_id}`);						
+								}}>Request</a>
+							</Space>
+							}
 						>
 							<Descriptions>
 								<Descriptions.Item label="Course Name">{course.course_name}</Descriptions.Item>
@@ -58,9 +55,12 @@ const CourseCards=()=>{
 								<Descriptions.Item label="Due Date">{formatDate(course.due_date)}</Descriptions.Item>
 							</Descriptions>
 						</Card>
-					);
-				})}
-			</Space>
+						<Divider/>
+					</>
+						
+				);
+			})}
+			
 			
 		</>
 	);

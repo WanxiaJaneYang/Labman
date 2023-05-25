@@ -1,8 +1,11 @@
+import AnnouncementCard from "./AnnouncementCard";
+import {Row} from "antd";
+
 const AnnouncementPage = () => {
 	return (
-		<div>
-			<h1>Announcement Page</h1>
-		</div>
+		<Row justify={"center"}>
+			<AnnouncementCard/>
+		</Row>
 	);
 };
 

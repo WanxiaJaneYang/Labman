@@ -6,6 +6,7 @@ import CoursePage from "../pages/Homepage/CoursePage";
 import RequestPage from "../pages/Homepage/RequestPage";
 import ReturnPage from "../pages/Homepage/ReturnPage";
 import AnouncementPage from "../pages/Homepage/AnnouncementPage";
+import ViewRequestPage from "../pages/Homepage/ViewRequestPage";
 
 const routes = [
 	{
@@ -31,6 +32,10 @@ const routes = [
 			{
 				path: "request/:course_id",
 				element: <RequestPage />,
+			},
+			{
+				path:"request/view",
+				element: <ViewRequestPage />,
 			},
 			{
 				path: "return",

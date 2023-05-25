@@ -8,7 +8,7 @@ export const login = async (username, password) => {
 		const response = await axios.get(USER_URL+"/"+username);
 		if(response.data){
 			console.log("password",password);
-			document.cookie = "username="+username;
+			localStorage.setItem("student_id",username);
 			console.log("cookies:",document.cookie);
 			return;
 		}

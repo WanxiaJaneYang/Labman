@@ -1,9 +1,11 @@
 import {Card} from "antd";
 
-const AnnouncementCard = ({announcement}) => {
+const AnnouncementCard = () => {
 	return (
-		<Card title={announcement.title} style={{ width: 300 }}>
-			<p>{announcement.content}</p>
+		<Card title={"Announcement"} 
+			type="inner"
+			style={{ width: "auto" }} >
+			<p>xxxxxxx</p>
 		</Card>
 	);
 };

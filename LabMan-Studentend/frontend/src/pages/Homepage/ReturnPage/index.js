@@ -1,7 +1,9 @@
+import BorrowingRecordCard from "./BorrowingRecordCard";
+
 const ReturnPage = () => {
 	return (
 		<div>
-			<h1>Return Page</h1>
+			<BorrowingRecordCard/>
 		</div>
 	);
 };
