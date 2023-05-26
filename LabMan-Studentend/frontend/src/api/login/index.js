@@ -3,17 +3,16 @@ import axios from "axios";
 const API_URL=process.env.REACT_APP_BASE_API_URL;
 const USER_URL=API_URL+"/users";
 
-export const login = async (username, password) => {
+export const checkLoginInfo=async (student_id,password)=>{
 	try{
-		const response = await axios.get(USER_URL+"/"+username);
-		if(response.data){
-			console.log("password",password);
-			localStorage.setItem("student_id",username);
-			console.log("cookies:",document.cookie);
-			return;
-		}
-		else{
-			throw new Error("Wrong password");
+		const body={
+			password:password
+		};
+
+		const response = await axios.post(USER_URL+"/"+student_id+"/login",body);
+		if(response.status === 200){
+			localStorage.setItem("student_id",student_id);
+			return true;
 		}
 	}catch(error){
 		if(error.response){

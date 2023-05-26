@@ -8,6 +8,7 @@ const CancelRequestPage = () => {
 
 	const onFinish = async (values) => {
 		try {
+			values.cancel_reason=values.cancel_reason+" by "+localStorage.getItem("username");
 			await cancelRequest(request_id, values);
 			message.success("Cancel request successfully");
 			navigate("/homepage/request/view");

@@ -1,4 +1,4 @@
-import { Card, Divider, Empty, message, Space } from "antd";
+import { Card, Divider, Empty, message } from "antd";
 import { formatDate } from "../../../../utils/date";
 import { getBorrowRecordByStudentId } from "../../../../api/borrow";
 import { useEffect, useState } from "react";
@@ -20,14 +20,14 @@ const BorrowingRecordCard = () => {
 	}, []);
 
 	return(
-		<Space direction="vertical" >
+		<>
 			{borrowRecordList.map((borrowRecord) => {
 				return(
 					<React.Fragment key={borrowRecord.borrow_id}>
 						<Card key={borrowRecord.borrow_id}
 							type="inner"
 							title={borrowRecord.type_name}
-							style={{ width: "300px", margin: "auto" }}
+							style={{ width: "auto"}}
 						>
 							<p>Borrow Date: {formatDate(borrowRecord.borrow_date)}</p>
 							<p>Borrow Amount: {borrowRecord.borrow_amount}</p>
@@ -44,7 +44,7 @@ const BorrowingRecordCard = () => {
 					</span>
 				}
 			/>}
-		</Space>
+		</>
 	);
 };
 

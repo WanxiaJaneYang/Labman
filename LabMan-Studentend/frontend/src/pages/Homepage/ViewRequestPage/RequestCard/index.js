@@ -3,6 +3,7 @@ import { getRequestListByStudentId } from "../../../../api/request";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../../../utils/date";
 import {useNavigate} from "react-router-dom";
+import React from "react";
 
 const RequestCard = () => {
 	const [requestList, setRequestList] = useState([]);
@@ -30,8 +31,8 @@ const RequestCard = () => {
 			<div>
 				{requestList.map((request) => {
 					return(
-						<>
-							<Card key={request.request_id}
+						<React.Fragment key={request.request_id+"parent"}>
+							<Card key={request.request_id+"card"}
 								type="inner"
 								title={request.type_name}
 								style={{ width: "auto" }} 
@@ -54,8 +55,8 @@ const RequestCard = () => {
 								<p>Borrow Amount :{request.borrow_amount}</p>
 								<p>Due Date:{formatDate(request.due_date)}</p>
 							</Card>
-							<Divider key={request.request_id}/>
-						</>
+							<Divider key={request.request_id+"divider"}/>
+						</React.Fragment>
 					);
 				}
 				)}
