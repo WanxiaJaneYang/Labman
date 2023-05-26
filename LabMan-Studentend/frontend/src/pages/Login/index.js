@@ -2,16 +2,17 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Typography, message } from "antd";
 import "./Login.css";
 import { useNavigate} from "react-router-dom";
-import { login } from "../../api/login";
+import { useAuth } from "../../Context/AuthContext";
 
 const Login = () => {
 	const Navigate = useNavigate();
+	const { login } = useAuth();
 	
 	const onFinish = async(values) => {
 		const {username,password}=values;
 		try{
 			await login(username,password);
-			Navigate("/homepage");
+			Navigate("/homepage/request");
 		}catch(error){
 			message.error(error.message);
 		}

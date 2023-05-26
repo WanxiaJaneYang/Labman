@@ -10,7 +10,7 @@ const userRouter = Router();
 //query users
 userRouter.get("/", getUser);
 userRouter.get("/:student_id", getUserByStudentID);
-userRouter.get("/:student_id/login", loginValidation);
+userRouter.post("/:student_id/login", loginValidation);
   
 //insert a new user/student
 userRouter.post("/", newUser);
