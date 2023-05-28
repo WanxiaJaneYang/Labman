@@ -10,10 +10,6 @@ const CoursePage = () => {
 
 	return (
 		<div 
-			style={{
-				marginTop:"20px",
-				marginBottom:"20px",
-			}}
 		>
 			<Row justify="start" style={{marginBottom:"0px"}}>
 				<Button type="primary" onClick={onClick}>View Request</Button>

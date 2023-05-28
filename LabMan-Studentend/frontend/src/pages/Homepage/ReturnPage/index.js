@@ -10,10 +10,7 @@ const ReturnPage = () => {
 	};
 
 	return (
-		<div style={{
-			marginTop:"20px",
-			marginBottom:"20px",
-		}}>
+		<div>
 			<Row justify="start" style={{marginBottom:"0px"}}>
 				<Button type="primary" onClick={onClick} >Show Returned Equipment</Button>
 			</Row>

@@ -10,6 +10,7 @@ import ViewRequestPage from "../pages/Homepage/ViewRequestPage";
 import EditRequestPage from "../pages/Homepage/EditRequestPage";
 import CancelRequestPage from "../pages/Homepage/CancelRequestPage";
 import ViewReturnedPage from "../pages/Homepage/ViewReturnedPage";
+import PrivateRoute from "./PrivateRoute";
 
 const routes = [
 	{
@@ -26,7 +27,7 @@ const routes = [
 	},
 	{
 		path:"/homepage",
-		element: <Homepage />,
+		element: <PrivateRoute><Homepage /></PrivateRoute>,
 		children: [
 			{
 				path: "request",

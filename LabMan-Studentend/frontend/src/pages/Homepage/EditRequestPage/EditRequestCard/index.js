@@ -41,7 +41,6 @@ const EditRequestCard = () => {
 	}, [request_id]);
 
 	useEffect(() => {
-		console.log(request);
 		if(request){
 			form.setFieldsValue({
 				borrow_amount: request.borrow_amount

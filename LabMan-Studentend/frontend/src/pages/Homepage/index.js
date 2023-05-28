@@ -1,14 +1,15 @@
 import React from "react";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme, Row } from "antd";
 import { Outlet } from "react-router";
 import "./style.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState} from "react";
+import { FormOutlined,FolderOpenOutlined,UserOutlined } from "@ant-design/icons";
 
-const { Footer, Content } = Layout;
+const { Header,Footer, Content } = Layout;
 
 const Homepage = () => {
-	const [selectedKey, setSelectedKey] = React.useState(window.location.pathname);
+	const [selectedKey, setSelectedKey] = useState(window.location.pathname);
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -21,14 +22,17 @@ const Homepage = () => {
 		{
 			key: "/homepage/request",
 			label: "Request",
+			icon:<FormOutlined />
 		},
 		{
 			key: "/homepage/return",
-			label: "Borrowing",
+			label: "Return",
+			icon:<FolderOpenOutlined />
 		},
 		{
 			key: "/homepage/announcement",
-			label: "Notice",
+			label: "User",
+			icon:<UserOutlined />
 		},
 	];
     
@@ -40,6 +44,16 @@ const Homepage = () => {
 
 	return (
 		<Layout className="layout" style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+			<Header style={{ padding: "0px 0px", display:"flex", height:"4%", backgroundColor:"Background" }}>
+				<Row style={
+					{
+						marginLeft: "auto",
+						marginRight: "80%",
+					}
+				}
+				justify="start"
+				/>
+			</Header>
 			<Content style={{ backgroundColor: colorBgContainer, flex: 1, overflow: "auto", padding:"20px"}}>
 				<Outlet/>
 			</Content>
@@ -53,7 +67,7 @@ const Homepage = () => {
 					}}
 					defaultSelectedKeys={["/homepage/request"]}
 					items={menuItems.map((item) => ({ ...item }))}
-					style={{ width: "100%", display: "flex", justifyContent: "space-around" }}
+					style={{ width: "100%",  justifyContent: "space-around" }}
 				/>
 			</Footer>
 		</Layout>
