@@ -1,10 +1,12 @@
 import { DatePicker, Form, Input, InputNumber } from "antd";
 import { useRequestRecordContext } from "../../../Context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
+import { getEquipmentByTypename} from "../../../../../../api/equipment";
 
 function ModifyRequestForm({ form}) {
-	const { modalData,searchStudentID, equipmentTypeList,selectedEquipmentType} = useRequestRecordContext();
+	const { modalData} = useRequestRecordContext();
+	const[type_name,setType_name]=useState();
 
 	useEffect(() => {
 		if (modalData) {
@@ -18,51 +20,32 @@ function ModifyRequestForm({ form}) {
 				type_id: modalData.type_id,
 				request_id: modalData.request_id,
 			});
+			setType_name(modalData.type_name);
 		} else {
 			form.resetFields();
 		}
 	}, [modalData, form]);
 
-	//when selected type change, update the type name value
-	useEffect(() => {
-		form.setFieldsValue({
-			type_name: selectedEquipmentType,
-		});
-	}, [selectedEquipmentType]);
-
-	const validateStudentID = async(_, value) => {
-		if (/^a\d{7}$/.test(value) ) {
-			const existed =await searchStudentID(value);
-			if(existed){
-				// setStudentExists(true);
-				return Promise.resolve("Student exists");
-			}else{
+	const validateAmount = async(_, value) => {
+		try{
+			const equipmentData=await getEquipmentByTypename(type_name);
+			const availableAmount=equipmentData[0].available_amount;
+			if(!availableAmount) return Promise.reject(new Error("Please select equipment type"));
+			if (value <= availableAmount) {
+				const upper_bound_amount=form.getFieldValue("upper_bound_amount");
+				if(value>upper_bound_amount){
+					return Promise.reject(
+						new Error(`Borrow Amount must be less than or equal to upper bound amount ${upper_bound_amount}`)
+					);
+				}
+				return Promise.resolve();
+			} else {
 				return Promise.reject(
-					new Error("Student ID does not exist")
+					new Error(`Borrow Amount must be less than or equal to available amount ${availableAmount}`)
 				);
 			}
-		} else {
-			return Promise.reject(
-				new Error("Student ID must start with 'a' and followed by 7 digits")
-			);
-		}
-	};
-
-	const validateAmount = (_, value) => {
-		const availableAmount = equipmentTypeList.find((type)=>type.type_name===selectedEquipmentType)?.available_amount;
-		if(!availableAmount) return Promise.reject(new Error("Please select equipment type"));
-		if (value <= availableAmount) {
-			const upper_bound_amount=form.getFieldValue("upper_bound_amount");
-			if(value>upper_bound_amount){
-				return Promise.reject(
-					new Error(`Borrow Amount must be less than or equal to upper bound amount ${upper_bound_amount}`)
-				);
-			}
-			return Promise.resolve();
-		} else {
-			return Promise.reject(
-				new Error(`Borrow Amount must be less than or equal to available amount ${availableAmount}`)
-			);
+		}catch(err){
+			return Promise.reject(new Error("Please select equipment type"));
 		}
 	};
 
@@ -85,14 +68,13 @@ function ModifyRequestForm({ form}) {
 				name="student_id" 
 				rules={[
 					{ required: true },
-					{ validator: validateStudentID },
 				]}>
 				<Input 
 					disabled={true}
 				/>
 			</Form.Item>
 			<Form.Item 
-				label="Borrow Amount" 
+				label={type_name+" Borrow Amount" }
 				name="borrow_amount" 
 				rules={[
 					{ required: true },
@@ -107,7 +89,9 @@ function ModifyRequestForm({ form}) {
 					allowClear={true}
 				/>
 			</Form.Item>
-			<Form.Item name={"upper_bound_amount"} hidden/>
+			<Form.Item name={"upper_bound_amount"} >
+				<Input style={{display:"none"}}/>
+			</Form.Item>
 		</Form>
 	);
 
