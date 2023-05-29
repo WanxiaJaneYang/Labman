@@ -8,7 +8,6 @@ import { getStudentById } from "../../../../../../api/student";
 function NewRequestRecordForm({ form }) {
 	const[courseList, setCourseList] = useState([]);
 	const[packageList, setPackageList] = useState([]);
-	const [equipmentList, setEquipmentList] = useState([]);
 	const course_id=Form.useWatch("course_id", form);
 	const package_id=Form.useWatch("package_id", form);
 
@@ -45,7 +44,6 @@ function NewRequestRecordForm({ form }) {
 			form.setFieldsValue({
 				"request_items": response
 			});
-			setEquipmentList(response);
 		}catch(error){
 			if(error.response.status===404){
 				message.error("Package includes no equipment!");
@@ -92,14 +90,6 @@ function NewRequestRecordForm({ form }) {
 				new Error("Student ID must start with 'a' and followed by 7 digits")
 			);
 		}
-	};
-
-	const getUpperLimit = (type_name) => {
-		equipmentList.forEach((equipment) => {
-			if(equipment.type_name===type_name){
-				return equipment.upper_bound_amount;
-			}
-		});
 	};
 
 	return (
@@ -162,10 +152,25 @@ function NewRequestRecordForm({ form }) {
 										label={form.getFieldValue(["request_items", key, "type_name"])+" Amount"}
 										name={[name, "borrow_amount"]}
 										key={"request_amount"+key}
+										rules={[
+											{ required: true },
+											{ validator: (_, value) => {
+												const upper_bound_amount=form.getFieldValue(["request_items", key, "upper_bound_amount"]);
+												if(value>upper_bound_amount){
+													return Promise.reject(
+														new Error("Amount exceeds upper bound("+upper_bound_amount+")!")
+													);
+												}else if(value<=0){
+													return Promise.reject(
+														new Error("Amount must be positive!")
+													);
+												}else{
+													return Promise.resolve();
+												}
+											}},
+										]}
 									>
-										<InputNumber type="number" min={1} max={
-											getUpperLimit(form.getFieldValue(["request_items", key, "type_name"]))
-										}/>
+										<InputNumber />
 									</Form.Item>
 									<Form.Item 
 										{...restField}
