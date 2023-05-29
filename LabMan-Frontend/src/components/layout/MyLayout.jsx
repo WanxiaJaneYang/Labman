@@ -33,7 +33,9 @@ const MyLayout = ({ children, menuItems }) => {
 					console.log(collapsed, type);
 				}}
 			>
-				<div className="logo" />
+				<div className="logo">
+					<h3>LabMan</h3>
+				</div>
 				<Menu
 					theme="dark"
 					mode="inline"
