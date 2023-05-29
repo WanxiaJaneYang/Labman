@@ -5,9 +5,9 @@ import moment from "moment";
 
 async function newTypeInPackage(req, res) {
 	try {
-	const { package_id, type_id } = req.params;
-    const { type_name, upper_bound_amount } = req.body;
-	const add_time = moment().format("YYYY-MM-DD HH:mm:ss");
+		const { package_id, type_id } = req.params;
+		const { type_name, upper_bound_amount } = req.body;
+		const add_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
 		await checkTypeInPackageDuplicate(pool, package_id, type_id);
 		const query = "INSERT INTO type_package (package_id, type_id,type_name, upper_bound_amount,last_edit_time ) VALUES (?, ?,?,?,?)";
@@ -25,4 +25,3 @@ async function newTypeInPackage(req, res) {
 }
 
 export { newTypeInPackage };
-

@@ -29,7 +29,6 @@ courseRouter.delete("/:course_id/student/:student_id", deleteEnrollment);
 courseRouter.get("/student/:student_id", getEnrollbyStudentId);
 courseRouter.get("/:course_id/student/:student_id", getEnrollment);
 
-
 courseRouter.get("/:course_id/package", getPackageByCourse);
 courseRouter.post("/:course_id/package",newPackage);
 courseRouter.delete("/package/:package_id", deletePackage);

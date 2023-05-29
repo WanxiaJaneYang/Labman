@@ -14,7 +14,6 @@ async function cancelRequest(req,res) {
 		const { request_id } = req.params; 
 		const { cancel_reason } = req.body; 
 
-
 		const requestRecord = await getRequestById(pool, request_id);
 		await statusIsNew(pool,request_id);
 

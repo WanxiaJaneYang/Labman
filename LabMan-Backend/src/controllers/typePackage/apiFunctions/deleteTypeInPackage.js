@@ -7,7 +7,7 @@ async function deleteTypeInPackage(req, res) {
 	try {
 		const { package_id, type_id } = req.params;
 		await checkPackageExists(pool, package_id);
-        await checkTypeExistsInPackage(pool, package_id,type_id);
+		await checkTypeExistsInPackage(pool, package_id,type_id);
 		const query = "DELETE FROM type_package WHERE type_id = ? ";
 		await pool.query(query, type_id);
 

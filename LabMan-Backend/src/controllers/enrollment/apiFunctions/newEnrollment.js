@@ -29,4 +29,3 @@ async function newEnrollment(req, res) {
 
 // For recall module
 export { newEnrollment };
-

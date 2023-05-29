@@ -5,7 +5,7 @@ import { userRouter } from "./userRouter.js";
 import { eqpmtRouter } from "./eqpmtRouter.js";
 import { logRouter } from "./logRouter.js";
 import { returnRouter } from "./returnRouter.js";
-import {typePackageRouter} from "./typePackageRouter.js"
+import {typePackageRouter} from "./typePackageRouter.js";
 import { courseRouter } from "./courseRouter.js";
 import { announceRouter } from "./announceRouter.js";
 
