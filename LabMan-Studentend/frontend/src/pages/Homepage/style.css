@@ -1,15 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800;900;1000&display=swap');
+
 .site-layout-content {
-    min-height: 280px;
-    padding: 24px;
-  }
-  #components-layout-demo-top .logo {
-    float: left;
-    width: 120px;
-    height: 31px;
-    margin: 16px 24px 16px 0;
-    background: rgba(255, 255, 255, 0.3);
-  }
-  .ant-row-rtl #components-layout-demo-top .logo {
-    float: right;
-    margin: 16px 0 16px 24px;
-  }
+  min-height: 280px;
+  padding: 24px;
+}
+
+#components-layout-demo-top .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+
+.layout-header {
+  padding: 0 0;
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  color: #fff;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 900;
+}
+
+.my-menu.ant-menu-horizontal > .ant-menu-item,
+.my-menu.ant-menu-horizontal > .ant-menu-submenu {
+  flex: 1;
+}
+
