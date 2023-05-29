@@ -92,11 +92,10 @@ const AddStudentForm = ({form}) => {
 													message.success(`${info.file.name} file uploaded successfully`);
 													Papa.parse(info.file.originFileObj, {
 														complete: function(results) {
-															const student_id = results.data.map((row) => {
-																if (/^a\d{7}$/.test(row[0]) ) {
-																	return row[0];
-																}
-															});
+															const student_id = results.data
+																.filter((row) => /^a\d{7}$/.test(row[0]))
+																.map((row) => row[0]);
+
 															form.setFieldsValue({student_id});
 															
 														}
