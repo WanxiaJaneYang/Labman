@@ -61,6 +61,8 @@ const ReturnedRecordProvider = ({ children }) => {
 			await Promise.all(selectedRows.map(async(row) => {
 				await cancelReturnedRecord(row.borrow_id, row.returned_amount);
 			}));
+			//await for another time
+			await sleep(1000);
 			message.success("Cancel returned record successfully");
 		}catch(error){
 			message.error(error.message);
@@ -69,10 +71,15 @@ const ReturnedRecordProvider = ({ children }) => {
 		}
 	};
 
+	const sleep=(ms) => {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	};
+
 	const onCancelReturn=async (values) => {
 		const {borrow_id, return_amount} = values;
 		try{
 			await cancelReturnedRecord(borrow_id, return_amount);
+			await sleep(1000);
 			message.success("Cancel returned record successfully");
 		}catch(error){
 			message.error(error.message);

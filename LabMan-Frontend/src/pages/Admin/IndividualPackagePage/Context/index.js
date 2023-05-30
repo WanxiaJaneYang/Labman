@@ -28,9 +28,7 @@ const PackageDetailProvider = ({ children, package_id }) => {
 			const data = await getPackageById(package_id);
 			setData(data);
 		}catch(error){
-			if(error.response.status !== 404){
-				message.error(error.message);
-			}
+			message.error(error.message);
 		}		
 		setLoading(false);
 	};

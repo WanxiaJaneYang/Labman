@@ -1,32 +1,48 @@
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Button, Modal, message } from "antd";
 import { useReturnRecordContext } from "../../../ReturnRecordContext";
-
-const { confirm } = Modal;
+import { useState } from "react";
 
 const ReturnEquipment = () => {
 	const {selectedRows, onReturnAllEquipment}= useReturnRecordContext();
+	const [open, setOpen] = useState(false);
+	const[loading, setLoading] = useState(false);
 
 	const onClick = () => {
 		if (selectedRows && selectedRows.length >0) {
-			showConfirm();
+			setOpen(true);
 		} else {
 			message.error("Please select at least one record to return");
 		}
 	};
 
-	const showConfirm = () => {
-		confirm({
-			title: "Do you record these as all returned?",
-			icon: <ExclamationCircleFilled />,
-			onOk() {
-				onReturnAllEquipment();
-			}
-		});
+	const onCancel = () => {
+		setOpen(false);
+	};
+
+	const onOk = async() => {
+		setLoading(true);
+		await onReturnAllEquipment();
+		setLoading(false);
+		onCancel();
 	};
 
 	return (
-		<Button type='primary' onClick={onClick}>Return All</Button>
+		<>
+			<Button type='primary' onClick={onClick}>Return All</Button>
+			<Modal 
+				title={<><ExclamationCircleFilled 
+					style={{color: "#faad14", marginRight: "10px"}}
+				/>{" Return All Equipment"}</>}
+				icon={<ExclamationCircleFilled />}
+				open={open}
+				onCancel={onCancel}
+				onOk={onOk}
+				confirmLoading={loading}
+			>
+				{"Are you sure to return all equipment?"}
+			</Modal>
+		</>
 	);
 };
 
