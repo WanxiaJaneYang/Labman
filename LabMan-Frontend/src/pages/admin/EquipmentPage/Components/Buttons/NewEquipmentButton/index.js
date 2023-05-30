@@ -15,6 +15,7 @@ const NewEquipmentButton = () => {
 	};
 
 	const hideModal = () => {
+		form.resetFields();
 		setIsModalOpen(false);
 	};
 
