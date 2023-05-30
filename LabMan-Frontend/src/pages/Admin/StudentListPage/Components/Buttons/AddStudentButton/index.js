@@ -17,9 +17,8 @@ const AddStudentButton = () => {
 	};
 
 	const handleOk = async () =>{
-		const data=await form.validateFields();
-		console.log( "form submitting", data);
 		setConfirmLoading(true);
+		const data=await form.validateFields();
 		await onAdd(data);
 		setConfirmLoading(false);
 		hideModal();
