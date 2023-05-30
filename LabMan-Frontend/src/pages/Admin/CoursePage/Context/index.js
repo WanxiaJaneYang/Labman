@@ -27,6 +27,7 @@ const CourseProvider = ({ children }) => {
 		await getAllCourses().then((data) => {
 			setData(data);
 		}).catch((err) => {
+			setData([]);
 			message.error(err.message);
 		});
 		setLoading(false);
