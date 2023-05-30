@@ -9,7 +9,7 @@ export const getAllCourses = async () => {
 		return response.data;
 	}catch(error){
 		if(error.response && error.response.status === 404){
-			throw new Error("No courses found");
+			return [];
 		}else if(error.response){
 			throw new Error(error.response.data.error);
 		}else{

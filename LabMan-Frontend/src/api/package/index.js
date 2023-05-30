@@ -56,7 +56,12 @@ export const getPackageById = async ( package_id) => {
 		}
 	}catch(error){
 		if(error.response){
-			throw new Error(error.response.data.error);
+			if(error.response.status === 404){
+				return [];
+			}
+			else{
+				throw new Error(error.response.data.error);
+			}
 		}else{
 			throw new Error(error.message);
 		}
