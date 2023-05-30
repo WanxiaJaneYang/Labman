@@ -45,7 +45,7 @@ function ModifyRequestForm({ form}) {
 				);
 			}
 		}catch(err){
-			return Promise.reject(new Error("Please select equipment type"));
+			return Promise.reject(new Error(err.message||"unknown error"));
 		}
 	};
 
