@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }) => {
 	const location = useLocation();
 
 	useEffect(() => {
-		console.log("PrivateRoute: is authentificated:", isAuthenticated);
+		// console.log("PrivateRoute: is authentificated:", isAuthenticated);
 		if (!isAuthenticated) {
 			navigate("/login", { state: { from: location } });
 		}
