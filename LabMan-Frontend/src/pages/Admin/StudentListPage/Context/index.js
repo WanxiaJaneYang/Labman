@@ -27,11 +27,8 @@ const StudentListProvider = ({ children, course_id }) => {
 		getStudentList(course_id).then((data) => {
 			setData(data);
 		}).catch((error) => {
-			if (error.response.status === 404) {
-				setData([]);
-			}else{
-				message.error(error.response.error);
-			}
+			setData([]);
+			message.error(error.response.error);
 		});
 		setLoading(false);
 	};
@@ -47,23 +44,26 @@ const StudentListProvider = ({ children, course_id }) => {
 	};
 
 	const onAdd = async (values) => {
-		postStudents(course_id, values).then(() => {
+		try{
+			await postStudents(course_id, values);
+			await fetchData();
 			message.success("Add student successfully");
-			fetchData();
-		}).catch((error) => {
+		}catch(error){
 			message.error(error.message);
-		});
+		}
 	};
 
 	const onDelete = async () => {
-		Promise.all(selectedRows.map(async(row) => {
-			await deleteStudent(course_id, row.student_id);
-		})).then(() => {
+		try{
+			await Promise.all(selectedRows.map(async(row) => {
+				await deleteStudent(course_id, row.student_id);
+			}
+			));
 			message.success("Delete student successfully");
 			fetchData();
-		}).catch((error) => {
+		}catch(error){
 			message.error(error.message);
-		});
+		}
 	};
 	
 	return (

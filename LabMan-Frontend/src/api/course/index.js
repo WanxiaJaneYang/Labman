@@ -8,7 +8,9 @@ export const getAllCourses = async () => {
 		const response = await axios.get(API_URL_COURSE);
 		return response.data;
 	}catch(error){
-		if(error.response){
+		if(error.response && error.response.status === 404){
+			throw new Error("No courses found");
+		}else if(error.response){
 			throw new Error(error.response.data.error);
 		}else{
 			throw new Error(error.message);

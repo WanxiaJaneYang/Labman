@@ -11,7 +11,7 @@ async function getCourse(req, res) {
 		const [results] = await pool.query("SELECT * FROM course");
 		//404 not found
 		if (results.length === 0) {
-			res.status(404).json({ error: errorMessages.COURSE_NOT_FOUND });
+			return res.status(404).json({ error: errorMessages.COURSE_NOT_FOUND });
 		}
 
 		return res.status(200).json(results);
@@ -43,32 +43,32 @@ async function getCourseById(req, res) {
 async function getFilteredCourse(req, res) {
 	try {
 		const { course_id, course_name, coordinator_name } = req.query;
-
+  
 		let sql = "SELECT * FROM course";
-
+  
 		// Add WHERE clauses based on the query parameters
 		const whereClauses = [];
 		const params = [];
-
+  
 		if (course_id) {
 			whereClauses.push("course_id LIKE ?");
 			params.push(`%${course_id}%`);
 		}
-
+  
 		if (course_name) {
 			whereClauses.push("course_name LIKE ?");
 			params.push(`%${course_name}%`);
 		}
-
+  
 		if (coordinator_name) {
 			whereClauses.push("coordinator_name LIKE ?");
 			params.push(`%${coordinator_name}%`);
 		}
-
+  
 		if (whereClauses.length > 0) {
 			sql += " WHERE " + whereClauses.join(" AND ");
 		}
-
+  
 		// Add ORDER BY clause to sort by edit_time
 		sql += " ORDER BY last_edit_time ASC";
 
@@ -89,5 +89,5 @@ async function getFilteredCourse(req, res) {
 		return res.status(500).json({ error: "Internal error: " + error.message });
 	}
 }
-
+  
 export { getCourse, getFilteredCourse, getCourseById };
