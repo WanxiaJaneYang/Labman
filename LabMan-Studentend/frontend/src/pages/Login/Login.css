@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700;800;900;1000&display=swap');
+
 .login-form {
-    max-width: 400px;
+    width: 320px;
 }
 .login-form-forgot {
     float: right;
@@ -11,3 +13,8 @@
 .login-form-button {
     width: 100%;
 }
+
+.labman-title {
+    font-family: 'Nunito Sans', sans-serif;
+}
+  

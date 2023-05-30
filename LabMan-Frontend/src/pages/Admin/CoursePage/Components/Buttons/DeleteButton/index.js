@@ -1,14 +1,14 @@
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { Button, Modal,message } from "antd";
-import {useCourseContext} from "../../../Context";
+import { Button, Modal, message } from "antd";
+import { useCourseContext } from "../../../Context";
 import { useState } from "react";
 
-const DeleteButton=()=>{
-	const {onDelete, selectedRows}=useCourseContext();
+const DeleteButton = () => {
+	const { onDelete, selectedRows } = useCourseContext();
 	const [visible, setVisible] = useState(false);
 	const [confirmLoading, setConfirmLoading] = useState(false);
 
-	const onClick=()=>{
+	const onClick = () => {
 		if (selectedRows && selectedRows.length > 0) {
 			console.log("selectedRows:", selectedRows);
 			setVisible(true);
@@ -17,16 +17,17 @@ const DeleteButton=()=>{
 		}
 	};
 
-	const onOk=async ()=>{
+	const onOk = async () => {
 		setConfirmLoading(true);
 		await onDelete();
 		setConfirmLoading(false);
 		setVisible(false);
 	};
 
-	return(
+	return (
 		<>
-			<Button 
+			<Button
+				type="primary"
 				danger
 				onClick={onClick}
 			>Delete</Button>
@@ -36,7 +37,7 @@ const DeleteButton=()=>{
 				open={visible}
 				onOk={onOk}
 				confirmLoading={confirmLoading}
-				onCancel={()=>setVisible(false)}
+				onCancel={() => setVisible(false)}
 			/>
 		</>
 	);

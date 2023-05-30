@@ -1,12 +1,12 @@
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { Button, Modal,message } from "antd";
+import { Button, Modal, message } from "antd";
 import { useEquipmentContext } from "../../../Context";
 const { confirm } = Modal;
 
 function DeleteEquipmentButton() {
 	const [messageApi, contextHolder] = message.useMessage();
 
-	const{selectedRows, onDelete}=useEquipmentContext();
+	const { selectedRows, onDelete } = useEquipmentContext();
 
 	const handleDelete = () => {
 		if (selectedRows) {
@@ -33,10 +33,10 @@ function DeleteEquipmentButton() {
 		<>
 			{contextHolder}
 			<Button type="primary" danger onClick={handleDelete}>
-            Delete
+				Delete
 			</Button>
 		</>
-		
+
 	);
 }
 
