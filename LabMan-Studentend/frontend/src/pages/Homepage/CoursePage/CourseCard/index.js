@@ -1,4 +1,4 @@
-import { Card, Descriptions, Divider, Space, message, Empty } from "antd";
+import { Card, Descriptions, Space, message, Empty } from "antd";
 import { useEffect, useState } from "react";
 import { getCourseListByStudentId } from "../../../../api/course";
 import { getID } from "../../../../utils";
@@ -36,7 +36,7 @@ const CourseCards = () => {
 		<>
 			{courseList.map((course) => {
 				return (
-					<div key={course.course_id}>
+					<div key={course.course_id} style={{ margin: "10px 0" }}>
 						<Card key={course.course_id}
 							type="inner"
 							title={course.course_id}
@@ -55,7 +55,6 @@ const CourseCards = () => {
 								<Descriptions.Item label="Due Date">{formatDate(course.due_date)}</Descriptions.Item>
 							</Descriptions>
 						</Card>
-						<Divider key={course.course_id + "divider"} />
 					</div>
 
 				);
