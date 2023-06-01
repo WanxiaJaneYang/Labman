@@ -27,8 +27,8 @@ const DeletePackageButton = () => {
 			<Button type="primary" danger 
 				onClick={onClick}
 			>Delete Package</Button>
-			<Modal title="Delete Package"
-				content="Are you sure you want to delete the selected packages?"
+			<Modal title="Are you sure you want to delete the selected packages?"
+				content="This action cannot be undone."
 				open={open}
 				confirmLoading={loading}
 				onOk={handleOk}
