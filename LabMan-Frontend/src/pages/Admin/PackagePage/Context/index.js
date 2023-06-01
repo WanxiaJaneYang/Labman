@@ -48,7 +48,7 @@ const PackageProvider = ({ children, course_id }) => {
 	const onDelete = async () => {
 		setLoading(true);
 		Promise.all(selectedRows.map(async(row) => {
-			await deletePackage(course_id, row.package_id);
+			await deletePackage(row.package_id);
 		})).then(() => {
 			message.success("Delete package successfully");
 			fetchData();

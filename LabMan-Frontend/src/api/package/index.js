@@ -12,16 +12,20 @@ export const getPackages = async (course_id) => {
 		}
 	}catch(error){
 		if(error.response){
-			throw new Error(error.response.data.error);
+			if(error.response.status === 404){
+				return [];
+			}else{
+				throw new Error(error.response.data.error);
+			}
 		}else{
 			throw new Error(error.message);
 		}
 	}
 };
 
-export const deletePackage = async (course_id, package_id) => {
+export const deletePackage = async ( package_id) => {
 	try{
-		const response = await axios.delete(API_URL_COURSE+"/"+course_id+"/package/"+package_id);
+		const response = await axios.delete(API_URL_COURSE+"/package/"+package_id);
 		if(response.status === 200){
 			return;
 		}}catch(error){

@@ -18,10 +18,14 @@ const AddStudentButton = () => {
 
 	const handleOk = async () =>{
 		setConfirmLoading(true);
-		const data=await form.validateFields();
-		await onAdd(data);
+		try{
+			const data=await form.validateFields();
+			await onAdd(data);
+			hideModal();
+		}catch(err){
+			console.log(err);
+		}
 		setConfirmLoading(false);
-		hideModal();
 	};
 
 	return (
