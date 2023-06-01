@@ -31,7 +31,7 @@ const RequestCard = () => {
 			<div>
 				{requestList.map((request) => {
 					return (
-						<React.Fragment key={request.request_id + "parent"}>
+						<div key={request.request_id + "parent"} style={{ margin: "10px 0" }}>
 							<Card key={request.request_id + "card"}
 								type="inner"
 								title={request.type_name}
@@ -42,12 +42,12 @@ const RequestCard = () => {
 											() => {
 												navigate("/homepage/request/edit-request/" + request.request_id);
 											}
-										}>edit</a>
+										}>Edit</a>
 										<a onClick={
 											() => {
 												navigate("/homepage/request/cancel-request/" + request.request_id);
 											}
-										}>cancel</a>
+										}>Cancel</a>
 									</Space>
 								}
 							>
@@ -55,7 +55,7 @@ const RequestCard = () => {
 								<p>Due Date:{formatDate(request.return_date)}</p>
 								<p>Borrow Amount :{request.borrow_amount}</p>
 							</Card>
-						</React.Fragment>
+						</div>
 					);
 				}
 				)}
