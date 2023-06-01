@@ -52,8 +52,8 @@ const RequestCard = () => {
 								}
 							>
 								<p>Request Date: {formatDate(request.request_time)}</p>
-								<p>Borrow Amount :{request.borrow_amount}</p>
 								<p>Due Date:{formatDate(request.return_date)}</p>
+								<p>Borrow Amount :{request.borrow_amount}</p>
 							</Card>
 						</React.Fragment>
 					);
