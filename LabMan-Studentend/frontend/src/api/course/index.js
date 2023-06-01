@@ -5,7 +5,12 @@ const API_URL_COURSE = API_URL + "/course";
 const API_URL_STUDENT = API_URL + "/course/student/";
 
 export const getCourseListByStudentId = async (student_id) => {
-	await axios.get(API_URL_STUDENT + student_id);
+	const response = await axios.get(API_URL_STUDENT + student_id);
+	if (response.status === 200) {
+		return response.data;
+	} else {
+		throw new Error(response.statusText);
+	}
 };
 
 export const getCoursePackageListByCourseId = async (course_id) => {

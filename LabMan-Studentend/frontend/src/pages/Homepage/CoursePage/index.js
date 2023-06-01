@@ -1,21 +1,25 @@
 import CourseCards from "./CourseCard";
-import { Button, Divider, Row } from "antd";
-import { useNavigate } from "react-router";
+import { Radio, Row } from "antd";
+import { useState } from "react";
+import ViewRequestPage from "../ViewRequestPage";
 
 const CoursePage = () => {
-	const navigate = useNavigate();
-	const onClick = () => {
-		navigate("/homepage/request/view");
+	const [activePage, setActivePage] = useState("viewRequest");
+
+	const onRadioChange = (e) => {
+		setActivePage(e.target.value);
 	};
 
 	return (
-		<div
-		>
-			<Row justify="start" style={{ marginBottom: "0px" }}>
-				<Button type="primary" onClick={onClick}>View Request</Button>
+		<div>
+			<Row justify="center" style={{ margin: "10px 0 20px 0" }}>
+				<Radio.Group onChange={onRadioChange} defaultValue={activePage}>
+					<Radio.Button value="viewRequest" >View Request</Radio.Button>
+					<Radio.Button value="makeRequest" >Make Request</Radio.Button>
+				</Radio.Group>
 			</Row>
-			<Divider style={{ marginTop: "10px" }} />
-			<CourseCards />
+			{activePage === "makeRequest" && <CourseCards />}
+			{activePage === "viewRequest" && <ViewRequestPage />}
 		</div>
 	);
 };

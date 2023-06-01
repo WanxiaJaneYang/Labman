@@ -1,16 +1,12 @@
-import React from "react";
-import { Layout, Menu, theme } from "antd";
-import { Outlet } from "react-router";
+import React, { useEffect, useState } from "react";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { AppBar } from "@mui/material";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
+import TaskIcon from "@mui/icons-material/Task";
+import PersonIcon from "@mui/icons-material/Person";
 import "./style.css";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-	FormOutlined,
-	FolderOpenOutlined,
-	UserOutlined,
-} from "@ant-design/icons";
-
-const { Header, Footer, Content } = Layout;
 
 const Homepage = () => {
 	const [selectedKey, setSelectedKey] = useState(window.location.pathname);
@@ -26,63 +22,52 @@ const Homepage = () => {
 		{
 			key: "/homepage/request",
 			label: "Request",
-			icon: <FormOutlined />,
+			icon: <SaveAsIcon />,
 		},
 		{
 			key: "/homepage/return",
 			label: "Return",
-			icon: <FolderOpenOutlined />,
+			icon: <TaskIcon />,
 		},
 		{
 			key: "/homepage/announcement",
 			label: "User",
-			icon: <UserOutlined />,
+			icon: <PersonIcon />,
 		},
 	];
-
-	const {
-		token: { colorBgContainer },
-	} = theme.useToken();
 
 	useEffect(() => {
 		setSelectedKey(getFirstTwoPathSegments(location.pathname));
 	}, [location]);
 
 	return (
-		<Layout
-			className="layout"
-			style={{ display: "flex", flexDirection: "column", height: "100vh" }}
-		>
-			<Header
-				className="layout-header"
-			>
-				LabMan
-			</Header>
-			<Content
-				style={{
-					backgroundColor: colorBgContainer,
-					flex: 1,
-					overflow: "auto",
-					padding: "10px",
-				}}
-			>
+		<div className="root" style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+			<AppBar position="static" className="app-bar" style={{ backgroundColor: "#001529" }}>
+				<h3 className="title">
+					LabMan
+				</h3>
+			</AppBar>
+			<main style={{ flex: 1, overflow: "auto", padding: "10px" }}>
 				<Outlet />
-			</Content>
-			<Footer style={{ padding: "0px 0px" }}>
-				<Menu
-					className="my-menu"
-					theme="dark"
-					mode="horizontal"
-					selectedKeys={[selectedKey]}
-					onClick={({ key }) => {
-						navigate(key);
-					}}
-					defaultSelectedKeys={["/homepage/request"]}
-					items={menuItems.map((item) => ({ ...item }))}
-					style={{ width: "100%" }}
-				/>
-			</Footer>
-		</Layout>
+			</main>
+			<BottomNavigation
+				value={selectedKey}
+				onChange={(event, newValue) => {
+					navigate(newValue);
+					setSelectedKey(newValue);
+				}}
+				showLabels
+			>
+				{menuItems.map((item) => (
+					<BottomNavigationAction
+						key={item.key}
+						value={item.key}
+						label={item.label}
+						icon={item.icon}
+					/>
+				))}
+			</BottomNavigation>
+		</div>
 	);
 };
 
