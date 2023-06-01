@@ -67,6 +67,7 @@ const RequestForm = ({ setLoading }) => {
 					"type_id": item.type_id,
 					"type_name": item.type_name,
 					"borrow_amount": item.borrow_amount,
+					"upper_bound_amount": item.upper_bound_amount,
 				};
 				await postRequest(request_values);
 			}));

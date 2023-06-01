@@ -17,10 +17,8 @@ const EditRequestCard = () => {
 	const getRequest = async () => {
 		try {
 			const response = await getRequestListByStudentId();
-			const data = response.find((request) => String(request.request_id) === request_id);
-			setRequest({
-				...data,
-			});
+			const data = await response.find((request) => String(request.request_id) === request_id);
+			setRequest(data);
 		} catch (error) {
 			message.error(error.message);
 		}
