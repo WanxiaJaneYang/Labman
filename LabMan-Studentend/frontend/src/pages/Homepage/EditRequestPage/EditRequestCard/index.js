@@ -55,20 +55,23 @@ const EditRequestCard = () => {
 		return Promise.resolve();
 	};
 
+
 	const onSubmit = async () => {
 		setLoading(true);
-		const values = await form.validateFields();
-		const requestForm = {
-			...request,
-			borrow_amount: values.borrow_amount,
-			return_date: formatDate(request.return_date),
-		};
 		try {
+			const values = await form.validateFields();
+			const requestForm = {
+				...request,
+				borrow_amount: values.borrow_amount,
+				return_date: formatDate(request.return_date),
+			};
 			await putRequest(request.request_id, requestForm);
 			message.success("Request edited successfully");
-			navigate("/homepage/request/view");
+			navigate("/homepage/request");
 		} catch (error) {
-			message.error(error.message);
+			if (error.message) {
+				message.error(error.message);
+			}
 		}
 		setLoading(false);
 	};
@@ -94,10 +97,10 @@ const EditRequestCard = () => {
 							value={request.borrow_amount}
 						/>
 					</Form.Item>
+					<Button type="primary" htmlType="submit" onClick={onSubmit}>
+						Submit
+					</Button>
 				</Form>
-				<Button type="primary" htmlType="submit" onClick={onSubmit}>
-					Submit
-				</Button>
 			</Spin>
 		</Card>
 	);

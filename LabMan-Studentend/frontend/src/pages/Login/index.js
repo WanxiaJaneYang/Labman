@@ -42,7 +42,7 @@ const Login = () => {
 						onFinish={onFinish}
 						style={{ backgroundColor: "white", padding: "20px", borderRadius: "8px" }}
 					>
-						<Typography.Title level={1} className="labman-title" style={{ color: "#1890ff", fontWeight: 900, fontSize: 60 }}>
+						<Typography.Title level={1} className="labman-title" style={{ color: "#1890ff", fontWeight: 900, fontSize: 60, textAlign: "center" }}>
 							LabMan
 						</Typography.Title>
 
