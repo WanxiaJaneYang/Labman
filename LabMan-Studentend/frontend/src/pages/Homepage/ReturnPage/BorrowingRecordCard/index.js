@@ -1,4 +1,4 @@
-import { Card, Divider, Empty, message } from "antd";
+import { Card, Empty, message } from "antd";
 import { formatDate } from "../../../../utils/date";
 import { getBorrowRecordByStudentId } from "../../../../api/borrow";
 import { useEffect, useState } from "react";
@@ -10,8 +10,8 @@ const BorrowingRecordCard = () => {
 		try {
 			const response = await getBorrowRecordByStudentId();
 			setBorrowRecordList(response);
-		} catch (error) {            
-			message.error(error.message);           
+		} catch (error) {
+			message.error(error.message);
 		}
 	};
 
@@ -19,22 +19,21 @@ const BorrowingRecordCard = () => {
 		getBorrowRecords();
 	}, []);
 
-	return(
+	return (
 		<>
 			{borrowRecordList.map((borrowRecord) => {
-				return(
-					<React.Fragment key={borrowRecord.borrow_id}>
+				return (
+					<div key={borrowRecord.borrow_id} style={{ margin: "10px 0" }}>
 						<Card key={borrowRecord.borrow_id}
 							type="inner"
 							title={borrowRecord.type_name}
-							style={{ width: "auto"}}
+							style={{ width: "auto" }}
 						>
 							<p>Borrow Date: {formatDate(borrowRecord.borrow_date)}</p>
-							<p>Borrow Amount: {borrowRecord.borrow_amount}</p>
 							<p>Due Date: {formatDate(borrowRecord.return_date)}</p>
+							<p>Borrow Amount: {borrowRecord.borrow_amount}</p>
 						</Card>
-						<Divider/>
-					</React.Fragment>
+					</div>
 				);
 			})}
 			{borrowRecordList.length === 0 && <Empty

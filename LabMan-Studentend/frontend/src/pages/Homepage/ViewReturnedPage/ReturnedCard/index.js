@@ -1,4 +1,4 @@
-import {Card, message, Divider, Empty} from "antd";
+import { Card, message, Empty } from "antd";
 import { getReturnedRecord } from "../../../../api/borrow";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../../../utils/date";
@@ -17,34 +17,31 @@ const ReturnedCard = () => {
 
 	useEffect(() => {
 		getReturnedRecords();
-	}
-	, []);
+	}, []);
 
-	return(
+	return (
 		<>
 			{returnedRecordList.map((returnedRecord) => {
-				return(
-					<React.Fragment key={returnedRecord.borrow_id}>
-						<Card key={returnedRecord.borrow_id}
+				return (
+					<div key={returnedRecord.borrow_id} style={{ margin: "10px 0" }}>
+						<Card
+							key={returnedRecord.borrow_id}
 							type="inner"
 							title={returnedRecord.type_name}
-							style={{ width: "300px", margin: "auto" }}
+							style={{ width: "auto" }}
 						>
 							<p>Borrow Date: {formatDate(returnedRecord.borrow_date)}</p>
+							<p>
+								Return Date: {formatDate(returnedRecord.actual_return_date)}
+							</p>
 							<p>Borrow Amount: {returnedRecord.borrow_amount}</p>
-							<p>Return Date: {formatDate(returnedRecord.actual_return_date)}</p>
 						</Card>
-						<Divider/>
-					</React.Fragment>
+					</div>
 				);
 			})}
-			{returnedRecordList.length === 0 && <Empty
-				description={
-					<span>
-                        No returned record found
-					</span>
-				}
-			/>}
+			{returnedRecordList.length === 0 && (
+				<Empty description={<span>No returned record found</span>} />
+			)}
 		</>
 	);
 };

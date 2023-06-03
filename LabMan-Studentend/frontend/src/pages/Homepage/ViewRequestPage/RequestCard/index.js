@@ -1,8 +1,8 @@
-import { Card, Divider, Empty, message, Space } from "antd";
+import { Card, Empty, message, Space } from "antd";
 import { getRequestListByStudentId } from "../../../../api/request";
 import { useEffect, useState } from "react";
 import { formatDate } from "../../../../utils/date";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React from "react";
 
 const RequestCard = () => {
@@ -16,7 +16,7 @@ const RequestCard = () => {
 		} catch (error) {
 			if (error.response && error.response.status === 404) {
 				message.info("No requests found");
-			}else{
+			} else {
 				message.error(error.message);
 			}
 		}
@@ -26,37 +26,36 @@ const RequestCard = () => {
 		getRequests();
 	}, []);
 
-	return(
+	return (
 		<>
 			<div>
 				{requestList.map((request) => {
-					return(
-						<React.Fragment key={request.request_id+"parent"}>
-							<Card key={request.request_id+"card"}
+					return (
+						<div key={request.request_id + "parent"} style={{ margin: "10px 0" }}>
+							<Card key={request.request_id + "card"}
 								type="inner"
 								title={request.type_name}
-								style={{ width: "auto" }} 
+								style={{ width: "auto" }}
 								extra={
 									<Space>
 										<a onClick={
 											() => {
-												navigate("/homepage/request/edit-request/"+request.request_id);
+												navigate("/homepage/request/edit-request/" + request.request_id);
 											}
-										}>edit</a>
+										}>Edit</a>
 										<a onClick={
 											() => {
-												navigate("/homepage/request/cancel-request/"+request.request_id);
+												navigate("/homepage/request/cancel-request/" + request.request_id);
 											}
-										}>cancel</a>
+										}>Cancel</a>
 									</Space>
 								}
 							>
 								<p>Request Date: {formatDate(request.request_time)}</p>
+								<p>Due Date:{formatDate(request.return_date)}</p>
 								<p>Borrow Amount :{request.borrow_amount}</p>
-								<p>Due Date:{formatDate(request.due_date)}</p>
 							</Card>
-							<Divider key={request.request_id+"divider"}/>
-						</React.Fragment>
+						</div>
 					);
 				}
 				)}
@@ -69,7 +68,7 @@ const RequestCard = () => {
 				/>}
 			</div>
 		</>
-		
+
 	);
 };
 

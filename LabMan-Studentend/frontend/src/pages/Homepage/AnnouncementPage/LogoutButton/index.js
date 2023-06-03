@@ -10,6 +10,7 @@ const LogoutButton = () => {
 
 	return (
 		<Button
+			danger
 			onClick={handleLogout}
 			style={{ cursor: "pointer" }}
 			size={40}

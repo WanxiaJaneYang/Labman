@@ -1,21 +1,26 @@
 import BorrowingRecordCard from "./BorrowingRecordCard";
-import { Button, Divider, Row } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Radio, Row } from "antd";
+import ViewReturnedPage from "../ViewReturnedPage";
+import { useState } from "react";
 
 const ReturnPage = () => {
-	const navigate = useNavigate();
+	const [activePage, setActivePage] = useState("borrowed");
 
-	const onClick = () => {
-		navigate("/homepage/return/view");
+	const onRadioChange = (e) => {
+		setActivePage(e.target.value);
 	};
 
 	return (
 		<div>
-			<Row justify="start" style={{marginBottom:"0px"}}>
-				<Button type="primary" onClick={onClick} >Show Returned Equipment</Button>
+			<Row justify="center" style={{ margin: "10px 0 20px 0" }}>
+				<Radio.Group onChange={onRadioChange} defaultValue={activePage}>
+					<Radio.Button value="borrowed" >Borrowed</Radio.Button>
+					<Radio.Button value="returned" >Returned</Radio.Button>
+				</Radio.Group>
 			</Row>
-			<Divider/>
-			<BorrowingRecordCard/>
+
+			{activePage === "borrowed" && <BorrowingRecordCard />}
+			{activePage === "returned" && <ViewReturnedPage />}
 		</div>
 	);
 };
