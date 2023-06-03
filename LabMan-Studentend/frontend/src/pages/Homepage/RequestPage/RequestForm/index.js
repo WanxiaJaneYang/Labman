@@ -49,7 +49,7 @@ const RequestForm = ({ setLoading }) => {
 			});
 		} catch (error) {
 			if (error.response.status === 404) {
-				message.error("Package includes no equipment!");
+				message.info("Package includes no equipment.");
 			} else {
 				message.error(error.message);
 			}
