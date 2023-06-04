@@ -22,8 +22,8 @@ async function getEquipmentTypeByName(req, res) {
 	const type_name = req.query.type_name;
 
 	try {
-		const query = "SELECT * FROM equipment_type WHERE LOWER(type_name) = LOWER(?)";
-		const params = [type_name];
+		const query = "SELECT * FROM equipment_type WHERE type_name LIKE ?";
+		const params = [`%${type_name}%`];
 
 		const [results] = await pool.query(query, params);
 

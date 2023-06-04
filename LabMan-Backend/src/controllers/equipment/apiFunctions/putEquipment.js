@@ -1,6 +1,7 @@
 import pool from "../../../utils/MySQL/db.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
 import moment from "moment";
+import { getEquipmentById } from "../helperFunctions/getEquipmentById.js";
 
 async function editEquipment(req, res) {
 	const { type_id } = req.params;
@@ -8,8 +9,11 @@ async function editEquipment(req, res) {
 	const edit_time = moment().format("YYYY-MM-DD HH:mm:ss");
 
 	try {
-		const query = "UPDATE equipment_type SET type_name = ?, total_amount = ? ,last_edit_time = ? WHERE type_id = ?";
-		const params = [type_name, total_amount, edit_time,type_id];
+		const [equipment] = await getEquipmentById(pool, type_id);
+		const change_amount = total_amount - equipment.total_amount;
+		const new_available_amount = equipment.available_amount + change_amount;
+		const query = "UPDATE equipment_type SET type_name = ?, total_amount = ? ,available_amount = ?,last_edit_time = ? WHERE type_id = ?";
+		const params = [type_name, total_amount, new_available_amount,edit_time, type_id];
 
 		const [results] = await pool.query(query, params);
 
