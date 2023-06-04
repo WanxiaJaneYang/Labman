@@ -3,7 +3,7 @@ import errorMessages from "../../../utils/constants/errorMessages.js";
 
 async function getReturns(req, res) {
 
-	let query = `SELECT * FROM borrowings WHERE borrow_status = '${req.query.borrow_status}'`;
+	let query = `SELECT * FROM borrowings WHERE borrow_status = '${req.query.borrow_status}' ORDER BY borrow_date DESC`;
 	const conditions = [];
 
 	if (req.query.type_name) {
