@@ -33,7 +33,11 @@ export const getRequestListByStudentId = async () => {
 		}
 	} catch (error) {
 		if (error.response) {
-			throw new Error(error.response.data.message);
+			if(error.response.status===404){
+				return [];
+			}else{
+				throw new Error(error.response.data.message);
+			}
 		} else {
 			throw new Error(error.message);
 		}
