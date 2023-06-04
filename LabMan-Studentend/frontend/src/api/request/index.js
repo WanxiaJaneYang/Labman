@@ -48,7 +48,7 @@ export const putRequest = async (request_id, values) => {
 		}
 	} catch (error) {
 		if (error.response) {
-			throw new Error(error.response.data.message);
+			throw new Error(error.response.data.error);
 		} else {
 			throw new Error(error.message);
 		}
