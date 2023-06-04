@@ -6,6 +6,7 @@ import { getPackageById } from "../../../../api/package";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import { getID } from "../../../../utils";
 import { postRequest } from "../../../../api/request";
+import { getEquipmentByTypename } from "../../../../api/equipment";
 
 const RequestForm = ({ setLoading }) => {
 	const { course_id } = useParams();
@@ -53,6 +54,15 @@ const RequestForm = ({ setLoading }) => {
 			} else {
 				message.error(error.message);
 			}
+		}
+	};
+
+	const getAvailableAmount = async (typename) => {
+		try {
+			const response = await getEquipmentByTypename(typename);
+			return response[0].available_amount;
+		} catch (error) {
+			message.error(error.message);
 		}
 	};
 
@@ -136,6 +146,15 @@ const RequestForm = ({ setLoading }) => {
 										{ required: true, message: "Please input amount." },
 										{
 											validator: async (_, value) => {
+												const typename = form.getFieldValue([
+													"request_items",
+													key,
+													"type_name",
+												]);
+												const available_amount = await getAvailableAmount(
+													typename
+												);
+
 												if (value <= 0) {
 													return Promise.reject(
 														new Error("Amount should be positive.")
@@ -151,7 +170,15 @@ const RequestForm = ({ setLoading }) => {
 													return Promise.reject(
 														new Error("Amount exceeds upper limit.")
 													);
-												} else {
+												} 
+												else if (value > available_amount) {
+													return Promise.reject(
+														new Error(
+															"Amount exceeds available amount."
+														)
+													);
+												}
+												else {
 													return Promise.resolve();
 												}
 											},
