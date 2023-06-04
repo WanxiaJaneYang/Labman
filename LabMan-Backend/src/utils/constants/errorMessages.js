@@ -5,7 +5,7 @@ const errorMessages = {
 	REQUEST_STATUS_IS_NOT_NEW: "The request status is not new",
 	BORROW_REQUIRED_FIELD_INVALID: "Required information for collecting is invalid",
 	borrowAmountExceedsUpperBound: "The borrow amount exceeds the upper bound amount predefined by the course package",
-
+	
 	//student
 	STUDENT_DOESNOT_EXIST: "The student does not exist",
 	DUPLICATE_USER: "Duplicate user",

@@ -61,6 +61,7 @@ async function getfilteredRequests(req, res) {
 		sql += " ORDER BY request_time DESC";
 
 		const [results] = await pool.query(sql, params);
+
 		return res.status(200).json(results);
 	} catch (error) {
 		console.error(error);
