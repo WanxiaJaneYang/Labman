@@ -2,11 +2,12 @@ import { DatePicker, Form, Input, InputNumber } from "antd";
 import { useRequestRecordContext } from "../../../Context";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { getEquipmentByTypename} from "../../../../../../api/equipment";
+import { getAvailableAmount} from "../../../../../../api/equipment";
 
 function ModifyRequestForm({ form}) {
 	const { modalData} = useRequestRecordContext();
 	const[type_name,setType_name]=useState();
+	const[request_amount,setRequest_amount]=useState();
 
 	useEffect(() => {
 		if (modalData) {
@@ -21,6 +22,7 @@ function ModifyRequestForm({ form}) {
 				request_id: modalData.request_id,
 			});
 			setType_name(modalData.type_name);
+			setRequest_amount(modalData.borrow_amount);
 		} else {
 			form.resetFields();
 		}
@@ -28,9 +30,7 @@ function ModifyRequestForm({ form}) {
 
 	const validateAmount = async(_, value) => {
 		try{
-			const equipmentData=await getEquipmentByTypename(type_name);
-			const availableAmount=equipmentData[0].available_amount;
-			if(!availableAmount) return Promise.reject(new Error("Please select equipment type"));
+			const availableAmount=await getAvailableAmount(type_name)+request_amount;
 			if (value <= availableAmount) {
 				const upper_bound_amount=form.getFieldValue("upper_bound_amount");
 				if(value>upper_bound_amount){

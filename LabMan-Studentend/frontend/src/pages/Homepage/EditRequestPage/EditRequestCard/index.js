@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { putRequest, getRequestListByStudentId } from "../../../../api/request";
 import { formatDate } from "../../../../utils/date";
+import { getAvailableAmount } from "../../../../api/equipment";
 
 const EditRequestCard = () => {
 	const navigate = useNavigate();
@@ -13,6 +14,7 @@ const EditRequestCard = () => {
 		borrow_amount: "",
 		type_name: "",
 	});
+	const [request_amount, setRequestAmount] = useState(0);
 
 	const getRequest = async () => {
 		try {
@@ -43,23 +45,30 @@ const EditRequestCard = () => {
 			form.setFieldsValue({
 				borrow_amount: request.borrow_amount
 			});
+			setRequestAmount(request.borrow_amount);
 		}
 	}, [request]);
 
-	const amountValidator = (_, value) => {
-		if (value < 1) {
-			return Promise.reject("Amount must be greater than 0");
-		} else if (value > request.upper_bound_amount) {
-			return Promise.reject("Amount must be less than upper bound amount:" + request.upper_bound_amount);
+	const amountValidator = async(_, value) => {
+		try{
+			const available_amount = await getAvailableAmount(request.type_name)+request_amount;
+			if (value < 1) {
+				return Promise.reject("Amount must be greater than 0");
+			} else if (value > request.upper_bound_amount) {
+				return Promise.reject("Amount must be less than upper bound amount:" + request.upper_bound_amount);
+			}else if (value > available_amount) {
+				return Promise.reject("Amount must be less than available amount:" + available_amount);
+			}
+			return Promise.resolve();
+		}catch(error){
+			message.error(error.message);
 		}
-		return Promise.resolve();
 	};
 
 
-	const onSubmit = async () => {
+	const onSubmit = async (values) => {
 		setLoading(true);
 		try {
-			const values = await form.validateFields();
 			const requestForm = {
 				...request,
 				borrow_amount: values.borrow_amount,
@@ -69,17 +78,15 @@ const EditRequestCard = () => {
 			message.success("Request edited successfully");
 			navigate("/homepage/request");
 		} catch (error) {
-			if (error.message) {
-				message.error(error.message);
-			}
+			message.error(error.message);
 		}
-		setLoading(false);
+		setLoading(false);		
 	};
 
 	return (
 		<Card type="inner" title="Edit Request" style={{ width: "auto" }}>
 			<Spin spinning={loading}>
-				<Form form={form}>
+				<Form form={form} onFinish={onSubmit}>
 					<Form.Item
 						label={request.type_name + " Amount"}
 						name={"borrow_amount"}
@@ -97,7 +104,7 @@ const EditRequestCard = () => {
 							value={request.borrow_amount}
 						/>
 					</Form.Item>
-					<Button type="primary" htmlType="submit" onClick={onSubmit}>
+					<Button type="primary" htmlType="submit" >
 						Submit
 					</Button>
 				</Form>
