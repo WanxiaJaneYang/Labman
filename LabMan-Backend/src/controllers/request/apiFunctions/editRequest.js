@@ -34,7 +34,7 @@ async function editRequest(req, res) {
 		await statusIsNew(pool, request_id);
 		await runTransaction(async (connection) => {
 			// Update the request record
-			await compareAvailableAmount(connection, type_id, borrow_amount);
+			await compareAvailableAmount(connection, type_id, change_amount);
 
 			const p1 = updateRequest(connection, type_id, type_name, borrow_amount, return_date, request_id);
 
