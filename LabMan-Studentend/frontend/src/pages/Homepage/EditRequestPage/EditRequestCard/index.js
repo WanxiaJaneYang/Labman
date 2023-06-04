@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { putRequest, getRequestListByStudentId } from "../../../../api/request";
 import { formatDate } from "../../../../utils/date";
+import { getAvailableAmount } from "../../../../api/equipment";
 
 const EditRequestCard = () => {
 	const navigate = useNavigate();
@@ -47,10 +48,13 @@ const EditRequestCard = () => {
 	}, [request]);
 
 	const amountValidator = (_, value) => {
+		const available_amount = getAvailableAmount(request.type_name);
 		if (value < 1) {
 			return Promise.reject("Amount must be greater than 0");
 		} else if (value > request.upper_bound_amount) {
 			return Promise.reject("Amount must be less than upper bound amount:" + request.upper_bound_amount);
+		}else if (value > available_amount) {
+			return Promise.reject("Amount must be less than available amount:" + available_amount);
 		}
 		return Promise.resolve();
 	};

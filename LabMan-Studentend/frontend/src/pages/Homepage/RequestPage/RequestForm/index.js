@@ -6,7 +6,7 @@ import { getPackageById } from "../../../../api/package";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import { getID } from "../../../../utils";
 import { postRequest } from "../../../../api/request";
-import { getEquipmentByTypename } from "../../../../api/equipment";
+import {getAvailableAmount} from "../../../../api/equipment";
 
 const RequestForm = ({ setLoading }) => {
 	const { course_id } = useParams();
@@ -54,15 +54,6 @@ const RequestForm = ({ setLoading }) => {
 			} else {
 				message.error(error.message);
 			}
-		}
-	};
-
-	const getAvailableAmount = async (typename) => {
-		try {
-			const response = await getEquipmentByTypename(typename);
-			return response[0].available_amount;
-		} catch (error) {
-			message.error(error.message);
 		}
 	};
 
