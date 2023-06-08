@@ -6,7 +6,7 @@ async function getEquipmentTypes(req, res) {
 		return getEquipmentTypeByName(req, res);
 	} else {
 		try {
-			const [results] = await pool.query("SELECT * FROM equipment_type");
+			const [results] = await pool.query("SELECT * FROM equipment_type ORDER BY last_edit_time DESC");
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
@@ -22,7 +22,7 @@ async function getEquipmentTypeByName(req, res) {
 	const type_name = req.query.type_name;
 
 	try {
-		const query = "SELECT * FROM equipment_type WHERE type_name LIKE ?";
+		const query = "SELECT * FROM equipment_type WHERE type_name LIKE ? ORDER BY last_edit_time DESC";
 		const params = [`%${type_name}%`];
 
 		const [results] = await pool.query(query, params);
