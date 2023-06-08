@@ -15,27 +15,27 @@ const ModifyEquipmentForm = ({ form, modalData }) => {
 		}
 	}, [modalData, form]);
 
-	const validateAvailableAmount = (_, value) => {
-		const totalAmount = form.getFieldValue("total_amount");
-		if (value <= totalAmount) {
-			return Promise.resolve();
-		} else {
-			return Promise.reject(
-				new Error("Available Amount can not be greater than Total Amount")
-			);
-		}
-	};
+	// const validateAvailableAmount = (_, value) => {
+	// 	const totalAmount = form.getFieldValue("total_amount");
+	// 	if (value <= totalAmount) {
+	// 		return Promise.resolve();
+	// 	} else {
+	// 		return Promise.reject(
+	// 			new Error("Available Amount can not be greater than Total Amount")
+	// 		);
+	// 	}
+	// };
 
-	const validateTotalAmount = (_, value) => {
-		const availableAmount = form.getFieldValue("available_amount");
-		if (value >= availableAmount) {
-			return Promise.resolve();
-		} else {
-			return Promise.reject(
-				new Error("Total Amount can not be less than Available Amount")
-			);
-		}
-	};
+	// const validateTotalAmount = (_, value) => {
+	// 	const availableAmount = form.getFieldValue("available_amount");
+	// 	if (value >= availableAmount) {
+	// 		return Promise.resolve();
+	// 	} else {
+	// 		return Promise.reject(
+	// 			new Error("Total Amount can not be less than Available Amount")
+	// 		);
+	// 	}
+	// };
 	
 
 	return (
@@ -49,7 +49,7 @@ const ModifyEquipmentForm = ({ form, modalData }) => {
 				dependencies={["total_amount"]}
 				rules={[
 					{ type: "number", min: 0, message: "Available Amount must be greater than 0" },
-					{ validator: validateAvailableAmount},
+					// { validator: validateAvailableAmount},
 				]}
 				disabled={true}
 			>
@@ -61,7 +61,7 @@ const ModifyEquipmentForm = ({ form, modalData }) => {
 				dependencies={["available_amount"]}
 				rules={[
 					{ type: "number", min: 0, message: "Total Amount must be greater than 0" },
-					{ validator: validateTotalAmount },
+					// { validator: validateTotalAmount },
 				]}
 			>
 				<InputNumber />
