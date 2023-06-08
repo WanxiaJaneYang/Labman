@@ -51,8 +51,9 @@ const ModifyEquipmentForm = ({ form, modalData }) => {
 					{ type: "number", min: 0, message: "Available Amount must be greater than 0" },
 					{ validator: validateAvailableAmount},
 				]}
+				disabled={true}
 			>
-				<InputNumber />
+				<InputNumber disabled={true}/>
 			</Form.Item>
 			<Form.Item 
 				label="Total Count" 
