@@ -37,8 +37,8 @@ async function cancelReturn(req, res) {
 
 			await Promise.all([p1, p2, p3, p4]);
 
-			return res.status(200).json({ success: "Cancel return equipment successfully" });
 		});
+		return res.status(200).json({ success: "Cancel return equipment successfully" });
 	} catch (error) {
 		console.error(error);
 		if (Object.values(errorMessages).includes(error.message)) {

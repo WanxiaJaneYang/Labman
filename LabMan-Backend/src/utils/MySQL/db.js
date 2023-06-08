@@ -17,6 +17,7 @@ const pool = mysql.createPool({
 		ca: fs.readFileSync(`${__dirname}/DigiCertGlobalRootCA.crt.pem`)
 	},
 	connectTimeout: 60000,
+	connectionLimit: 50, // Set the maximum number of connections to create at once. 
 });
 console.log("Connection pool object created successfully");
 
