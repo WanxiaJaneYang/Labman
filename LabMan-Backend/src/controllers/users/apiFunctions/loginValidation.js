@@ -10,7 +10,7 @@ export async function loginValidation(req, res) {
 
 		const query = "SELECT password FROM students_user WHERE student_id = ?";
 		const [result] = await pool.query(query, [student_id]);
-		console.log(result[0]);
+		// console.log(result[0]);
 		if (result[0].password === password) {
 			return res.status(200).json({ message: "User logged in successfully" });
 		}
