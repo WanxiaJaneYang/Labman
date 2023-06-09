@@ -33,6 +33,9 @@ Student Frontend
 ## MileStone 1 Point 
 Check the tag "Milestone1" in main branch
 
+## MileStone 2 Point
+Check the tag "Milestone2" in main branch
+
 ## AWS SES email
 labman5000@proton.me
 Adelaide123.
