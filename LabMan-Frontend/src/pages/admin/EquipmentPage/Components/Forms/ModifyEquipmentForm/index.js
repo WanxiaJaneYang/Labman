@@ -36,14 +36,14 @@ const ModifyEquipmentForm = ({ form, modalData }) => {
 	// 		);
 	// 	}
 	// };
-	
+
 
 	return (
 		<Form form={form} layout="vertical">
 			<Form.Item label="Equipment Type" name="type_name">
 				<Input />
 			</Form.Item>
-			<Form.Item
+			{/* <Form.Item
 				label="Available Count"
 				name="available_amount"
 				dependencies={["total_amount"]}
@@ -54,9 +54,9 @@ const ModifyEquipmentForm = ({ form, modalData }) => {
 				disabled={true}
 			>
 				<InputNumber disabled={true}/>
-			</Form.Item>
-			<Form.Item 
-				label="Total Count" 
+			</Form.Item>  */}
+			<Form.Item
+				label="Total Count"
 				name="total_amount"
 				dependencies={["available_amount"]}
 				rules={[

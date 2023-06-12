@@ -19,6 +19,10 @@ const EquipmentTable = () => {
 			dataIndex: "available_amount",
 		},
 		{
+			title: "Reserved Amount",
+			dataIndex: "reserved_amount",
+		},
+		{
 			title: "Total Amount",
 			dataIndex: "total_amount",
 		},

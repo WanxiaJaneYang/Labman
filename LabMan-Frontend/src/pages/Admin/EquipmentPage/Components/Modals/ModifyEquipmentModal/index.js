@@ -23,7 +23,7 @@ const ModifyEquipmentModal=({open, modalData, hideModal}) =>{
 	return (
 		<Modal
 			title="Modify Equipment" 
-			width="70vw" 
+			width="40vw" 
 			open={open} 
 			onCancel={hideModal} 
 			onOk={handleModify}

@@ -12,6 +12,9 @@ async function editEquipment(req, res) {
 		const [equipment] = await getEquipmentById(pool, type_id);
 		const change_amount = total_amount - equipment.total_amount;
 		const new_available_amount = equipment.available_amount + change_amount;
+		if (new_available_amount<0) {
+			throw new Error(errorMessages.AVAILABLE_AMOUNT_CANNOT_BE_NEGATIVE);
+		}
 		const query = "UPDATE equipment_type SET type_name = ?, total_amount = ? ,available_amount = ?,last_edit_time = ? WHERE type_id = ?";
 		const params = [type_name, total_amount, new_available_amount,edit_time, type_id];
 

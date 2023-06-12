@@ -5,7 +5,7 @@ import { insertRequestLog } from "../../logs/helperFunctions/insertRequestLog.js
 import { insertBorrowingRecords } from "../helperFunctions/insertBorrowingRecords.js";
 import { updateRequestStatus } from "../helperFunctions/updateRequestStatus.js";
 import { getRequestById } from "../helperFunctions/getRequestById.js";
-import { compareAvailableAmount } from "../../equipment/helperFunctions/compareAvailableAmount.js";
+import { compareReservedAmount } from "../../equipment/helperFunctions/compareReservedAmount.js";
 import { statusIsNew } from "../helperFunctions/checkRequestStatus.js";
 import errorMessages from "../../../utils/constants/errorMessages.js";
 import {updateReservedAmount} from "../../equipment/helperFunctions/updateReservedAmount.js";
@@ -18,7 +18,7 @@ async function collectRequest(req,res) {
 		//console.log(request.type_id);
 		await statusIsNew(pool,request_id);
 
-		await compareAvailableAmount(pool, request.type_id, request.borrow_amount);
+		await compareReservedAmount(pool, request.type_id, request.borrow_amount);
 
 		await runTransaction(async (connection) => {
 			// Insert borrowingRecord into borrowings table N times with amount=1 per record

@@ -12,9 +12,11 @@ const errorMessages = {
 
 	//equipment
 	EQUIPMENT_TYPE_DOESNOT_EXIST: "The equipment type does not exist",
-	NOT_ENOUGH_EQUIPMENT: "Not enough equipment available",
+	NOT_ENOUGH_EQUIPMENT_FOR_REQUEST: "Not enough equipment available",
 	EQUIPMENT_LOG_REQUIRED_FIELD_INVALID: "Required information for equipment borrowing is invalid",
 	EQUIPMENT_TYPE_NOT_REMOVABLE: "Equipment type is not removable",
+	NOT_ENOUGH_EQUIPMENT_FOR_COLLECT: "Not enough equipment available",
+	AVAILABLE_AMOUNT_CANNOT_BE_NEGATIVE: "The change causes the Available amount to be negative",
 
 	//borrowing
 	REQUEST_STATUS_IS_NOT_COLLECTED: "The request status is not collected",
