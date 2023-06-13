@@ -32,6 +32,7 @@ const BorrowingRecordCard = () => {
 							<p>Borrow Date: {formatDate(borrowRecord.borrow_date)}</p>
 							<p>Due Date: {formatDate(borrowRecord.return_date)}</p>
 							<p>Borrow Amount: {borrowRecord.borrow_amount}</p>
+							<p>Returned Amount: {borrowRecord.returned_amount}</p>
 						</Card>
 					</div>
 				);
