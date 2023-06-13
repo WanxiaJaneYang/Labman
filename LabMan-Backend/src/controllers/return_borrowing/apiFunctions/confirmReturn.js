@@ -26,7 +26,7 @@ async function confirmReturn(req, res) {
 				log_type: 1,
 				log_time: new Date(),
 				return_date: borrowingRecord.return_date,
-				returned_amount: borrowingRecord.returned_amount,
+				returned_amount: return_amount,
 			};
 			const p2 = await insertEquipmentLog(connection, equipmentLog);
 

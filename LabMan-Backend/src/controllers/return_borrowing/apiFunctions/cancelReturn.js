@@ -26,7 +26,7 @@ async function cancelReturn(req, res) {
 				log_type: 2,
 				log_time: new Date(),
 				return_date: borrowingRecord.return_date,
-				returned_amount: borrowingRecord.returned_amount,
+				returned_amount: cancel_return_amount*(-1),
 			};
 			const p2 = await insertEquipmentLog(connection, equipmentLog);
 

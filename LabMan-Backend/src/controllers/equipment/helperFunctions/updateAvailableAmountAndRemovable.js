@@ -8,8 +8,8 @@ export async function updateAvailableAmountAndRemovable(connection, type_id, cha
 		if (new_available_amount<0) {
 			throw new Error(errorMessages.AVAILABLE_AMOUNT_CANNOT_BE_NEGATIVE);
 		}
-		const updateAmountQuery = "UPDATE equipment_type SET available_amount = new_available_amount WHERE type_id = ?";
-		await connection.query(updateAmountQuery, [type_id]);
+		const updateAmountQuery = "UPDATE equipment_type SET available_amount = ? WHERE type_id = ?";
+		await connection.query(updateAmountQuery, [new_available_amount,type_id]);
 
 		const [equipment] = await getEquipmentById(connection, type_id);
 		const removable = equipment.available_amount === equipment.total_amount ? 1 : 0;

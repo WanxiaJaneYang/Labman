@@ -6,7 +6,7 @@ async function getEmailLogs(req, res) {
 		return getfilteredEmailLogs(req, res);
 	} else {
 		try {
-			const [results] = await pool.query("SELECT * FROM email_log");
+			const [results] = await pool.query("SELECT * FROM email_log ORDER BY log_time DESC");
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
@@ -53,7 +53,7 @@ async function getfilteredEmailLogs(req, res) {
 	}
 
 	// Add ORDER BY clause to sort by request_time
-	sql += " ORDER BY log_time ASC";
+	sql += " ORDER BY log_time DESC";
 
 	try {
 		const [results] = await pool.query(sql, params);

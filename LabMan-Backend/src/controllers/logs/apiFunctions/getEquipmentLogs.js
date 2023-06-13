@@ -6,7 +6,7 @@ async function getEquipmentLogs(req, res) {
 		return getfilteredEquipmentLogs(req, res);
 	} else {
 		try {
-			const [results] = await pool.query("SELECT * FROM equipment_log");
+			const [results] = await pool.query("SELECT * FROM equipment_log ORDER BY log_time DESC");
 			return res.status(200).json(results);
 		} catch (error) {
 			console.error(error);
@@ -53,7 +53,7 @@ async function getfilteredEquipmentLogs(req, res) {
 	}
 
 	// Add ORDER BY clause to sort by request_time
-	sql += " ORDER BY log_time ASC";
+	sql += " ORDER BY log_time DESC";
 
 	// // Add LIMIT and OFFSET clauses for paging
 	// if (page && per_page) {

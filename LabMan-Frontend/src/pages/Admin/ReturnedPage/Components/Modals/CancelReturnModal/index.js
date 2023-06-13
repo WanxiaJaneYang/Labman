@@ -34,7 +34,7 @@ const CancelReturnModal = ({open, hideModal, data}) => {
 				form={form}
 			>
 				<Form.Item
-					label={"Return Amount"}
+					label={"Cancel Amount"}
 					name={"return_amount"}
 					rules={[
 						{
