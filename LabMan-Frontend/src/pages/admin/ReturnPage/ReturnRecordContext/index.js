@@ -79,7 +79,6 @@ const ReturnRecordProvider = ({ children }) => {
 		try{
 			const data = await searchBorrowRecord(values);
 			setData(data);
-			message.success("record found");
 		}catch(error){
 			message.error(error.message);
 		}
